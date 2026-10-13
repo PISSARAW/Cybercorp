@@ -24,7 +24,7 @@ try {
         } catch {
             "$(Get-Date -Format o) ERREUR $($_.Exception.Message)" | Set-Content -LiteralPath $log -Encoding utf8
         }
-        Start-Sleep -Seconds 300
+        Start-Sleep -Seconds 20
     }
 } finally {
     if ($ownsMutex) { $mutex.ReleaseMutex() }

@@ -199,6 +199,22 @@ Capture du Gestionnaire de commutateur virtuel fournie le 13 octobre 2026 :
 - [ ] Règles de confinement appliquées.
 - [ ] Configuration exportée et fonctionnement vérifié.
 
+### Création observée
+
+Captures et fichiers vérifiés le 13 octobre 2026 :
+
+- VM `CC-PFS01` créée et laissée **Désactivée**.
+- Génération : 2.
+- Mémoire de démarrage : 1 024 Mo.
+- Mémoire dynamique : désactivée.
+- Aucun point de contrôle.
+- Disque dynamique `CC-PFS01.vhdx` créé dans `C:\Users\Public\Documents\Hyper-V\CyberCorp\CC-PFS01\CC-PFS01\Virtual Hard Disks`.
+- Configuration Hyper-V créée sous l'identifiant `5C5BF22F-7663-4D64-B1B0-88379422DDD5`.
+- Processeurs virtuels : 2, confirmé par capture.
+- Démarrage sécurisé : désactivé, conformément aux prérequis pfSense sous Hyper-V.
+- Lecteur DVD : ISO `netgate-installer-v1.2-RELEASE-amd64.iso` attaché.
+- Première carte réseau : `Default Switch`, uniquement pour donner un accès Internet temporaire à l'installateur Netgate.
+
 ### Validation
 
 - Date : —

@@ -1,5 +1,7 @@
 const byId = (id) => document.getElementById(id);
 const number = (value) => Number.isFinite(Number(value)) ? Number(value) : null;
+let latestData = null;
+let loading = false;
 
 function text(id, value) { byId(id).textContent = value; }
 function element(tag, className, content) {
@@ -18,14 +20,23 @@ function renderList(container, items, build, emptyText) {
   for (const item of items) container.append(build(item));
 }
 
-function render(data) {
+function renderFreshness(data) {
   const collected = new Date(data.collected_at);
-  const ageMinutes = (Date.now() - collected.getTime()) / 60000;
-  const fresh = Number.isFinite(ageMinutes) && ageMinutes >= -2 && ageMinutes <= 10;
+  const ageSeconds = (Date.now() - collected.getTime()) / 1000;
+  const fresh = Number.isFinite(ageSeconds) && ageSeconds >= -120 && ageSeconds <= 60;
   const pill = byId('freshness');
   pill.className = `state-pill ${fresh ? 'state-fresh' : 'state-stale'}`;
-  pill.textContent = fresh ? 'Relevé récent' : 'Relevé ancien';
-  text('collected-at', Number.isNaN(collected.getTime()) ? 'Date inconnue' : `Reçu le ${new Intl.DateTimeFormat('fr-FR', {dateStyle:'medium',timeStyle:'short'}).format(collected)}`);
+  pill.textContent = fresh ? 'Serveur connecté' : 'Relevé ancien';
+  text('collected-at', Number.isNaN(collected.getTime()) ? 'Date inconnue' : `Dernier relevé : ${new Intl.DateTimeFormat('fr-FR', {dateStyle:'medium',timeStyle:'medium'}).format(collected)}`);
+  const hostState = byId('host-state');
+  if (hostState) {
+    hostState.className = `vm-state ${fresh ? 'vm-on' : 'vm-off'}`;
+    hostState.textContent = fresh ? 'Connecté' : 'À vérifier';
+  }
+}
+
+function render(data) {
+  renderFreshness(data);
 
   const vms = Array.isArray(data.vms) ? data.vms : [];
   const steps = Array.isArray(data.project?.steps) ? data.project.steps : [];
@@ -40,6 +51,25 @@ function render(data) {
   const notice = byId('notice');
   notice.hidden = data.collection?.hyperv === 'ok';
   if (!notice.hidden) notice.textContent = 'Le relevé du projet a été reçu, mais la lecture Hyper-V n’est pas autorisée pour le compte qui exécute le collecteur. Les états des VM et des commutateurs sont indisponibles.';
+
+  const servers = [
+    { name: 'Hôte Hyper-V', role: 'Serveur physique du laboratoire', vm: null },
+    { name: 'CC-PFS01', role: 'Pare-feu et routage pfSense', vm: 'CC-PFS01' },
+    { name: 'CC-DC01', role: 'Active Directory, DNS et fichiers', vm: 'CC-DC01' },
+  ];
+  renderList(byId('server-list'), servers, server => {
+    const vm = vms.find(item => item.name === server.vm);
+    const state = server.vm === null ? 'Connecté' : data.collection?.hyperv !== 'ok' ? 'Indisponible' : vm ? vm.state === 'Running' ? 'En cours' : vm.state === 'Off' ? 'Arrêté' : vm.state : 'Non créé';
+    const card = element('article', 'server-card');
+    const head = element('div', 'vm-head');
+    const badge = element('span', `vm-state ${state === 'Connecté' || state === 'En cours' ? 'vm-on' : 'vm-off'}`, state);
+    if (server.vm === null) badge.id = 'host-state';
+    head.append(element('strong', '', server.name), badge);
+    card.append(head, element('p', '', server.role));
+    if (vm) card.append(element('small', '', `${number(vm.memory_mb) ?? 0} Mio affectés · ${number(vm.checkpoints) ?? 0} point(s) de contrôle`));
+    return card;
+  }, 'Aucun serveur disponible.');
+  renderFreshness(data);
 
   renderList(byId('vm-list'), vms, vm => {
     const card = element('article', 'vm-card');
@@ -63,18 +93,27 @@ function render(data) {
 }
 
 async function refresh() {
+  if (loading) return;
+  loading = true;
   byId('refresh').disabled = true;
   try {
     const response = await fetch('/api/status', { cache: 'no-store' });
     if (response.status === 204) return;
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    render(await response.json());
+    const data = await response.json();
+    if (data.collected_at !== latestData?.collected_at) render(data);
+    latestData = data;
+    renderFreshness(data);
   } catch {
     const notice = byId('notice'); notice.hidden = false;
     notice.textContent = 'Le relevé n’a pas pu être chargé. Réessayez plus tard.';
-  } finally { byId('refresh').disabled = false; }
+  } finally { byId('refresh').disabled = false; loading = false; }
 }
 
 byId('refresh').addEventListener('click', refresh);
 refresh();
-setInterval(refresh, 60000);
+setInterval(() => {
+  if (latestData) renderFreshness(latestData);
+  if (!document.hidden) refresh();
+}, 5000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
