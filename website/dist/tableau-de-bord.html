@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1830">
+  <meta name="description" content="Suivi en lecture seule du laboratoire pédagogique CyberCorp : machines virtuelles, commutateurs et avancement du projet.">
+  <title>Suivi du projet — CyberCorp</title>
+  <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <div class="demo-bar">Entreprise fictive · Projet pédagogique CyberCorp</div>
+  <header class="site-header"><div class="container nav-row"><a class="brand" href="index.html" aria-label="CyberCorp, accueil"><img src="assets/logo-mark.svg" width="42" height="42" alt=""><span>Cyber<span>Corp</span></span></a><nav aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="index.html#expertises">Expertises</a><a href="index.html#approche">Approche</a><a href="equipe.html">L’équipe</a><a class="active" aria-current="page" href="tableau-de-bord.html">Projet</a></nav></div></header>
+  <main id="contenu">
+    <section class="dashboard-hero"><div class="container"><p class="eyebrow"><span class="eyebrow-line"></span> Laboratoire pédagogique</p><h1>Le projet, <em>en un regard.</em></h1><p>Une vue en lecture seule des machines virtuelles, de l’hôte et des étapes de construction. Les données proviennent d’un relevé de l’hôte, jamais d’un accès direct aux VM.</p><div class="dashboard-meta"><span id="freshness" class="state-pill state-waiting">En attente de données</span><span id="collected-at">Aucun relevé reçu</span><button id="refresh" class="refresh-button" type="button">Actualiser ↻</button></div></div></section>
+    <div class="container dashboard-body">
+      <div id="notice" class="dashboard-notice" role="status">Le tableau de bord attend son premier relevé. Les machines virtuelles ne sont pas accessibles depuis ce site.</div>
+      <section aria-labelledby="overview-title"><div class="dashboard-title"><div><p class="section-kicker">Vue d’ensemble</p><h2 id="overview-title">État du laboratoire</h2></div><p>Les valeurs correspondent au dernier relevé reçu, pas à un flux vidéo ou à une console distante.</p></div><div class="metric-grid"><div class="metric-card"><span>VM en cours d’exécution</span><strong id="vm-running">—</strong><small id="vm-total">Sur — VM suivies</small></div><div class="metric-card"><span>Mémoire disponible sur l’hôte</span><strong id="host-memory">—</strong><small>Gio</small></div><div class="metric-card"><span>Étapes validées</span><strong id="steps-done">—</strong><small id="steps-total">Sur — étapes</small></div><div class="metric-card"><span>Tests validés</span><strong id="tests-done">—</strong><small id="tests-total">Sur 15 tests T01–T15</small></div></div></section>
+      <div class="dashboard-columns"><section aria-labelledby="vm-title"><div class="dashboard-title"><div><p class="section-kicker">Hyper-V</p><h2 id="vm-title">Machines virtuelles</h2></div></div><div id="vm-list" class="vm-list"><div class="empty-card">Aucun relevé des VM disponible.</div></div></section><section aria-labelledby="network-title"><div class="dashboard-title"><div><p class="section-kicker">Topologie</p><h2 id="network-title">Commutateurs</h2></div></div><div id="switch-list" class="switch-list"><div class="empty-card">Aucun relevé réseau disponible.</div></div></section></div>
+      <section aria-labelledby="progress-title"><div class="dashboard-title"><div><p class="section-kicker">Construction</p><h2 id="progress-title">Avancement du projet</h2></div><p>Une étape n’est « validée » qu’après confirmation dans le journal de déploiement.</p></div><ol id="step-list" class="progress-list"><li class="empty-card">Aucun relevé d’avancement disponible.</li></ol></section>
+      <p class="dashboard-footnote">Ce tableau n’expose ni mots de passe, ni adresses du réseau personnel, ni commande d’administration. Pour accéder aux consoles des VM : Tailscale → RDP de l’hôte → Hyper-V.</p>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container footer-row"><a class="brand" href="index.html"><img src="assets/logo-mark.svg" width="34" height="34" alt=""><span>Cyber<span>Corp</span></span></a><p>Entreprise fictive · Projet pédagogique · Aucune activité commerciale</p><a href="index.html">Retour à l’accueil →</a></div></footer>
+</body>
+</html>

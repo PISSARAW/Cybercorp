@@ -30,6 +30,8 @@ Le site précise qu’il s’agit d’une entreprise fictive et ne collecte aucu
 
 Version hébergée privée : [CyberCorp — site vitrine](https://cybercorp-vitrine.fabled-haven-3189.chatgpt.site).
 
+Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatgpt.site/tableau-de-bord) affiche le dernier relevé de l’hôte, les VM, les commutateurs et l’avancement. Voir le [guide de collecte](docs/suivi-site.md) pour le fonctionnement, les droits Hyper-V et l’actualisation automatique.
+
 ## Statut
 
 - [x] Noms, rôles, profils mémoire et plan IP documentés

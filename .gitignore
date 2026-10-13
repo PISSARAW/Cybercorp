@@ -12,3 +12,5 @@ config.xml
 # Copie locale de publication Sites (dépôt Git séparé).
 /site/
 /.sites-deploy.tar
+/website/dist/server/
+/website/dist/.openai/
