@@ -10,8 +10,8 @@ Ce journal conserve les étapes réalisées et validées avec l'utilisateur. Une
 | 2 | Sauvegarde/export des VM existantes | Validée |
 | 3 | Contrôle et création des commutateurs Hyper-V | Validée |
 | 4 | Décision de réutilisation pour chaque VM | Validée |
-| 5 | Adaptation ou reconstruction de `CC-PFS01` | En cours |
-| 6 | Adaptation ou reconstruction de `CC-DC01` | À faire |
+| 5 | Adaptation ou reconstruction de `CC-PFS01` | En attente Netgate |
+| 6 | Adaptation ou reconstruction de `CC-DC01` | En cours |
 | 7 | Adaptation ou reconstruction de `CC-W11-01` | À faire |
 | 8 | Import et confinement de `CC-KALI01` | À faire |
 | 9 | Configuration réseau, domaine et comptes | À faire |
@@ -192,7 +192,7 @@ Capture du Gestionnaire de commutateur virtuel fournie le 13 octobre 2026 :
 
 ### Contrôles
 
-- [ ] VM créée avec les paramètres matériels attendus.
+- [x] VM créée avec les paramètres matériels attendus.
 - [ ] Installation pfSense terminée.
 - [ ] Trois interfaces affectées aux bons commutateurs.
 - [ ] Adresses LAN, AUDIT et WAN configurées.
@@ -214,6 +214,111 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 - Démarrage sécurisé : désactivé, conformément aux prérequis pfSense sous Hyper-V.
 - Lecteur DVD : ISO `netgate-installer-v1.2-RELEASE-amd64.iso` attaché.
 - Première carte réseau : `Default Switch`, uniquement pour donner un accès Internet temporaire à l'installateur Netgate.
+- Deuxième carte réseau : `CC-LAN`.
+- Troisième carte réseau : `CC-AUDIT`.
+- L'ordre des cartes a été confirmé par capture avant le premier démarrage : WAN temporaire, LAN, puis AUDIT.
+
+Correspondance détectée par l'installateur Netgate :
+
+| Interface pfSense | Adresse MAC | Commutateur pendant l'installation | Rôle définitif |
+| --- | --- | --- | --- |
+| `hn0` | `00:15:5d:01:3c:05` | `Default Switch` | WAN sur `CC-WAN-MAINT` après installation |
+| `hn1` | `00:15:5d:01:3c:06` | `CC-LAN` | LAN métier |
+| `hn2` | `00:15:5d:01:3c:07` | `CC-AUDIT` | Réseau d'audit |
+
+Choix de stockage de l'installateur :
+
+- Système de fichiers : UFS, retenu pour limiter la consommation mémoire avec 1 024 Mo de RAM.
+- Schéma de partition : GPT.
+- Disque cible : `da0`, disque virtuel Microsoft de 20 Go.
+
+Installation pfSense CE lancée via le Netgate Installer. Pendant l'installation, seules `hn0` (WAN) et `hn1` (LAN) sont assignées ; `hn2` reste détectée et sera affectée après le premier démarrage comme `OPT1`, puis renommée `AUDIT`.
+
+Première tentative d'installation : **échec**. Le Netgate Installer indique que le système n'est pas installé et demande de consulter `/tmp/install-log.txt`. Aucun nouvel essai ne doit être lancé avant lecture du journal.
+
+Diagnostic du journal : 156 paquets sur 179 ont été récupérés avec succès, puis le téléchargement de `perl5-5.42.2` depuis `https://pkg.pfsense.org/` a atteint le délai maximal (`Timeout was reached`). La panne est donc liée au téléchargement réseau ou au serveur de paquets, et non à la détection du disque ou des interfaces.
+
+Contrôles réseau après l'échec :
+
+- Accès IPv4 fonctionnel depuis l'installateur : `1.1.1.1`, quatre réponses sur quatre, aucune perte.
+- Le résolveur du `Default Switch` répond, mais `pkg.pfsense.org` ne publie momentanément aucune adresse `A` ni `AAAA`.
+- Le même résultat a été confirmé depuis l'hôte avec le résolveur système et le résolveur public Cloudflare `1.1.1.1`.
+- Conclusion : incident DNS externe côté dépôt Netgate, sans lien avec la configuration Hyper-V locale. L'installation doit être reprise lorsque l'enregistrement DNS officiel est revenu ; aucune redirection manuelle vers un miroir non validé ne sera utilisée.
+- `CC-PFS01` arrêtée proprement avec `shutdown -p now` après le diagnostic. La VM, son disque et ses paramètres sont conservés pour reprendre l'installation.
+
+### Validation
+
+- Date : —
+- Validation utilisateur : —
+- Preuves ou remarques : —
+
+## Étape 6 — Reconstruction de `CC-DC01`
+
+**État : En cours**
+
+### Cible
+
+- Nom : `CC-DC01`.
+- Génération : 2.
+- Mémoire de démarrage : 4 096 Mo ; mémoire dynamique autorisée avec minimum 2 048 Mo et maximum 4 096 Mo.
+- Processeurs virtuels : 2.
+- Disque système : 80 Gio, allocation dynamique.
+- Disque de données : 30 Gio, allocation dynamique, à ajouter après la création initiale.
+- Réseau : une seule carte sur `CC-LAN`.
+- Système : Windows Server 2025 Evaluation avec expérience de bureau.
+- Aucun accès direct au `Default Switch` ou à un commutateur externe.
+
+### Contrôles
+
+- [x] VM créée avec les paramètres matériels attendus.
+- [ ] Windows Server 2025 installé.
+- [ ] Nom `CC-DC01` et adresse `10.77.10.10/24` configurés.
+- [ ] Second disque de 30 Gio initialisé.
+- [ ] Rôles AD DS, DNS et fichiers installés.
+- [ ] Forêt `ad.cybercorp.test` créée et contrôles de santé réussis.
+- [ ] Configuration sauvegardée et fonctionnement vérifié.
+
+### Création observée
+
+Captures et fichiers vérifiés le 13 octobre 2026 :
+
+- VM `CC-DC01` créée et laissée **Désactivée**.
+- Génération : 2.
+- Un point de contrôle automatique non souhaité a ensuite été créé le 13 octobre 2026 à 17:12:14, avant le premier démarrage et avant l'installation de Windows. La VM étant encore vide et arrêtée, ce point doit être supprimé proprement depuis le Gestionnaire Hyper-V. Les fichiers `.avhdx` ne doivent jamais être supprimés manuellement.
+- Suppression du point de contrôle validée visuellement : le Gestionnaire Hyper-V indique désormais que `CC-DC01` n'a pas de point de contrôle.
+- Contrôle complémentaire du stockage : deux fichiers `.avhdx` de 4 Mio portant l'horodatage du point de contrôle subsistent dans le dossier des disques. Une première observation les avait classés prudemment comme résidus, sans les supprimer.
+- Cause observée dans les paramètres : les points de contrôle standard étaient sélectionnés et l'option de création automatique était activée. Réglage correctif demandé avant le premier démarrage : points de contrôle de production uniquement, sans repli standard et sans point de contrôle automatique.
+- Réglage correctif vérifié par capture : points de contrôle activés, type **Production**, repli vers les points standard désactivé et création automatique désactivée.
+- Enregistrement confirmé après fermeture des paramètres : `CC-DC01` reste désactivée et le Gestionnaire Hyper-V indique qu'elle n'a aucun point de contrôle. La VM est prête pour son premier démarrage.
+- Premier démarrage : échec avant amorçage avec le code `0x800705AA`, Hyper-V ne pouvant pas allouer les 4 096 Mo demandés.
+- Mesure de l'hôte au moment de l'échec : 11,75 Gio de RAM visible, environ 3,54 Gio libres et 8,21 Gio utilisés. Correction retenue : mémoire de démarrage abaissée à 2 048 Mo, mémoire dynamique maintenue avec un maximum de 4 096 Mo.
+- Réglage mémoire vérifié par capture : démarrage 2 048 Mo, minimum 2 048 Mo, maximum 4 096 Mo et mémoire dynamique activée.
+- La même capture révèle que les deux fichiers `.avhdx` sont encore attachés au contrôleur SCSI malgré la disparition du point de contrôle dans l'interface. Ils ne sont donc pas considérés comme orphelins. Démarrage suspendu jusqu'au rattachement propre des disques de base `.vhdx` ; aucune suppression manuelle de fichier ne sera effectuée.
+- Diagnostic affiné : le fichier de configuration du point de contrôle n'existe plus, mais la configuration courante de la VM reste raccordée aux deux `.avhdx`. Hyper-V affiche donc encore un avertissement de point de contrôle et interdit la modification directe du disque. Les `.avhdx` ont une taille de 4 Mio et n'ont jamais été écrits depuis leur création, la VM n'ayant jamais démarré.
+- Décision de réparation : déconnecter les `.avhdx` depuis les paramètres Hyper-V, sans supprimer les fichiers, puis rattacher `CC-DC01.vhdx` et `CC-DC01-DATA.vhdx`. La recréation complète de la VM n'est pas nécessaire à ce stade.
+- Premier résultat de réparation validé par capture : le disque différentiel système `CC-DC01_C839814B-A624-463C-B1E0-10D7B185CE0B.avhdx` a été déconnecté de la VM, sans suppression du fichier. Le lecteur DVD et le disque différentiel de données restent présents.
+- Second résultat validé par capture : le disque différentiel de données `CC-DC01-DATA_7ED2877A-DE03-49A2-BD88-9301CE4F78AA.avhdx` a également été déconnecté sans suppression. Seul le lecteur DVD reste attaché au contrôleur SCSI ; les disques de base peuvent désormais être rattachés.
+- Rattachement observé : les deux disques de base `CC-DC01.vhdx` et `CC-DC01-DATA.vhdx` apparaissent de nouveau sous le contrôleur SCSI, sans suffixe `.avhdx`. Le disque de données est confirmé à l'emplacement SCSI 2 et le lecteur DVD à l'emplacement 1. L'emplacement 0 du disque système reste à confirmer visuellement.
+- Confirmation utilisateur : le disque système `CC-DC01.vhdx` est à l'emplacement SCSI 0. Configuration finale du contrôleur : système 0, DVD 1, données 2. Les anciens `.avhdx` sont conservés sur le stockage mais ne sont plus attachés à la VM.
+- Tentative de démarrage suivante : échec sur `CC-DC01-DATA.vhdx`, signalé comme utilisé par un autre processus. Le disque n'est pas monté sur l'hôte (`Get-DiskImage` indique `Attached: false`). Hypothèse prioritaire : verrou conservé par une ancienne fenêtre d'inspection, de paramètres ou de connexion Hyper-V ; fermeture complète des interfaces demandée avant toute action plus intrusive.
+- Nettoyage d'interface confirmé : toutes les consoles et fenêtres Hyper-V ont été fermées, puis le Gestionnaire Hyper-V a été rouvert. Aucun processus `vmconnect` résiduel n'est actif et toutes les VM restent arrêtées avant la nouvelle tentative.
+- Nouvelle tentative : même échec de partage sur `CC-DC01-DATA.vhdx`.
+- Diagnostic par l'API Windows Restart Manager : le verrou est détenu par `System` (PID 4, application critique non redémarrable), ce qui indique un verrou noyau résiduel du sous-système de disque virtuel et non une fenêtre utilisateur. Toutes les VM étant arrêtées, décision : redémarrer d'abord le service de gestion Hyper-V ; un redémarrage complet de l'hôte ne sera envisagé que si ce nettoyage ciblé échoue.
+- Disque système dynamique `CC-DC01.vhdx` créé sous `C:\Users\Public\Documents\Hyper-V\CyberCorp\CC-DC01\Virtual Hard Disks`.
+- Configuration Hyper-V créée sous l'identifiant `696B08FF-A882-4E7F-94AF-9C288D960E88`.
+- Processeurs virtuels : 2.
+- Mémoire dynamique : activée, démarrage 4 096 Mo, minimum 2 048 Mo, maximum 4 096 Mo, tampon 20 %.
+- Démarrage sécurisé : activé pour Windows Server.
+- Carte réseau unique : `CC-LAN`.
+- Lecteur DVD : ISO Windows Server 2025 Evaluation FR attaché.
+- Première tentative d'ajout du disque de données : échec, car la configuration référençait `CC-DC01-DATA.vhdx` alors que le fichier n'avait pas été créé. Le disque système `CC-DC01.vhdx` est intact. Correction de l'attachement requise.
+- Contrôle ultérieur : `CC-DC01-DATA.vhdx` avait finalement été créé par la première tentative en taille fixe, avec une taille physique d'environ 30 Gio. La tentative de création dynamique a échoué parce que ce fichier existait déjà. Décision : conserver le disque fixe et l'attacher à la VM ; espace libre restant après sa création, environ 193,9 Gio.
+- Propriétés du fichier confirmées par capture : format VHDX, disque virtuel de taille fixe, taille actuelle et maximale de 30 Go.
+- Les deux disques `CC-DC01.vhdx` et `CC-DC01-DATA.vhdx` sont confirmés comme attachés au contrôleur SCSI.
+- Le redémarrage ciblé du service `vmms` n'a pas libéré le verrou noyau sur le disque fixe `CC-DC01-DATA.vhdx` ; une nouvelle tentative a reproduit l'erreur `0x80070020`.
+- Correction non destructive appliquée : le disque fixe verrouillé, encore vierge puisque la VM n'avait jamais démarré, a été détaché mais conservé intact. Un disque dynamique de 30 Gio nommé `CC-DC01-DATA-DYNAMIC.vhdx` a été créé et attaché à l'emplacement SCSI 2.
+- Configuration finale contrôlée : mémoire dynamique 2–4 Gio, 2 processeurs virtuels, points de contrôle de production, points automatiques désactivés, carte unique sur `CC-LAN`, disque système en SCSI 0 et disque de données dynamique en SCSI 2.
+- Démarrage réussi le 13 octobre 2026 à 18:15 (Europe/Paris) : état Hyper-V `Running`, statut `Fonctionnement normal`, 2 048 Mio de mémoire affectée.
 
 ### Validation
 
