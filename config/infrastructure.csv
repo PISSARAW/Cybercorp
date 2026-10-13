@@ -1,0 +1,10 @@
+element,type,role,reseau_ou_commutateur,ipv4_cidr,passerelle,dns,ram_go,vcpu,disque_go,notes
+CC-WAN-MAINT,commutateur,Maintenance WAN,Internal,172.31.250.1/24,,,,,,Interface hote sans passerelle; WinNAT temporaire
+CC-LAN,commutateur,LAN metier,Private,10.77.10.0/24,,,,,,Aucune interface hote
+CC-AUDIT,commutateur,Zone audit,Private,10.77.20.0/24,,,,,,Aucune interface hote
+CC-PFS01-WAN,interface pfSense,WAN maintenance,CC-WAN-MAINT,172.31.250.2/24,172.31.250.1,resolveur approuve,1,1-2,20,Carte deconnectee en audit
+CC-PFS01-LAN,interface pfSense,Passerelle metier,CC-LAN,10.77.10.1/24,,,,,,Meme VM CC-PFS01
+CC-PFS01-AUDIT,interface pfSense,Passerelle audit,CC-AUDIT,10.77.20.1/24,,,,,,Meme VM CC-PFS01; DHCP desactive
+CC-DC01,VM,AD DS DNS fichiers,CC-LAN,10.77.10.10/24,10.77.10.1,10.77.10.10,4,2,80+30,Windows Server 2025
+CC-W11-01,VM,Poste metier,CC-LAN,10.77.10.100/24,10.77.10.1,10.77.10.10,4,2,80,Windows 11 Pro
+CC-KALI01,VM,Audit controle,CC-AUDIT,10.77.20.50/24,10.77.20.1,10.77.10.10 si autorise,2,2,40,Kali Linux; aucun WAN direct

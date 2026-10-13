@@ -1,0 +1,10 @@
+# Secrets locaux : ne jamais versionner les identifiants ou les exports pfSense.
+/secrets/
+*.pfx
+*.key
+config.xml
+
+# Artefacts locaux et preuves pouvant contenir des données sensibles.
+/preuves/
+*.evtx
+*.vhdx

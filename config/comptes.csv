@@ -1,0 +1,35 @@
+identifiant,type,service,statut_initial,commentaire
+usr.dir01,metier,Direction,actif,Compte fictif
+usr.dir02,metier,Direction,actif,Compte fictif
+usr.rh01,metier,RH,actif,Compte fictif
+usr.rh02,metier,RH,actif,Compte fictif
+usr.rh03,metier,RH,actif,Compte fictif
+usr.fin01,metier,Finance,actif,Compte fictif
+usr.fin02,metier,Finance,actif,Compte fictif
+usr.fin03,metier,Finance,actif,Compte fictif
+usr.com01,metier,Commercial,actif,Compte fictif
+usr.com02,metier,Commercial,actif,Compte fictif
+usr.com03,metier,Commercial,actif,Compte fictif
+usr.com04,metier,Commercial,actif,Compte fictif
+usr.com05,metier,Commercial,actif,Compte fictif
+usr.com06,metier,Commercial,actif,Compte fictif
+usr.com07,metier,Commercial,actif,Compte fictif
+usr.tech01,metier,Technique,actif,Compte fictif
+usr.tech02,metier,Technique,actif,Compte fictif
+usr.tech03,metier,Technique,actif,Compte fictif
+usr.tech04,metier,Technique,actif,Compte fictif
+usr.tech05,metier,Technique,actif,Compte fictif
+usr.tech06,metier,Technique,actif,Compte fictif
+usr.tech07,metier,Technique,actif,Compte fictif
+usr.tech08,metier,Technique,actif,Compte fictif
+usr.it01,metier,Informatique,actif,Compte quotidien standard
+usr.it02,metier,Informatique,actif,Compte quotidien standard
+adm.ad01,administration,AD,actif,Compte dedie administrateur 1
+adm.ad02,administration,AD,actif,Compte dedie administrateur 2
+Administrator,administration,AD,secours,Compte integre du domaine; hors usage quotidien
+DSRM,recuperation,CC-DC01,secours,Secret distinct du domaine
+local-admin,administration,CC-W11-01,secours,Compte local de secours du client
+admin,administration,CC-PFS01,actif,Compte administrateur pfSense
+kali,administration,CC-KALI01,actif,Compte local Kali
+tst.acl,test,AD,desactive,Activer seulement pour le scenario ACL
+tst.lock,test,AD,desactive,Activer seulement pour le scenario verrouillage
