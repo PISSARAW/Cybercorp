@@ -8,3 +8,7 @@ config.xml
 /preuves/
 *.evtx
 *.vhdx
+
+# Copie locale de publication Sites (dépôt Git séparé).
+/site/
+/.sites-deploy.tar

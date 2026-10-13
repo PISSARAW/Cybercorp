@@ -20,6 +20,16 @@ Laboratoire pédagogique Windows sécurisé pour une PME fictive de 25 personnes
 
 Domaine : `ad.cybercorp.test` ; NetBIOS : `CYBERCORP`. Les comptes à créer figurent dans [config/comptes.csv](config/comptes.csv). Les adresses, passerelles et DNS détaillés figurent dans [config/infrastructure.csv](config/infrastructure.csv). Ce sont des **valeurs de conception**, à vérifier sur l’hôte avant déploiement.
 
+## Entreprise fictive et site vitrine
+
+- [Fiche d’entreprise et identité visuelle](docs/entreprise.md) : mission, offres fictives, valeurs et charte de marque.
+- [Organigramme](docs/organigramme.md) : 25 personnages fictifs associés aux 25 comptes métier du laboratoire.
+- [Site vitrine](website/dist/index.html) : pages statiques responsive, logo SVG dans `website/dist/assets/`, et manifeste d’hébergement dans `website/.openai/hosting.json`.
+
+Le site précise qu’il s’agit d’une entreprise fictive et ne collecte aucune donnée. Pour un aperçu local : `python -m http.server 8765 --directory website/dist`, puis ouvrir `http://127.0.0.1:8765/`. `site/` est une copie locale de publication ignorée par Git ; les modifications durables se font dans `website/`.
+
+Version hébergée privée : [CyberCorp — site vitrine](https://cybercorp-vitrine.fabled-haven-3189.chatgpt.site).
+
 ## Statut
 
 - [x] Noms, rôles, profils mémoire et plan IP documentés
