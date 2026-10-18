@@ -10,10 +10,10 @@ Ce journal conserve les étapes réalisées et validées avec l'utilisateur. Une
 | 2 | Sauvegarde/export des VM existantes | Validée |
 | 3 | Contrôle et création des commutateurs Hyper-V | Validée |
 | 4 | Décision de réutilisation pour chaque VM | Validée |
-| 5 | Adaptation ou reconstruction de `CC-PFS01` | En attente Netgate |
-| 6 | Adaptation ou reconstruction de `CC-DC01` | En cours |
-| 7 | Adaptation ou reconstruction de `CC-W11-01` | À faire |
-| 8 | Import et confinement de `CC-KALI01` | À faire |
+| 5 | Adaptation ou reconstruction de `CC-PFS01` | Validée |
+| 6 | Adaptation ou reconstruction de `CC-DC01` | Validée |
+| 7 | Adaptation ou reconstruction de `CC-W11-01` | Validée |
+| 8 | Import et confinement de `CC-KALI01` | Validée |
 | 9 | Configuration réseau, domaine et comptes | À faire |
 | 10 | Recette de sécurité T01–T15 | À faire |
 
@@ -178,7 +178,7 @@ Capture du Gestionnaire de commutateur virtuel fournie le 13 octobre 2026 :
 
 ## Étape 5 — Reconstruction de `CC-PFS01`
 
-**État : En cours**
+**État : Validée**
 
 ### Cible
 
@@ -193,11 +193,11 @@ Capture du Gestionnaire de commutateur virtuel fournie le 13 octobre 2026 :
 ### Contrôles
 
 - [x] VM créée avec les paramètres matériels attendus.
-- [ ] Installation pfSense terminée.
-- [ ] Trois interfaces affectées aux bons commutateurs.
-- [ ] Adresses LAN, AUDIT et WAN configurées.
-- [ ] Règles de confinement appliquées.
-- [ ] Configuration exportée et fonctionnement vérifié.
+- [x] Installation pfSense terminée et démarrage depuis le VHDX validé sans ISO.
+- [x] Trois interfaces affectées aux commutateurs définitifs `CC-WAN-MAINT`, `CC-LAN` et `CC-AUDIT`.
+- [x] Adresses WAN, LAN et AUDIT configurées sur leurs réseaux définitifs.
+- [x] Règles de confinement appliquées.
+- [x] Configuration exportée et fonctionnement vérifié.
 
 ### Création observée
 
@@ -241,20 +241,154 @@ Diagnostic du journal : 156 paquets sur 179 ont été récupérés avec succès,
 Contrôles réseau après l'échec :
 
 - Accès IPv4 fonctionnel depuis l'installateur : `1.1.1.1`, quatre réponses sur quatre, aucune perte.
-- Le résolveur du `Default Switch` répond, mais `pkg.pfsense.org` ne publie momentanément aucune adresse `A` ni `AAAA`.
-- Le même résultat a été confirmé depuis l'hôte avec le résolveur système et le résolveur public Cloudflare `1.1.1.1`.
-- Conclusion : incident DNS externe côté dépôt Netgate, sans lien avec la configuration Hyper-V locale. L'installation doit être reprise lorsque l'enregistrement DNS officiel est revenu ; aucune redirection manuelle vers un miroir non validé ne sera utilisée.
+- Le nom méta `pkg.pfsense.org` ne publie pas d’adresse `A` ou `AAAA`, comportement normal documenté par Netgate : le client `pkg` découvre les serveurs réels au moyen de l’enregistrement SRV `_https._tcp.pkg.pfsense.org`.
+- Contrôle corrigé le 16 octobre 2026 : les cibles officielles `pkg00-atx.netgate.com` (`208.123.73.207`) et `pkg01-atx.netgate.com` (`208.123.73.209`) sont publiées par SRV et répondent toutes deux sur TCP/443 depuis l’hôte.
+- Conclusion révisée : le premier échec correspond à un délai de téléchargement ponctuel sur le paquet `perl5-5.42.2`, et non à l’absence anormale d’un enregistrement `A` sur le nom méta. Une nouvelle tentative d’installation est autorisée sans redirection vers un miroir tiers.
 - `CC-PFS01` arrêtée proprement avec `shutdown -p now` après le diagnostic. La VM, son disque et ses paramètres sont conservés pour reprendre l'installation.
+- Nouvelle tentative menée à terme le 17 octobre 2026 : pfSense CE `2.9.0-RELEASE` installé sur `da0` avec UFS et GPT, puis démarré depuis le disque virtuel.
+- État au premier démarrage : WAN `hn0` en DHCP sur le `Default Switch` (`172.21.254.39/20`) et LAN `hn1` sur `10.77.10.1/24`. L’interface `hn2` reste à affecter comme réseau `AUDIT`.
+- Interface `hn2` affectée comme `OPT1` puis configurée sur `10.77.20.1/24`, sans passerelle, sans IPv6 et sans serveur DHCP. Le protocole HTTPS du webConfigurator est conservé.
+- Après retrait du média d’installation, Hyper-V tentait encore d’ouvrir l’ISO depuis `Downloads` et refusait le démarrage. L’ISO a été éjectée explicitement du lecteur DVD virtuel.
+- Le démarrage a ensuite été bloqué par la pression mémoire de l’hôte. Le tampon de mémoire dynamique de `CC-DC01` a été abaissé de 20 % à 5 % sans modifier son minimum de 2 048 Mo. Les quatre conteneurs Docker `tandian` ont été arrêtés proprement, Docker Desktop et WSL ont été arrêtés sans suppression de données, libérant environ 2 068 Mo.
+- `CC-PFS01` a alors démarré correctement avec ses 1 024 Mo statiques. La carte WAN est désormais raccordée à `CC-WAN-MAINT`, les cartes LAN et AUDIT restant sur leurs commutateurs privés respectifs.
+- Diagnostic du démarrage PXE le 17 octobre 2026 : le VHDX de base et le `.avhdx` attaché ne mesuraient que 4 Mio chacun. Le menu pfSense précédemment observé provenait donc encore du média Netgate chargé en mémoire ; aucune installation amorçable n’avait été écrite sur le disque de 20 Gio.
+- Mesure corrective : VM arrêtée, points de contrôle automatiques désactivés, anciens fichiers vides conservés sans suppression, nouveau disque dynamique `CC-PFS01-OS.vhdx` de 20 Gio attaché en SCSI 0:0. L’ISO officielle a été copiée dans `CC-PFS01\ISO` puis attachée en SCSI 0:1 et placée en tête de l’ordre de démarrage.
+- Pour permettre le redémarrage avec 1 024 Mo, les jeux de travail des applications ont été purgés sans fermeture ni perte d’état, portant la mémoire libre de l’hôte à environ 2 988 Mo. La VM a ensuite démarré correctement sur l’installateur.
+- Seconde installation réellement écrite sur `CC-PFS01-OS.vhdx` : taille physique observée de 4 708 Mio pour une capacité virtuelle de 20 Gio. `hn2` a été réaffectée comme `OPT1` sur `10.77.20.1/24`, sans DHCP ni IPv6.
+- Après arrêt propre, l’ISO a été éjectée, le VHDX placé en première position UEFI et `hn0` déplacée du `Default Switch` vers `CC-WAN-MAINT`. Le démarrage depuis disque a réussi et les trois cartes Hyper-V sont revenues à l’état `Ok`.
+- Adressage final vérifié sur la console pfSense : WAN `hn0` `172.31.250.2/24` avec passerelle `172.31.250.1`, LAN `hn1` `10.77.10.1/24`, OPT1 `hn2` `10.77.20.1/24` ; IPv6 et serveurs DHCP désactivés sur les réseaux internes.
+- Assistant web initial terminé depuis `CC-W11-01`. Nom système `cc-pfs01.ad.cybercorp.test`, DNS primaire `10.77.10.10`, NTP interne `10.77.10.10`, fuseau `Europe/Paris`, WAN statique confirmé et blocage RFC1918 désactivé uniquement sur ce WAN privé de maintenance. Le mot de passe initial `admin` a été remplacé par le secret prévu, sans consignation de sa valeur.
+- Tableau de bord vérifié : pfSense CE `2.9.0-RELEASE`, WAN `172.31.250.2`, LAN `10.77.10.1` et OPT1 `10.77.20.1`, trois interfaces actives.
+- L’interface `OPT1` a été renommée `AUDIT`, conservée active en IPv4 statique `10.77.20.1/24`, sans IPv6, sans passerelle propre et sans filtrage RFC1918/bogon spécifique à l’interface interne.
+- Règle de base appliquée sur `AUDIT` : blocage IPv4 de tout trafic provenant de `AUDIT subnets` vers toute destination, tous protocoles, avec journalisation. Cette règle reste en dernière position ; toute autorisation de scénario devra être temporaire, ciblée et placée au-dessus.
+- Règle de segmentation appliquée en tête de l’onglet LAN : blocage IPv4 journalisé de `LAN subnets` vers `AUDIT subnets`, avant la règle par défaut autorisant le reste du trafic LAN. Le trafic direct entre `CC-DC01` et `CC-W11-01` reste local au même commutateur et n’est pas affecté.
+- Règle permissive IPv6 par défaut du LAN désactivée (conservée mais inactive), en cohérence avec la désactivation d’IPv6 sur les interfaces du laboratoire.
+- Override du résolveur DNS appliqué pour `ad.cybercorp.test` vers le serveur Active Directory/DNS `10.77.10.10`, sans DNS sur TLS.
+- Validation de l’override depuis `Diagnostics > DNS Lookup` : `cc-dc01.ad.cybercorp.test` retourne l’enregistrement A `10.77.10.10`; le serveur AD/DNS `10.77.10.10` apparaît dans les mesures de requête.
+- Export chiffré de la configuration complète réalisé le 18 octobre 2026 depuis `Diagnostics > Backup & Restore`, avec données RRD exclues, informations de paquets incluses et clés SSH incluses. Le fichier le plus récent observé est `config-cc-pfs01.ad.cybercorp.test-20261018153424 (1).xml`, stocké provisoirement dans les téléchargements de `CC-W11-01`; une copie externe à la VM reste à effectuer.
+- Copie externe réalisée sur l’hôte dans `secrets/pfsense-backups/config-cc-pfs01.ad.cybercorp.test-20261018153424.xml`, emplacement exclu de Git. Contrôle sans déchiffrement : enveloppe `BEGIN/END config.xml`, corps Base64 valide de 14 928 octets, charge OpenSSL `Salted__` et absence de section `<system>` en clair. Empreinte SHA-256 : `11501A52D926588688073E9434FD17CE5463F36A39DC33AAB9710394A3E7E28D`.
+- Test de confinement effectué depuis `CC-KALI01` le 18 octobre 2026 : `eth0` est actif sur `10.77.20.50/24` avec route par défaut via `10.77.20.1`. Les tests ICMP vers la passerelle AUDIT `10.77.20.1`, le contrôleur de domaine `10.77.10.10` et Internet `1.1.1.1` échouent tous avec 100 % de perte, conformément à la règle de blocage AUDIT.
+- Journalisation vérifiée dans `Status > System Logs > Firewall` avec le filtre `Block`, interface `AUDIT`, source `10.77.20.50` : 233 entrées correspondent à la règle `BASELINE - Bloquer et journaliser AUDIT` (Tracking ID `1792264179`). Les événements montrent notamment le rejet des requêtes UDP/53 de Kali vers le DNS AD `10.77.10.10`.
+- Test inverse depuis `CC-W11-01` (`10.77.10.100`) vers l’adresse AUDIT de pfSense `10.77.20.1` : deux requêtes ICMP envoyées, aucune réponse et 100 % de perte, résultat conforme au blocage `LAN subnets` vers `AUDIT subnets`.
+- Journalisation du test inverse confirmée : deux entrées ICMP bloquées sur l’interface `LAN`, source `10.77.10.100`, destination `10.77.20.1`, associées à la règle `BASELINE - Bloquer LAN vers AUDIT` (Tracking ID `1792265901`).
+- Baseline isolée préparée le 18 octobre 2026 : arrêt propre de pfSense, déconnexion Hyper-V de la carte WAN `hn0` (MAC `00:15:5d:01:3c:0e`) du commutateur `CC-WAN-MAINT`, cartes LAN et AUDIT maintenues sur leurs commutateurs privés. Point de contrôle standard `Baseline-pfSense-2.9.0-2026-10-18` créé avec les points automatiques désactivés.
+- Redémarrage après point de contrôle réussi : `CC-PFS01` fonctionne avec 1 024 Mio, la carte WAN reste sans commutateur, et les cartes `CC-LAN` et `CC-AUDIT` sont à l’état `Ok`. `CC-DC01` et `CC-W11-01` fonctionnent simultanément avec pfSense tandis que Kali reste arrêtée.
 
 ### Validation
 
-- Date : —
-- Validation utilisateur : —
-- Preuves ou remarques : —
+- Date : 18 octobre 2026.
+- Validation utilisateur : validation progressive par captures et résultats de tests réseau.
+- Preuves ou remarques : pfSense CE `2.9.0-RELEASE` démarre depuis son VHDX, les interfaces LAN et AUDIT sont actives sur `10.77.10.1/24` et `10.77.20.1/24`, le WAN de maintenance est déconnecté, les règles de confinement sont effectives et journalisées dans les deux sens, l’override DNS AD fonctionne, la configuration chiffrée est sauvegardée hors de la VM et le point de contrôle `Baseline-pfSense-2.9.0-2026-10-18` a été créé.
+
+## Étape 7 — Reconstruction de `CC-W11-01`
+
+**État : Validée**
+
+### Cible
+
+- Nom : `CC-W11-01`.
+- Génération : 2.
+- Mémoire : 4 096 Mo pour l’installation, puis mémoire dynamique adaptée à la capacité réelle de l’hôte.
+- Processeurs virtuels : 2.
+- Disque système : 80 Gio, allocation dynamique.
+- Réseau : une seule carte sur `CC-LAN`.
+- Système : Windows 11 Enterprise Evaluation FR.
+- Adresse prévue : `10.77.10.100/24`, passerelle `10.77.10.1`, DNS `10.77.10.10`.
+
+### Contrôles
+
+- [x] VM créée avec un disque dynamique de 80 Gio, 4 096 Mo au démarrage, une carte sur `CC-LAN` et l’ISO Windows 11 attaché.
+- [x] Deux processeurs virtuels et paramètres de mémoire/points de contrôle vérifiés.
+- [x] Windows 11 installé et compte local de secours configuré.
+- [x] Nom et adresse IPv4 configurés.
+- [x] Poste joint au domaine `ad.cybercorp.test` et déplacé dans l’OU `Postes`.
+- [x] Configuration sauvegardée et fonctionnement vérifié.
+
+### Création observée
+
+- Première tentative de démarrage : échec `0x800705AA`, Hyper-V ne pouvant pas allouer immédiatement les 4 096 Mo demandés alors que `CC-DC01` est en exécution. Aucun amorçage de l’installateur ni écriture sur le disque n’a eu lieu.
+- Mesure corrective retenue : arrêter proprement `CC-DC01` pendant l’installation de Windows 11, conserver 4 096 Mo pour satisfaire les prérequis de l’installateur, puis réduire la mémoire de démarrage du poste après installation afin de permettre l’exécution simultanée du DC et du client.
+- Seconde tentative après arrêt annoncé du DC : nouvel échec d’initialisation mémoire `0x8007000E`. Mesure de l’hôte : 11,75 Gio visibles, 2,87 Gio libres et 8,88 Gio utilisés ; une réservation immédiate de 4 096 Mo reste impossible.
+- Adaptation retenue pour l’hôte réel : mémoire de démarrage et minimum à 2 048 Mo, maximum à 4 096 Mo, mémoire dynamique activée. Les prérequis Windows 11, dont le TPM virtuel, seront contrôlés avant l’installation ; toute éventuelle dérogation au contrôle de RAM sera limitée à ce laboratoire et documentée.
+- Contrôle de compatibilité de l’installateur Windows 11 avec 2 048 Mo : installation bloquée pour deux motifs explicites, TPM 2.0 absent et mémoire système inférieure à 4 Go. Aucune installation n’a commencé. Le TPM virtuel sera activé dans Hyper-V ; seule la contrainte RAM propre à l’hôte limité pourra nécessiter une dérogation de laboratoire.
+- TPM virtuel 2.0 activé dans les paramètres de sécurité Hyper-V ; le contrôle suivant de l’installateur ne signale plus que la mémoire inférieure à 4 Go.
+- Dérogation limitée appliquée dans l’environnement d’installation : valeur `BypassRAMCheck=1` sous `HKLM\SYSTEM\Setup\LabConfig`. TPM 2.0 et démarrage sécurisé restent activés ; aucun autre contrôle matériel n’a été contourné.
+- Installation de Windows 11 terminée jusqu’à l’OOBE, écran de création du compte local. Le compte de secours prévu est `local-admin`, avec le secret correspondant conservé uniquement dans `secrets/initial-passwords.csv`.
+- OOBE terminée : ouverture du bureau Windows 11 réussie avec le compte local de secours `local-admin`.
+- Configuration matérielle validée avant installation : 2 processeurs virtuels, mémoire dynamique 2 048–4 096 Mo, TPM virtuel activé, démarrage sécurisé Microsoft Windows, points de contrôle de production uniquement, repli standard désactivé et points de contrôle automatiques désactivés.
+- Poste renommé `CC-W11-01`, puis redémarré avec succès.
+- Configuration IPv4 appliquée : `10.77.10.100/24`, passerelle `10.77.10.1`, DNS préféré `10.77.10.10`, sans DNS auxiliaire.
+- Résolution directe validée depuis le client : `cc-dc01.ad.cybercorp.test` retourne `10.77.10.10`. Le message `Serveur : Unknown` correspond à l’absence de zone de recherche inverse et ne bloque pas l’adhésion au domaine.
+- Le 14 octobre 2026, nouvelle tentative de démarrage du client alors que le laboratoire et les applications de l’hôte consomment davantage de mémoire : échec `0x8007000E`. L’hôte n’affiche plus que 1,71 Gio libres sur 11,75 Gio.
+- Adaptation de coexistence retenue : mémoire de démarrage et minimum du client abaissées à 1 024 Mo, maximum dynamique conservé à 4 096 Mo et tampon réduit. Cette valeur est inférieure au minimum officiellement pris en charge par Windows 11 ; elle est réservée à ce laboratoire contraint et implique des performances réduites.
+- Après application du réglage 1 024–4 096 Mo avec tampon de 5 %, `CC-W11-01` démarre simultanément avec `CC-DC01`.
+- Le 18 octobre 2026, un nouveau démarrage a échoué avec `0x8007000E` alors que l’hôte ne disposait plus que de 0,59 Gio libres. Les jeux de travail de 28 applications de l’hôte ont été purgés sans fermeture de processus ni perte de données, portant la mémoire libre à environ 2,02 Gio. `CC-W11-01` a ensuite démarré avec 1 024 Mio affectés et l’état Hyper-V `Fonctionnement normal`.
+- Depuis la session locale du client, `nltest /dsgetdc:ad.cybercorp.test` réussit et retourne `CC-DC01.ad.cybercorp.test` (`10.77.10.10`) avec les indicateurs PDC, GC, DS, LDAP, KDC, TIMESERV, WRITABLE, DNS_DC, DNS_DOMAIN et DNS_FOREST. L’adhésion et la découverte du domaine sont opérationnelles.
+- Une première tentative d’ouverture de session interactive comme administrateur du domaine a été signalée comme refusée. Le test `runas /user:CYBERCORP\Administrateur cmd` effectué depuis le compte local réussit avec le secret `Administrator` et ouvre une invite sous `CYBERCORP\Administrateur`. Le compte, son mot de passe et l’authentification Kerberos sont donc valides ; l’échec initial est attribué à la saisie sur l’écran de connexion.
+- Nouvelle ouverture de session interactive réussie sur `CC-W11-01` avec `CYBERCORP\Administrateur`. La commande `whoami` retourne `cybercorp\administrateur`.
+- Dans Active Directory, création de l’OU racine protégée `CyberCorp`, puis de l’OU enfant protégée `Postes`.
+- L’objet ordinateur `CC-W11-01`, initialement créé dans le conteneur natif `Computers`, a été déplacé dans `OU=Postes,OU=CyberCorp,DC=ad,DC=cybercorp,DC=test` et sa présence y a été vérifiée.
+- L’ISO d’installation Windows 11 a été détaché du lecteur DVD virtuel sans supprimer le lecteur.
+- Point de contrôle de production créé à chaud puis renommé `Baseline-W11-Domain-2026-10-14` ; la VM est restée en exécution.
+- Étape 7 validée : `CC-W11-01` est installé, adressé, joint à `ad.cybercorp.test`, authentifie les comptes du domaine et se trouve dans l’OU `CyberCorp\Postes`.
+
+### Validation
+
+- Date : 14 octobre 2026
+- Validation utilisateur : validation progressive par captures et résultats de commandes.
+- Preuves ou remarques : paramètres Hyper-V, installation, compte local de secours, adressage, DNS, découverte du DC, authentification de domaine, objet AD et point de contrôle de production vérifiés.
+
+## Étape 8 — Import et confinement de `CC-KALI01`
+
+**État : Validée**
+
+### Cible
+
+- Nom : `CC-KALI01`.
+- Génération : 2.
+- Mémoire : 2 048 Mo, adaptée ensuite aux contraintes de l’hôte si nécessaire.
+- Processeurs virtuels : 2.
+- Disque : VHDX Kali Linux 2026.2 préinstallé.
+- Réseau : une seule carte sur `CC-AUDIT` ; aucune connexion au `Default Switch`, à `CC-LAN` ou à un commutateur externe.
+- Adresse prévue : `10.77.20.50/24`, passerelle `10.77.20.1`, DNS `10.77.10.10` uniquement lorsque les règles pfSense l’autorisent.
+
+### Contrôles
+
+- [x] Archive Kali officielle disponible et contenu inspecté sans exécuter les scripts fournis.
+- [x] VHDX extrait dans le stockage CyberCorp et vérifié.
+- [x] VM créée avec les paramètres matériels attendus.
+- [x] Une seule carte réseau affectée à `CC-AUDIT`.
+- [x] Démarrage, identité et adresse réseau vérifiés.
+- [x] Identifiants par défaut remplacés par le secret prévu pour `kali`.
+- [x] Configuration sauvegardée et confinement vérifié.
+
+### Import observé
+
+- Archive source : `C:\Users\pissa\Downloads\kali-linux-2026.2-hyperv-amd64.7z`.
+- Contenu inspecté : `create-vm.ps1`, `install-vm.bat` et `kali-linux-2026.2-hyperv-amd64.vhdx`.
+- Le script fourni cible `Default Switch` ; il n’a pas été exécuté afin de préserver l’isolation du laboratoire.
+- Seul le VHDX a été extrait et renommé `C:\Users\Public\Documents\Hyper-V\CyberCorp\CC-KALI01\Virtual Hard Disks\CC-KALI01.vhdx`.
+- Vérification `Get-VHD` : VHDX dynamique, 16,71 Gio physiques, capacité virtuelle 80,09 Gio, secteurs logiques et physiques de 512 octets.
+- VM `CC-KALI01` créée en génération 2 avec le VHDX existant, 2 processeurs virtuels, mémoire dynamique 1 024–2 048 Mo, tampon 10 %, une carte unique sur `CC-AUDIT`, démarrage sécurisé désactivé, TPM/protection désactivés, points de contrôle standard autorisés manuellement et points automatiques désactivés.
+- Premier démarrage réussi jusqu’à l’écran de connexion Kali ; la disposition de clavier affichée est `US`.
+- Première connexion locale réussie avec le compte Kali préinstallé ; le bureau XFCE s’affiche correctement.
+- Le mot de passe initial du compte `kali` a été remplacé avec succès le 16 octobre 2026. Sa valeur n’est pas consignée dans le journal.
+- La disposition française a été activée dans la session graphique avec `setxkbmap fr` ; sa persistance après redémarrage reste à valider.
+- La persistance du clavier français a été reportée à la demande de l’utilisateur, le réglage de session étant suffisant pour poursuivre.
+- Nom d’hôte configuré et vérifié : `cc-kali01`. L’entrée `127.0.1.1 cc-kali01` est présente dans `/etc/hosts`.
+- Profil NetworkManager renommé `CC-AUDIT` et configuré en IPv4 statique : `10.77.20.50/24`, passerelle `10.77.20.1`, DNS `10.77.10.10`, IPv6 désactivé. La table de routage et les propriétés du périphérique `eth0` confirment ces valeurs.
+- Confinement vérifié : NetworkManager ne présente que `eth0` connecté à `CC-AUDIT` et l’interface locale `lo`. Le test vers `1.1.1.1` échoue avec `Destination Host Unreachable` et 100 % de perte, résultat attendu tant que `CC-PFS01` n’assure aucun routage.
+- VM arrêtée proprement et point de contrôle standard `Baseline-Kali-Audit-2026-10-16` créé le 16 octobre 2026.
+- Inventaire préalable au nettoyage demandé le 14 octobre 2026 : les anciennes VM arrêtées `CLIENT01`, `DC01` et `PFSENSE01` occupent respectivement 18,24 Gio, 30,10 Gio et 5,70 Gio dans `C:\Users\Public\Documents\Hyper-V\LAB-AD`, soit 54,04 Gio au total.
+- Leurs exports distincts existent dans `C:\Users\Public\Documents\Hyper-V\Exports\CyberCorp-PreMigration-2026-10-13` avec les mêmes tailles. Décision proposée : désenregistrer les trois anciennes VM puis supprimer leurs trois dossiers d’origine complets, tout en conservant les exports jusqu’à la recette finale.
+- L’archive Kali source de 3,68 Gio est conservée jusqu’au premier démarrage réussi de `CC-KALI01` ; elle ne fait pas encore partie du nettoyage immédiat.
+- Incident de nettoyage le 14 octobre 2026 : les trois anciennes VM `CLIENT01`, `DC01` et `PFSENSE01`, leurs dossiers d’origine sous `LAB-AD` et le dossier d’exports `CyberCorp-PreMigration-2026-10-13` ont été supprimés. Les suppressions récentes ne figurent pas dans la Corbeille et les copies de retour arrière de `CLIENT01` et `DC01` ne sont donc plus immédiatement restaurables.
+- Contrôle après incident : les actifs actuels `CC-DC01`, `CC-W11-01`, `CC-PFS01` et le VHDX extrait de `CC-KALI01` sont toujours présents. L’espace libre sur `C:` est passé à 237,3 Gio.
+- Une ancienne copie distincte de `PFSENSE01`, supprimée le 13 octobre 2026 et totalisant 5,70 Gio, reste dans la Corbeille avec son VHDX. L’utilisateur a explicitement refusé sa restauration afin de ne conserver aucun élément étranger au nouveau projet ; seuls `CC-PFS01`, `CC-DC01`, `CC-W11-01` et `CC-KALI01` sont désormais dans le périmètre.
 
 ## Étape 6 — Reconstruction de `CC-DC01`
 
-**État : En cours**
+**État : Validée**
 
 ### Cible
 
@@ -271,12 +405,12 @@ Contrôles réseau après l'échec :
 ### Contrôles
 
 - [x] VM créée avec les paramètres matériels attendus.
-- [ ] Windows Server 2025 installé.
-- [ ] Nom `CC-DC01` et adresse `10.77.10.10/24` configurés.
-- [ ] Second disque de 30 Gio initialisé.
-- [ ] Rôles AD DS, DNS et fichiers installés.
-- [ ] Forêt `ad.cybercorp.test` créée et contrôles de santé réussis.
-- [ ] Configuration sauvegardée et fonctionnement vérifié.
+- [x] Windows Server 2025 installé.
+- [x] Nom `CC-DC01` et adresse `10.77.10.10/24` configurés.
+- [x] Second disque de 30 Gio initialisé.
+- [x] Rôles AD DS, DNS et fichiers installés.
+- [x] Forêt `ad.cybercorp.test` créée et contrôles de santé réussis.
+- [x] Configuration sauvegardée et fonctionnement vérifié.
 
 ### Création observée
 
@@ -304,6 +438,37 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 - Nettoyage d'interface confirmé : toutes les consoles et fenêtres Hyper-V ont été fermées, puis le Gestionnaire Hyper-V a été rouvert. Aucun processus `vmconnect` résiduel n'est actif et toutes les VM restent arrêtées avant la nouvelle tentative.
 - Nouvelle tentative : même échec de partage sur `CC-DC01-DATA.vhdx`.
 - Diagnostic par l'API Windows Restart Manager : le verrou est détenu par `System` (PID 4, application critique non redémarrable), ce qui indique un verrou noyau résiduel du sous-système de disque virtuel et non une fenêtre utilisateur. Toutes les VM étant arrêtées, décision : redémarrer d'abord le service de gestion Hyper-V ; un redémarrage complet de l'hôte ne sera envisagé que si ce nettoyage ciblé échoue.
+- Après redémarrage du service de gestion Hyper-V, `CC-DC01` démarre correctement : l'erreur de partage sur `CC-DC01-DATA.vhdx` a disparu. La VM atteint le microprogramme Hyper-V UEFI et détecte le DVD Windows Server.
+- L'écran UEFI affiche `Press any key to boot from CD or DVD`. Plusieurs tentatives de saisie automatisée ont manqué la fenêtre très courte de capture clavier et la VM est passée au démarrage PXE. Aucune écriture d'installation n'a encore eu lieu sur les disques.
+- Amorçage DVD finalement validé par l'utilisateur en maintenant une saisie clavier pendant le redémarrage. L'installateur Windows Server 2025 atteint l'écran de sélection d'image.
+- Édition retenue pour la suite : **Windows Server 2025 Standard Evaluation (expérience utilisateur)**, afin de disposer de l'interface graphique. Les éditions Server Core et Datacenter ne sont pas retenues pour ce laboratoire.
+- Écran de stockage atteint : l'installateur reconnaît `Disque 0` de 80 Go et `Disque 1` de 30 Go, tous deux non alloués. Affectation validée : Windows sera installé sur le disque 0 de 80 Go ; le disque 1 de 30 Go restera non alloué pendant l'installation et sera initialisé ultérieurement comme volume de données.
+- Installation terminée jusqu'à l'écran de définition du mot de passe du compte Administrateur intégré.
+- Le fichier local ignoré par Git `secrets/initial-passwords.csv` existe. Pour cet écran, l'entrée `Administrator` doit être utilisée. La valeur du secret n'est volontairement ni recopiée dans ce journal ni ajoutée au dépôt. Les entrées `DSRM`, `local-admin` et `admin` restent réservées à leurs usages distincts.
+- Windows Server 2025 Standard Evaluation avec expérience utilisateur est installé et le compte Administrateur initial a été configuré. Le Gestionnaire de serveur s'ouvre correctement sur le tableau de bord.
+- État initial du serveur local observé : nom temporaire `WIN-8TF2F08DE0P`, appartenance à `WORKGROUP` et interface Ethernet configurée par DHCP. Aucun rôle n'est encore installé.
+- Renommage validé après redémarrage : le système invité affiche désormais `CC-DC01`. Il reste temporairement membre de `WORKGROUP` jusqu'à la promotion en contrôleur de domaine.
+- Paramètres IPv4 vérifiés avant application : adresse `10.77.10.10`, masque `255.255.255.0`, passerelle `10.77.10.1`, DNS préféré `10.77.10.10`, aucun DNS auxiliaire et validation automatique en quittant désactivée.
+- Paramètres IPv4 confirmés après application dans les détails de connexion : DHCP désactivé, `10.77.10.10/24`, passerelle `10.77.10.1`, DNS `10.77.10.10`. Le Gestionnaire de serveur affiche également l'adresse `10.77.10.10` pour l'interface Ethernet.
+- Disque de données reconnu comme `Disque 1`, capacité 30 Go. Il a été mis en ligne puis initialisé en GPT ; il reste entièrement non alloué avant la création du volume.
+- Volume de données créé avec succès sur le `Disque 1` : lettre `E:`, nom `DATA`, taille 30 Go, système de fichiers NTFS et taille d’unité d’allocation par défaut. Toutes les tâches de l’Assistant Nouveau volume sont indiquées comme terminées.
+- Contrôle final dans `Services de fichiers et de stockage > Volumes > Disques` : le `Disque 1` est en ligne, initialisé en GPT, affiche une capacité de 30 Go et `0,00 O` non alloué ; tout l’espace est donc affecté au volume de données.
+- Installation des rôles réussie sur `CC-DC01` : Services de domaine Active Directory, Serveur DNS, outils d’administration AD DS/DNS et Gestion de stratégie de groupe. Le service de fichiers de base était déjà présent.
+- Le Gestionnaire de serveur affiche désormais les vues `AD DS` et `DNS`. L’avertissement « Configuration requise » confirme que les binaires sont installés mais que le serveur n’est pas encore promu en contrôleur de domaine.
+- Un événement DFSR 1202 est visible avant la promotion ; il est conservé comme observation de l’état transitoire et sera réévalué après la création de la forêt et le redémarrage.
+- Promotion AD DS effectuée après validation complète des prérequis : nouvelle forêt `ad.cybercorp.test`, nom NetBIOS `CYBERCORP`, niveaux fonctionnels Windows Server 2025, DNS et catalogue global activés, RODC désactivé, délégation DNS non créée et chemins AD DS par défaut conservés.
+- Le serveur a redémarré automatiquement et l’ouverture de session avec le compte de domaine `CYBERCORP\Administrateur` a réussi. Le tableau de bord affiche les rôles AD DS, DNS et Services de fichiers et de stockage avec une facilité de gestion opérationnelle.
+- Trois alertes de services restent visibles immédiatement après le premier redémarrage ; elles doivent être examinées avant de valider les contrôles de santé de la forêt.
+- Examen des trois alertes de services : `cbdhsvc_cddee` (service utilisateur du Presse-papiers), `InventorySvc` (Appraisal Inventory and Compatibility) et `OneSyncSvc_cddee` (hôte de synchronisation) sont arrêtés avec un démarrage automatique différé. Ce sont des services utilisateur déclenchés à la demande ; aucun service critique AD DS, DNS, Netlogon ou DFSR n’est signalé dans cette alerte.
+- Vérification dans `Utilisateurs et ordinateurs Active Directory` : le domaine `ad.cybercorp.test` est accessible et expose les conteneurs standards `Builtin`, `Computers`, `Domain Controllers`, `ForeignSecurityPrincipals`, `Managed Service Accounts` et `Users`.
+- L’OU `Domain Controllers` contient l’objet ordinateur `CC-DC01`, identifié comme catalogue global (`GC`) dans le site `Default-First-Site-Name`.
+- Vérification dans le Gestionnaire DNS : les zones intégrées à Active Directory `_msdcs.ad.cybercorp.test` et `ad.cybercorp.test` sont présentes. Les arborescences `_msdcs`, `_sites`, `_tcp`, `_udp`, `DomainDnsZones` et `ForestDnsZones` ont été créées.
+- Premier contrôle `dcdiag /q` après promotion : les tests `DFSREvent` et `SystemLog` signalent des événements produits dans les dernières 24 heures, dont un échec de réplication SYSVOL et un événement Kerberos/SAM généré pendant l’état transitoire suivant la promotion. Le contrôle global n’est donc pas encore validé ; des tests ciblés de l’état actuel de SYSVOL, Netlogon et de la publication du DC sont requis.
+- Contrôle ciblé `dcdiag /test:Advertising /test:SysVolCheck /test:NetLogons /q` : aucune sortie d’erreur. Le contrôleur s’annonce correctement, SYSVOL est prêt et Netlogon est opérationnel. Les alertes du contrôle global sont donc des événements historiques récents et non un échec actuel de ces composants.
+- Contrôle ciblé `dcdiag /test:DNS /q` : aucune sortie d’erreur. Le service DNS et les enregistrements nécessaires à Active Directory sont opérationnels.
+- Conclusion des contrôles de santé : la forêt `ad.cybercorp.test`, le catalogue global, DNS, l’annonce du contrôleur, SYSVOL et Netlogon fonctionnent. Les deux tests de journaux du premier `dcdiag /q` restent documentés comme événements historiques du cycle de promotion et ne correspondent pas à une panne actuelle.
+- Point de contrôle de production créé à chaud puis renommé `Baseline-ADDS-DNS-2026-10-13`. La VM est restée en exécution. Ce point constitue un retour arrière pratique pour le laboratoire, sans être considéré comme une sauvegarde Active Directory.
+- Étape 6 validée : `CC-DC01` est opérationnel avec Windows Server 2025, le volume `DATA (E:)`, AD DS, DNS, les services de fichiers de base et la forêt `ad.cybercorp.test`.
 - Disque système dynamique `CC-DC01.vhdx` créé sous `C:\Users\Public\Documents\Hyper-V\CyberCorp\CC-DC01\Virtual Hard Disks`.
 - Configuration Hyper-V créée sous l'identifiant `696B08FF-A882-4E7F-94AF-9C288D960E88`.
 - Processeurs virtuels : 2.
@@ -322,6 +487,6 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 
 ### Validation
 
-- Date : —
-- Validation utilisateur : —
-- Preuves ou remarques : —
+- Date : 13 octobre 2026.
+- Validation utilisateur : validation progressive par captures et résultats de commandes.
+- Preuves ou remarques : Windows Server 2025, volume de données, AD DS, DNS, forêt `ad.cybercorp.test`, SYSVOL, Netlogon, authentification et point de contrôle `Baseline-ADDS-DNS-2026-10-13` vérifiés.
