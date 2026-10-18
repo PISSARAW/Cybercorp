@@ -9,6 +9,10 @@ Laboratoire pédagogique Windows sécurisé pour une PME fictive de 25 personnes
 3. Importer les identifiants initiaux de `secrets/initial-passwords.csv` dans un gestionnaire de mots de passe, puis supprimer la copie CSV locale dès que l’import est vérifié. Ce fichier est ignoré par Git mais se trouve dans un dossier OneDrive. Changer les secrets après leur première utilisation, en particulier les comptes d’administration. Si le fichier manque avant le déploiement, le recréer avec `python scripts/generate_initial_passwords.py` ; le script refuse d’écraser un fichier existant. Ne pas utiliser ces valeurs pour un système réel.
 4. Construire les VM hors ligne, puis suivre la séquence du dossier de conception (p. 10). La carte WAN de pfSense doit rester déconnectée pendant les exercices d’audit.
 
+## Outillage de sécurité prévu
+
+Le pack de soutenance est volontairement limité à cinq outils : Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA. Il apporte des preuves sur l’audit réseau, la télémétrie Windows, l’analyse des événements, la gouvernance GPO et la conformité as code, sans ajouter de VM ni de SIEM lourd. Les règles de périmètre, les livrables attendus et l’ordre d’adoption figurent dans le [plan d’outillage de sécurité](docs/outillage-securite.md).
+
 ## Repères
 
 | VM | Rôle | Adresse principale | RAM | Commutateur principal |
@@ -36,8 +40,10 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 
 - [x] Noms, rôles, profils mémoire et plan IP documentés
 - [x] Comptes et secrets initiaux proposés localement
+- [x] Pack de cinq outils de sécurité sélectionné et documenté
 - [ ] Compatibilité des sous-réseaux et capacité hôte vérifiées
 - [ ] VM et règles pfSense créées
+- [ ] Outils de sécurité installés, configurés et validés par preuve
 - [ ] Recette T01–T15 exécutée et preuves conservées
 
 Les fichiers DOCX et PDF à la racine sont des documents sources non suivis par Git. Leur contenu n’est pas modifié ici.

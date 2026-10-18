@@ -47,3 +47,9 @@ Le trafic DC ↔ client reste sur `CC-LAN` et ne traverse pas pfSense ; les ACL,
 La forêt est `ad.cybercorp.test` (`CYBERCORP`). Le DC reste dans l’OU native `Domain Controllers`. Les utilisateurs métier vont dans `OU=CyberCorp/OU=Utilisateurs/<service>`, le poste dans `OU=Postes`, les comptes dédiés dans `OU=Admins` et les comptes de scénario dans `OU=Tests`.
 
 Les 25 comptes fictifs et les comptes techniques figurent dans `config/comptes.csv`. Les secrets initiaux sont uniquement dans `secrets/initial-passwords.csv`, ignoré par Git. Le secret DSRM est distinct du secret du compte Administrator du domaine ; le compte local de secours du client et le compte pfSense ont chacun un secret différent. Les comptes `tst.*` restent désactivés hors séance.
+
+## Outillage de vérification prévu
+
+Le laboratoire prévoit cinq outils complémentaires, tous exécutés dans le périmètre décrit ici : Nmap/Ndiff pour comparer l’exposition réseau, Sysmon et Hayabusa pour la télémétrie et son analyse hors ligne, GPOZaurr pour l’audit des stratégies de groupe, et Conftest/OPA pour vérifier les invariants de topologie sous forme de politiques versionnées.
+
+Ils ne remplacent pas les contrôles natifs — pfSense, pare-feu Windows, Defender, audit Windows, `dcdiag`, `gpresult` et les ACL restent les sources de configuration et de preuve. Aucun outil n’autorise un scan du réseau personnel, une modification automatique ou l’exposition d’un service supplémentaire. Le [plan d’outillage de sécurité](outillage-securite.md) définit les préconditions, livrables et limites de chaque usage.
