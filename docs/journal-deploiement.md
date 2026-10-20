@@ -554,6 +554,10 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 - Un nouveau rapport XML de la GPO confirme les six valeurs réellement enregistrées : `MinimumPasswordLength=14`, `PasswordComplexity=true`, `PasswordHistorySize=24`, `LockoutBadCount=5`, `LockoutDuration=15` et `ResetLockoutCount=15`.
 - Après une nouvelle exécution réussie de `gpupdate /target:computer /force`, `Get-ADDefaultDomainPasswordPolicy` confirme l'application effective : complexité active, longueur minimale 14, historique 24, verrouillage après 5 échecs, durée de verrouillage 15 minutes et fenêtre d'observation 15 minutes. Les âges minimal et maximal restent respectivement de 1 et 42 jours, valeurs héritées de la stratégie de domaine existante et volontairement non redéfinies dans `CC-Domaine-Comptes`.
 - La GPO vide `CC-Postes-Securite` a ensuite été créée et liée directement à `OU=Postes,OU=CyberCorp,DC=ad,DC=cybercorp,DC=test`. La liaison est active, non forcée et placée à l'ordre 1 ; aucune configuration n'a encore été appliquée au poste à ce stade.
+- Audit T10 exécuté le 20 octobre 2026 à 12:13:44 avec GPOZaurr 1.1.13, installé hors ligne sur `CC-DC01` avec ses dépendances. Le rapport est produit en lecture seule dans `C:\Audit\T10\GPOZaurr-CC-DC01.html`, avec l'inventaire `C:\Audit\T10\Inventaire-GPO.csv`.
+- Le contrôle « Broken / Orphaned Group Policies » ne relève aucun écart : 0 GPO présente dans SYSVOL mais absente d'AD, 0 GPO AD sans contenu SYSVOL, 0 objet de classe inattendue et 0 GPO non évaluée faute de permission. Le domaine `ad.cybercorp.test` ne requiert aucune action pour cette catégorie.
+- L'inventaire GPO confirme que `CC-Domaine-Comptes`, `CC-Postes-Securite`, `Default Domain Controllers Policy` et `Default Domain Policy` existent dans AD et SYSVOL ; les quatre stratégies sont actives. Aucune commande corrective GPOZaurr n'a été exécutée.
+- Les artefacts sont hachés SHA-256 : rapport HTML `C2D2F3A095CA3F9FFDBAFAC8599D60041569955230E0DA541117849AEA7571BE0` ; inventaire CSV `4228BF6DE331E69892CFF3ACF7B1D4D12115D0325052D7FA152321901AEFCF2B`.
 
 ### Durcissement du poste et télémétrie T12–T13
 

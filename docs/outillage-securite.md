@@ -2,7 +2,7 @@
 
 ## Objet et état
 
-Ce document encadre les cinq outils retenus pour la soutenance. Sysmon et Hayabusa ont été déployés et démontrés sur le scénario T12–T13 du 20 octobre 2026 ; leurs preuves et empreintes sont consignées dans `docs/journal-deploiement.md`. Nmap/Ndiff, GPOZaurr et Conftest/OPA restent au statut prévu. Une preuve n'est ajoutée au dossier de soutenance qu'après une exécution réelle, bornée et datée.
+Ce document encadre les cinq outils retenus pour la soutenance. Sysmon et Hayabusa ont été déployés et démontrés sur le scénario T12–T13 du 20 octobre 2026 ; GPOZaurr a été exécuté en lecture seule pour T10 le même jour. Les preuves et empreintes sont consignées dans `docs/journal-deploiement.md`. Nmap/Ndiff et Conftest/OPA restent au statut prévu. Une preuve n'est ajoutée au dossier de soutenance qu'après une exécution réelle, bornée et datée.
 
 Le choix est volontairement limité. Il complète le socle existant (Hyper-V, pfSense, Active Directory, GPO, pare-feu Windows, Defender et Kali) sans ajouter de VM, de SIEM ou d'IDS permanent. Les analyses sont réalisées sur l'hôte ou hors ligne afin de respecter la contrainte de 16 Go et les profils mémoire du laboratoire.
 
@@ -11,10 +11,10 @@ Le choix est volontairement limité. Il complète le socle existant (Hyper-V, pf
 | Connu | Nmap + Ndiff | Mesurer l'exposition strictement autorisée depuis Kali et comparer l'état avant/après une règle pfSense. | Scénario S01 ; préconditions T03–T04 | Sorties Nmap XML et diff Ndiff, avec cible, ports et fenêtre de tir identifiés. | Prévu |
 | Connu | Sysmon | Produire une télémétrie endpoint Windows exploitable. | T12–T13 ; scénario S03 | Export EVTX du journal Sysmon, configuration appliquée et test horodaté. | Déployé et démontré sur `CC-W11-01` |
 | Peu courant | Hayabusa | Construire une chronologie et rechercher les détections Sigma dans les EVTX. | T12–T13 ; scénarios S03–S04 | Chronologie CSV/JSON et extrait explicatif lié à un scénario. | Démontré hors ligne sur l'EVTX Sysmon |
-| Peu courant | GPOZaurr | Auditer les liens, propriétaires, permissions et cohérence des GPO. | T10 | Rapport HTML/CSV expurgé et liste des écarts réellement observés. | Prévu |
+| Peu courant | GPOZaurr | Auditer les liens, propriétaires, permissions et cohérence des GPO. | T10 | Rapport HTML/CSV expurgé et liste des écarts réellement observés. | Exécuté en lecture seule sur `CC-DC01` le 20 octobre 2026 |
 | Niche à fort potentiel | Conftest / OPA | Vérifier des invariants de sécurité sous forme de politiques versionnées. | T01–T04 ; bonus G01–G04 | Rapport PASS/FAIL reproductible sur un export JSON expurgé. | Prévu |
 
-Sysmon et Hayabusa sont démontrés ; les trois autres outils restent au statut **prévu**. Les outils envisagés hors de ce pack (PingCastle, Zeek/Zui, KAPE, Kopia et HardeningKitty) restent hors périmètre tant que ce pack n'est pas entièrement démontré.
+Sysmon, Hayabusa et GPOZaurr sont démontrés ; Nmap/Ndiff et Conftest/OPA restent au statut **prévu**. Les outils envisagés hors de ce pack (PingCastle, Zeek/Zui, KAPE, Kopia et HardeningKitty) restent hors périmètre tant que ce pack n'est pas entièrement démontré.
 
 ## Correspondance avec la recette existante
 
