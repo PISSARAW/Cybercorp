@@ -15,7 +15,7 @@ Ce journal conserve les étapes réalisées et validées avec l'utilisateur. Une
 | 7 | Adaptation ou reconstruction de `CC-W11-01` | Validée |
 | 8 | Import et confinement de `CC-KALI01` | Validée |
 | 9 | Configuration réseau, domaine et comptes | À faire |
-| 10 | Recette de sécurité T01–T15 | À faire |
+| 10 | Recette de sécurité T01–T15 | En cours |
 
 ## Étape 1 — Inventaire initial et décision de conservation
 
@@ -571,3 +571,17 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 - Hayabusa v4.2.0 a analysé cet export EVTX hors ligne avec le paquet DFIR complet et ses règles locales. La chronologie `C:\Preuves\T12-Sysmon\Hayabusa_T12_Sysmon_timeline_dfir.csv` a été générée (1 014 030 octets) et hachée SHA-256 : `60B24457DC5988B2C92BB2649B9228CA024FAA6C2B0644F607274F6E2B9CD6C5`.
 - La recherche textuelle dans cette chronologie retrouve le fichier contrôlé et l'associe à la règle `Sysmon_2_Low_PossibleTimestomping.yml`, au canal Sysmon et à l'ID 2. Cette détection est classée faible et constitue la trace attendue du scénario pédagogique ; elle ne doit pas être interprétée isolément comme une compromission.
 - L'édition d'évaluation de Windows 11 a provoqué un arrêt automatique du poste après l'analyse. Les artefacts EVTX et CSV avaient déjà été écrits et ont été vérifiés après le redémarrage ; cet arrêt ne modifie pas leurs empreintes consignées ci-dessus.
+
+## Étape 10 — Recette de sécurité T01–T15
+
+**État : En cours**
+
+### Scénario S01 — Nmap/Ndiff
+
+- Le 20 octobre 2026, le scénario a été exécuté depuis `CC-KALI01` (`10.77.20.50`) vers l'unique contrôleur de domaine `CC-DC01` (`10.77.10.10`). Seules les VM `CC-PFS01`, `CC-DC01` et `CC-KALI01` étaient nécessaires ; le WAN de pfSense est resté déconnecté et `CC-W11-01` n'a pas été utilisé.
+- Le périmètre a été limité à TCP `53`, `88`, `389` et `445`, sans découverte de réseau, script Nmap ni autre cible. La commande de mesure est `nmap -n -Pn -sT -p 53,88,389,445 -oA <prefixe> 10.77.10.10`.
+- La mesure de référence a retourné les quatre ports à l'état `filtered`, conformément à `BASELINE - Bloquer et journaliser AUDIT`.
+- Quatre règles pfSense temporaires, placées au-dessus de la règle de blocage sur l'interface `AUDIT`, ont été créées avec journalisation : TCP `53`, `88`, `389` et `445`, source `10.77.20.50`, destination `10.77.10.10`. Avec ces seules autorisations, le même scan a retourné les quatre ports à l'état `open`.
+- Les artefacts XML de preuve à conserver sur Kali sont `~/s01-ndiff/temporary-pass.xml` et `~/s01-ndiff/blocked-restored.xml`. Le préfixe initial `baseline-blocked` a été réutilisé par erreur pendant le scan autorisé ; il ne constitue donc pas une preuve de blocage et est remplacé par `blocked-restored`.
+- Les quatre règles temporaires ont été supprimées, sans modifier la règle de référence. Le contre-test enregistré dans `blocked-restored.xml` retourne à nouveau `filtered` pour les ports `53`, `88`, `389` et `445`.
+- La commande `ndiff ~/s01-ndiff/blocked-restored.xml ~/s01-ndiff/temporary-pass.xml` confirme, pour chacun des quatre ports, la différence attendue : `filtered` dans l'état bloqué et `open` lorsque les règles temporaires étaient actives.
