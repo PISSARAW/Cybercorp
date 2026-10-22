@@ -21,6 +21,10 @@
 
 Ces offres décrivent le scénario de l’entreprise et ne constituent pas une proposition commerciale réelle. Aucun client, chiffre d’affaires, certification ou résultat d’audit n’est revendiqué.
 
+## Mandat pédagogique du laboratoire
+
+Le laboratoire traite une difficulté concrète pour une petite équipe informatique : répondre à une demande client urgente tout en maîtrisant une exception d'audit et en expliquant un signal suspect sur un poste. Le cas fictif `M-CLIENT-01` produit un dossier de décision avec les accès autorisés, les mesures, les traces, les écarts et les limites. Les responsabilités et la justification de chaque outil figurent dans [la mission métier du laboratoire](mission-securite.md).
+
 ## Organisation
 
 | Service | Effectif | Responsabilité fictive |

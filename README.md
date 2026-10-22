@@ -11,7 +11,7 @@ Laboratoire pédagogique Windows sécurisé pour une PME fictive de 25 personnes
 
 ## Outillage de sécurité prévu
 
-Le pack de soutenance est volontairement limité à cinq outils : Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA. Il apporte des preuves sur l’audit réseau, la télémétrie Windows, l’analyse des événements, la gouvernance GPO et la conformité as code, sans ajouter de VM ni de SIEM lourd. Les règles de périmètre, les livrables attendus et l’ordre d’adoption figurent dans le [plan d’outillage de sécurité](docs/outillage-securite.md).
+CyberCorp simule le problème d'une petite société de conseil qui doit répondre à une demande client pendant qu'elle ouvre une exception d'audit et qualifie un signal sur un poste. Le résultat attendu est un dossier de décision : qui a autorisé quoi, quels accès ont réellement changé, ce qui a été observé, ce qui a été refermé et ce qui demeure incertain. La [mission métier du laboratoire](docs/mission-securite.md) donne le cas concret ; le [plan d'outillage](docs/outillage-securite.md) répartit le travail entre Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA.
 
 ## Repères
 
