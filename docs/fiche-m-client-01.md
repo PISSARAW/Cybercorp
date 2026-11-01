@@ -2,16 +2,21 @@
 
 Ce formulaire est à remplir avec les résultats réellement observés. Les cases vides ne valent ni conformité ni approbation. Les pièces citées suivent le [protocole de chaîne de preuves](protocole-preuves.md) ; conserver les exports bruts dans le coffre restreint et ne partager que des extraits expurgés.
 
+**État de la demande : cadrage proposé, non approuvé.** Les désignations, le dossier et la fenêtre ci-dessous sont créés pour préparer le mandat ; ils ne prouvent ni l'existence du livrable sur le serveur ni l'accord des personnes nommées. Ils n'autorisent ni l'ouverture d'une règle ni un nouveau scan.
+
+**Référence de cadrage :** rapport Google « Dossier Henri Pissa », annexe E « Mandat de sécurité M-CLIENT-01 ». Le rapport décrit le mandat et ses rôles par fonction, mais ne constitue pas une approbation nominative ou une fenêtre d'audit. Son état des preuves est daté du 20 octobre 2026 ; le contrôle Conftest du 1er novembre est documenté séparément ci-dessous.
+
 ## 1. Demande métier
 
 | Champ | Valeur à renseigner |
 | --- | --- |
-| Mission et livrable client | À renseigner |
-| Demandeur et responsable de la décision | À renseigner |
-| Motif de l'exception d'audit | À renseigner |
-| Début, fin et fuseau horaire | À renseigner |
-| Source, cible et ports exacts | À renseigner |
-| Critère d'arrêt et plan de fermeture | À renseigner |
+| Mission et livrable client | Référence de mandat `CL-2026-014` ; dossier cible `\\CC-DC01\Clients\CL-2026-014\Livraison` ; livrable proposé `Dossier-technique-exploitation-reprise-CL-2026-014-v1.0.pdf`. Destinataire : responsable informatique du client `CL-2026-014` (identité et canal de remise à confirmer). Le dossier et le fichier doivent encore être créés puis vérifiés sur `CC-DC01`. |
+| Demandeur et responsable de la décision | Demandeur proposé : **Alex Martin**, direction des opérations (`usr.dir02`). Responsable de la décision et approbatrice proposée : **Camille Moreau**, direction générale (`usr.dir01`). Opérateur technique proposé : **Raphaël Henry**, administration systèmes (`usr.it01`). Ces attributions ne constituent pas leur accord. |
+| Motif de l'exception d'audit | Mesurer l'exposition créée par une règle temporaire, puis prouver son retrait avant la décision de remise. Motif métier du demandeur à confirmer. |
+| Début, fin et fuseau horaire | Fenêtre **proposée** : mardi **3 novembre 2026, 14 h 00–15 h 00**, `Europe/Paris` (UTC+01:00). Préconditions à revoir avant 14 h ; règles temporaires prévues uniquement entre 14 h 20 et 14 h 35, retirées et contre-testées avant 14 h 50. Sans approbation explicite avant 14 h, la fenêtre est annulée. |
+| Approbation de l'ouverture | **Non obtenue.** À compléter avec identité du signataire, date/heure et référence de l'accord écrit avant toute règle ou mesure depuis Kali. |
+| Source, cible et ports exacts | Périmètre documenté : `CC-KALI01` (`10.77.20.50`) → `CC-DC01` (`10.77.10.10`), TCP `53`, `88`, `389`, `445` uniquement ; WAN pfSense déconnecté. L'hôte, le réseau personnel et les systèmes tiers sont exclus. |
+| Critère d'arrêt et plan de fermeture | Arrêt si précondition non conforme, absence d'accord, cible/port hors périmètre, comportement inattendu ou expiration de la fenêtre. Retirer les quatre règles temporaires, refaire exactement la même mesure et vérifier le retour à l'état bloqué avant 14 h 50. Si ce retour n'est pas prouvé, suspendre la remise et faire arbitrer la direction. |
 
 ## 2. Questions avant autorisation
 
