@@ -1,6 +1,6 @@
-# Organigramme fictif CyberCorp
+# Organigramme CyberCorp
 
-Les 25 personnes ci-dessous sont fictives. Les identifiants reprennent les comptes métier prévus dans `config/comptes.csv` ; les comptes `adm.*`, `tst.*` et les comptes techniques ne représentent pas des salariés supplémentaires.
+Les identifiants des 25 collaborateurs correspondent aux comptes métier de `config/comptes.csv`. Les comptes `adm.*`, `tst.*` et les comptes techniques ne représentent pas des postes supplémentaires.
 
 ```mermaid
 flowchart TB
@@ -14,7 +14,7 @@ flowchart TB
   OPS --> IT[Informatique<br/>2 personnes]
 ```
 
-| Service | Identifiant | Personne fictive | Fonction |
+| Service | Identifiant | Collaborateur | Fonction |
 | --- | --- | --- | --- |
 | Direction | `usr.dir01` | Camille Moreau | Direction générale |
 | Direction | `usr.dir02` | Alex Martin | Direction des opérations |
@@ -42,4 +42,4 @@ flowchart TB
 | Informatique | `usr.it01` | Raphaël Henry | Administrateur systèmes |
 | Informatique | `usr.it02` | Salomé Renaud | Support informatique |
 
-Les responsables sont choisis pour la cohérence du scénario. Cette structure ne change pas la matrice des droits définie dans le dossier de conception : les accès sont accordés par groupes de métier et non par la position dans cet organigramme.
+L'organigramme ne remplace pas la matrice des droits du dossier de conception : les accès sont accordés par groupes de métier et non par la position hiérarchique.

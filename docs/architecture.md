@@ -1,6 +1,6 @@
 # Architecture cible
 
-Référence : dossier de conception CyberCorp v1.0, pages 5 à 10. Cette page décrit une cible de laboratoire, pas un déploiement constaté.
+Référence : dossier de conception CyberCorp v1.0, pages 5 à 10. Cette page décrit l'architecture de référence ; les états effectivement observés figurent dans le [journal de déploiement](journal-deploiement.md).
 
 ```mermaid
 flowchart TB
@@ -46,7 +46,7 @@ Le trafic DC ↔ client reste sur `CC-LAN` et ne traverse pas pfSense ; les ACL,
 
 La forêt est `ad.cybercorp.test` (`CYBERCORP`). Le DC reste dans l’OU native `Domain Controllers`. Les utilisateurs métier vont dans `OU=CyberCorp/OU=Utilisateurs/<service>`, le poste dans `OU=Postes`, les comptes dédiés dans `OU=Admins` et les comptes de scénario dans `OU=Tests`.
 
-Les 25 comptes fictifs et les comptes techniques figurent dans `config/comptes.csv`. Les secrets initiaux sont uniquement dans `secrets/initial-passwords.csv`, ignoré par Git. Le secret DSRM est distinct du secret du compte Administrator du domaine ; le compte local de secours du client et le compte pfSense ont chacun un secret différent. Les comptes `tst.*` restent désactivés hors séance.
+Les 25 comptes métier et les comptes techniques figurent dans `config/comptes.csv`. Les secrets initiaux sont uniquement dans `secrets/initial-passwords.csv`, ignoré par Git. Le secret DSRM est distinct du secret du compte Administrator du domaine ; le compte local de secours du client et le compte pfSense ont chacun un secret différent. Les comptes `tst.*` restent désactivés hors séance.
 
 ## Outillage de vérification prévu
 

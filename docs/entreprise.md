@@ -1,33 +1,31 @@
-# CyberCorp — fiche d’entreprise fictive
-
-> CyberCorp est une organisation inventée pour le projet pédagogique Guardia. Ses personnes, offres et réalisations ci-dessous sont fictives. Elle n’exerce aucune activité commerciale.
+# CyberCorp — fiche d’entreprise
 
 ## Identité
 
 - **Nom d’usage :** CyberCorp
 - **Signature :** Le numérique mérite de la clarté.
-- **Activité simulée :** conseil et accompagnement numérique pour clients professionnels
-- **Taille simulée :** 25 collaborateurs, répartis dans six services
+- **Activité :** conseil et accompagnement numérique pour clients professionnels
+- **Effectif :** 25 collaborateurs, répartis dans six services
 - **Positionnement :** rendre les projets numériques lisibles, maîtrisables et sécurisés
 - **Mission :** aider une organisation à prendre de meilleures décisions techniques, protéger ses données et maintenir ses services essentiels
 - **Valeurs :** clarté, responsabilité, coopération, sobriété
 - **Public visé :** PME et équipes qui ont besoin d’un accompagnement pragmatique
 
-## Offres fictives
+## Offres
 
 1. **Conseil & feuille de route** — cadrage, priorités, choix techniques et accompagnement des décisions.
 2. **Systèmes & exploitation** — architecture, identités, postes, documentation et continuité.
 3. **Sécurité & résilience** — contrôle des accès, durcissement, sauvegarde, préparation aux incidents et vérification.
 
-Ces offres décrivent le scénario de l’entreprise et ne constituent pas une proposition commerciale réelle. Aucun client, chiffre d’affaires, certification ou résultat d’audit n’est revendiqué.
+Les offres structurent les responsabilités des équipes et les exigences appliquées aux dossiers clients. Ce document ne revendique ni certification ni résultat d'audit non démontré.
 
-## Mandat pédagogique du laboratoire
+## Mandat de sécurité M-CLIENT-01
 
-Le laboratoire traite une difficulté concrète pour une petite équipe informatique : répondre à une demande client urgente tout en maîtrisant une exception d'audit et en expliquant un signal suspect sur un poste. Le cas fictif `M-CLIENT-01` produit un dossier de décision avec les accès autorisés, les mesures, les traces, les écarts et les limites. Les responsabilités et la justification de chaque outil figurent dans [la mission métier du laboratoire](mission-securite.md).
+Le mandat traite une difficulté concrète pour une petite équipe informatique : répondre à une demande client urgente tout en maîtrisant une exception d'audit et en expliquant un signal sur un poste. `M-CLIENT-01` doit produire un dossier de décision avec les accès autorisés, les mesures, les traces, les écarts et les limites. Les responsabilités et la justification de chaque outil figurent dans [la mission de sécurité](mission-securite.md).
 
 ## Organisation
 
-| Service | Effectif | Responsabilité fictive |
+| Service | Effectif | Responsabilité |
 | --- | ---: | --- |
 | Direction | 2 | Stratégie, arbitrage et qualité |
 | Administration & RH | 3 | Vie interne et gestion du personnel |
@@ -55,4 +53,4 @@ Typographie du site : pile système pour limiter les dépendances externes. Gard
 
 ## Usage du site
 
-Le site vitrine du dépôt est une démonstration. Son bandeau et son pied de page indiquent le caractère fictif. Il ne collecte aucune donnée, n’affiche pas de coordonnées inventées et ne propose pas de formulaire trompeur.
+Le site vitrine présente l'activité, les offres et l'organisation. Il ne collecte aucune donnée et ne propose pas de formulaire de contact.

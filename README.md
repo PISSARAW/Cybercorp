@@ -1,17 +1,19 @@
 # CyberCorp
 
-Laboratoire pédagogique Windows sécurisé pour une PME fictive de 25 personnes. Ce dépôt prépare la construction décrite dans le [dossier de conception](CyberCorp_Dossier_Conception.pdf) ; aucune VM, règle de pare-feu ou configuration de l’hôte n’a encore été déployée par ce dépôt.
+Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. Ce dépôt rassemble le [dossier de conception](CyberCorp_Dossier_Conception.pdf), la configuration, le journal de déploiement, les contrôles de sécurité et les preuves de validation. Le périmètre Hyper-V est opérationnel ; la recette complète et le mandat M-CLIENT-01 restent à clôturer.
 
 ## Démarrage
 
-1. Lire [l’architecture et les règles de confinement](docs/architecture.md) avant de créer les commutateurs Hyper-V.
-2. Vérifier que les trois sous-réseaux proposés dans [l’inventaire](config/infrastructure.csv) ne chevauchent pas le réseau personnel, Tailscale, WSL, Docker ou un VPN. En cas de conflit, modifier les adresses dans le dépôt **avant** l’installation.
+1. Lire [l’architecture et les règles de confinement](docs/architecture.md) avant toute modification des commutateurs Hyper-V.
+2. Vérifier que les trois sous-réseaux de [l’inventaire](config/infrastructure.csv) ne chevauchent pas le réseau personnel, Tailscale, WSL, Docker ou un VPN. En cas de conflit, documenter les écarts et adapter les adresses avant une nouvelle intervention.
 3. Importer les identifiants initiaux de `secrets/initial-passwords.csv` dans un gestionnaire de mots de passe, puis supprimer la copie CSV locale dès que l’import est vérifié. Ce fichier est ignoré par Git mais se trouve dans un dossier OneDrive. Changer les secrets après leur première utilisation, en particulier les comptes d’administration. Si le fichier manque avant le déploiement, le recréer avec `python scripts/generate_initial_passwords.py` ; le script refuse d’écraser un fichier existant. Ne pas utiliser ces valeurs pour un système réel.
-4. Construire les VM hors ligne, puis suivre la séquence du dossier de conception (p. 10). La carte WAN de pfSense doit rester déconnectée pendant les exercices d’audit.
+4. Pour une reconstruction, préparer les VM hors ligne puis suivre la séquence du dossier de conception (p. 10). La carte WAN de pfSense doit rester déconnectée pendant les exercices d’audit.
 
 ## Outillage de sécurité prévu
 
-CyberCorp simule le problème d'une petite société de conseil qui doit répondre à une demande client pendant qu'elle ouvre une exception d'audit et qualifie un signal sur un poste. Le résultat attendu est un dossier de décision : qui a autorisé quoi, quels accès ont réellement changé, ce qui a été observé, ce qui a été refermé et ce qui demeure incertain. La [mission métier du laboratoire](docs/mission-securite.md) donne le cas concret ; le [plan d'outillage](docs/outillage-securite.md) répartit le travail entre Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA.
+CyberCorp doit répondre à une demande client tout en maîtrisant une exception d'audit et en qualifiant un signal sur un poste. Le résultat attendu est un dossier de décision : qui a autorisé quoi, quels accès ont réellement changé, ce qui a été observé, ce qui a été refermé et ce qui demeure incertain. Le [mandat métier M-CLIENT-01](docs/mission-securite.md) donne le cas opérationnel ; le [plan d'outillage](docs/outillage-securite.md) répartit le travail entre Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA.
+
+Les nouveaux exports suivent le [protocole de chaîne de preuves](docs/protocole-preuves.md) : coffre local hors OneDrive, noms uniques, registre, empreintes SHA-256 et relecture des extraits avant remise.
 
 ## Repères
 
@@ -22,15 +24,15 @@ CyberCorp simule le problème d'une petite société de conseil qui doit répond
 | `CC-W11-01` | Windows 11 Pro, poste métier | `10.77.10.100/24` | 4 Go | `CC-LAN` |
 | `CC-KALI01` | Kali Linux, audit contrôlé | `10.77.20.50/24` | 2 Go | `CC-AUDIT` |
 
-Domaine : `ad.cybercorp.test` ; NetBIOS : `CYBERCORP`. Les comptes à créer figurent dans [config/comptes.csv](config/comptes.csv). Les adresses, passerelles et DNS détaillés figurent dans [config/infrastructure.csv](config/infrastructure.csv). Ce sont des **valeurs de conception**, à vérifier sur l’hôte avant déploiement.
+Domaine : `ad.cybercorp.test` ; NetBIOS : `CYBERCORP`. Les comptes métier figurent dans [config/comptes.csv](config/comptes.csv). Les adresses, passerelles et DNS détaillés figurent dans [config/infrastructure.csv](config/infrastructure.csv). Cet inventaire reste la référence à comparer à l’état constaté avant chaque changement.
 
-## Entreprise fictive et site vitrine
+## Entreprise et site vitrine
 
-- [Fiche d’entreprise et identité visuelle](docs/entreprise.md) : mission, offres fictives, valeurs et charte de marque.
-- [Organigramme](docs/organigramme.md) : 25 personnages fictifs associés aux 25 comptes métier du laboratoire.
+- [Fiche d’entreprise et identité visuelle](docs/entreprise.md) : mission, offres, valeurs et charte de marque.
+- [Organigramme](docs/organigramme.md) : 25 fonctions et leurs comptes métier.
 - [Site vitrine](website/dist/index.html) : pages statiques responsive, logo SVG dans `website/dist/assets/`, et manifeste d’hébergement dans `website/.openai/hosting.json`.
 
-Le site précise qu’il s’agit d’une entreprise fictive et ne collecte aucune donnée. Pour un aperçu local : `python -m http.server 8765 --directory website/dist`, puis ouvrir `http://127.0.0.1:8765/`. `site/` est une copie locale de publication ignorée par Git ; les modifications durables se font dans `website/`.
+Le site ne collecte aucune donnée. Pour un aperçu local : `python -m http.server 8765 --directory website/dist`, puis ouvrir `http://127.0.0.1:8765/`. `site/` est une copie locale de publication ignorée par Git ; les modifications durables se font dans `website/`.
 
 Version hébergée privée : [CyberCorp — site vitrine](https://cybercorp-vitrine.fabled-haven-3189.chatgpt.site).
 
@@ -41,9 +43,10 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 - [x] Noms, rôles, profils mémoire et plan IP documentés
 - [x] Comptes et secrets initiaux proposés localement
 - [x] Pack de cinq outils de sécurité sélectionné et documenté
-- [ ] Compatibilité des sous-réseaux et capacité hôte vérifiées
-- [ ] VM et règles pfSense créées
-- [ ] Outils de sécurité installés, configurés et validés par preuve
+- [x] VM, commutateurs privés et règles pfSense de base créés et documentés
+- [x] Essais bornés Nmap/Ndiff, Sysmon/Hayabusa et GPOZaurr consignés
+- [x] Conftest/OPA exécuté le 01/11/2026 : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-topologie.md)
+- [ ] Mandat M-CLIENT-01 assemblé et décidé
 - [ ] Recette T01–T15 exécutée et preuves conservées
 
 Les fichiers DOCX et PDF à la racine sont des documents sources non suivis par Git. Leur contenu n’est pas modifié ici.

@@ -1,12 +1,12 @@
 # M-CLIENT-01 — fiche de décision (modèle)
 
-Ce formulaire est à remplir avec les résultats réellement observés. Les noms et données sont fictifs ; les cases vides ne valent ni conformité ni approbation. Conserver les preuves brutes dans un emplacement restreint et ne partager que des extraits expurgés.
+Ce formulaire est à remplir avec les résultats réellement observés. Les cases vides ne valent ni conformité ni approbation. Les pièces citées suivent le [protocole de chaîne de preuves](protocole-preuves.md) ; conserver les exports bruts dans le coffre restreint et ne partager que des extraits expurgés.
 
 ## 1. Demande métier
 
 | Champ | Valeur à renseigner |
 | --- | --- |
-| Mission et livrable client fictif | À renseigner |
+| Mission et livrable client | À renseigner |
 | Demandeur et responsable de la décision | À renseigner |
 | Motif de l'exception d'audit | À renseigner |
 | Début, fin et fuseau horaire | À renseigner |
@@ -17,7 +17,7 @@ Ce formulaire est à remplir avec les résultats réellement observés. Les noms
 
 | Question | Référence de preuve | Résultat observé | Décision |
 | --- | --- | --- | --- |
-| Topologie Hyper-V conforme à V01–V05 ? | Export + rapport Conftest | À renseigner | À renseigner |
+| Topologie Hyper-V conforme à V01–V05 ? | `M-CLIENT-01_topologie_20261101T162606114Z_HOTE-HYPERV_HyperV` + `M-CLIENT-01_topologie_20261101T162606177Z_HOTE-HYPERV_Conftest` | PASS sur l'export réel du 01/11/2026 ; cinq copies fautives refusées. État ponctuel, à revérifier avant l'audit. | Précondition technique satisfaite à cet instant ; **aucune autorisation d'ouverture accordée**. |
 | WAN pfSense déconnecté et Kali confinée ? | Cartes Hyper-V + test contrôlé | À renseigner | À renseigner |
 | GPO appliquées et gouvernance examinée ? | `gpresult` + rapport GPOZaurr | À renseigner | À renseigner |
 | Accès métier aux dossiers sensibles conformes ? | T08–T09 et ACL natives | À renseigner | À renseigner |
@@ -38,7 +38,7 @@ Comparer les deux transitions avec Ndiff, puis confirmer la suppression des règ
 | --- | --- |
 | Action bénigne et compte de test | À renseigner |
 | Heure de référence et contrôle des horloges | À renseigner |
-| SHA-256 du livrable fictif avant/après | À renseigner |
+| SHA-256 de la copie de contrôle du livrable avant/après | À renseigner |
 | EVTX Security/Sysmon et empreintes | À renseigner |
 | Événement source, ID et machine | À renseigner |
 | Règle Hayabusa et ligne de chronologie | À renseigner |
@@ -55,6 +55,6 @@ Une empreinte inchangée du fichier testé ne démontre pas qu'il n'a pas été 
 
 **Corrections, contre-tests, responsables et échéances :** à renseigner.
 
-**Temps réel de constitution du dossier :** à mesurer, sans annoncer de délai contractuel fictif.
+**Temps réel de constitution du dossier :** à mesurer, sans annoncer de délai contractuel non établi.
 
 **Validation du responsable :** identité, date et référence de la preuve à renseigner.

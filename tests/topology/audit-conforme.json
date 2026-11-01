@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "profile": "audit",
+  "captured_utc": "2026-11-01T00:00:00Z",
+  "switches": [
+    {"name": "CC-LAN", "type": "Private"},
+    {"name": "CC-AUDIT", "type": "Private"},
+    {"name": "CC-WAN-MAINT", "type": "Internal"}
+  ],
+  "vms": [
+    {"name": "CC-PFS01", "adapters": [
+      {"switch": null, "connected": false},
+      {"switch": "CC-LAN", "connected": true},
+      {"switch": "CC-AUDIT", "connected": true}
+    ]},
+    {"name": "CC-DC01", "adapters": [{"switch": "CC-LAN", "connected": true}]},
+    {"name": "CC-W11-01", "adapters": [{"switch": "CC-LAN", "connected": true}]},
+    {"name": "CC-KALI01", "adapters": [{"switch": "CC-AUDIT", "connected": true}]}
+  ]
+}

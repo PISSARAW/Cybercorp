@@ -2,7 +2,7 @@
 
 ## Objet et état
 
-Ce document organise les cinq outils autour du [mandat métier M-CLIENT-01](mission-securite.md). Sysmon et Hayabusa ont été démontrés sur un essai de télémétrie du 20 octobre 2026 ; GPOZaurr a été exécuté en lecture seule pour T10 le même jour ; Nmap/Ndiff a été démontré par S01. Les preuves et empreintes sont consignées dans `docs/journal-deploiement.md`. Conftest/OPA reste à réaliser. Ces essais distincts ne constituent pas encore le dossier de décision complet.
+Ce document organise les cinq outils autour du [mandat métier M-CLIENT-01](mission-securite.md). Sysmon et Hayabusa ont été démontrés sur un essai de télémétrie du 20 octobre 2026 ; GPOZaurr a été exécuté en lecture seule pour T10 le même jour ; Nmap/Ndiff a été démontré par S01. Conftest/OPA a été exécuté le 1er novembre 2026 sur un [export Hyper-V réel et cinq copies fautives](controle-topologie.md). Ces essais distincts ne constituent pas encore le dossier de décision complet.
 
 Le choix est volontairement limité. Il complète le socle existant (Hyper-V, pfSense, Active Directory, GPO, pare-feu Windows, Defender et Kali) sans ajouter de VM, de SIEM ou d'IDS permanent. Les analyses sont réalisées sur l'hôte ou hors ligne afin de respecter la contrainte de 16 Go et les profils mémoire du laboratoire.
 
@@ -12,9 +12,9 @@ Le choix est volontairement limité. Il complète le socle existant (Hyper-V, pf
 | Connu | Sysmon | Produire une télémétrie endpoint Windows exploitable. | T12–T13 ; scénario S03 | Export EVTX du journal Sysmon, configuration appliquée et test horodaté. | Déployé et démontré sur `CC-W11-01` |
 | Peu courant | Hayabusa | Construire une chronologie et rechercher les détections Sigma dans les EVTX. | T12–T13 ; scénarios S03–S04 | Chronologie CSV/JSON et extrait explicatif lié à un scénario. | Démontré hors ligne sur l'EVTX Sysmon |
 | Peu courant | GPOZaurr | Auditer les liens, propriétaires, permissions et cohérence des GPO. | T10 et M03 | Rapport HTML/CSV expurgé et liste des écarts réellement observés. | Exécuté en lecture seule sur `CC-DC01` le 20 octobre 2026 |
-| Niche à fort potentiel | Conftest / OPA | Vérifier des invariants de sécurité sous forme de politiques versionnées. | Préconditions T01–T04 et M02 ; bonus G01–G04 | Rapport PASS/FAIL reproductible sur un export JSON expurgé. | Prévu |
+| Niche à fort potentiel | Conftest / OPA | Vérifier des invariants de sécurité sous forme de politiques versionnées. | Préconditions T01–T04 et M02 ; bonus G01–G04 | Rapport PASS/FAIL reproductible sur un export JSON expurgé. | Démontré le 01/11/2026 ; à relancer avant toute exception |
 
-Sysmon, Hayabusa, GPOZaurr et Nmap/Ndiff sont démontrés ; Conftest/OPA reste au statut **prévu**. Les outils envisagés hors de ce pack (PingCastle, Zeek/Zui, KAPE, Kopia et HardeningKitty) restent hors périmètre tant que ce pack n'est pas entièrement démontré.
+Les cinq outils sont démontrés séparément, mais leur chaîne commune et la décision M-CLIENT-01 restent à constituer. Les outils envisagés hors de ce pack (PingCastle, Zeek/Zui, KAPE, Kopia et HardeningKitty) restent hors périmètre tant que cette chaîne n'est pas entièrement démontrée.
 
 ## Correspondance avec la recette existante
 
@@ -31,7 +31,7 @@ La recette T01–T15 évalue les contrôles du laboratoire. Le mandat M-CLIENT-0
 1. Exécuter les tests uniquement sur les IP, VM et comptes de scénario du laboratoire. Le réseau personnel, l'hôte, le MacBook, Tailscale et Internet ne sont jamais des cibles.
 2. Avant une action depuis Kali, vérifier que son unique carte est sur `CC-AUDIT`, que la carte WAN de `CC-PFS01` est déconnectée et que la console Hyper-V reste disponible.
 3. Enregistrer la version de l'outil, l'identité utilisée, le profil de VM, l'heure Europe/Paris et la commande exacte. Exporter les preuves avant toute restauration de checkpoint.
-4. Conserver les données brutes dans un emplacement restreint. Les extraits destinés au jury ne contiennent ni mot de passe, jeton, clé Tailscale, secret DSRM, chemin personnel ou contenu métier fictif inutile.
+4. Conserver les données brutes dans un emplacement restreint. Les extraits destinés au jury ne contiennent ni mot de passe, jeton, clé Tailscale, secret DSRM, chemin personnel ou contenu métier non nécessaire.
 5. Aucun outil ne corrige automatiquement une configuration. Toute correction passe par une sauvegarde préalable, une modification documentée, un contrôle fonctionnel puis un contre-test.
 
 ## 1. Audit réseau : Nmap et Ndiff
@@ -58,7 +58,7 @@ Sysmon est la source de télémétrie Windows du pack. Avant son activation, vé
 
 Hayabusa analyse les exports EVTX ; il n'est pas installé comme un agent permanent. Il sert à relier un événement de scénario à une règle Sigma et à générer une chronologie lisible.
 
-La piste endpoint exploite d'abord les événements réellement configurés sur `CC-W11-01` : processus sélectionnés, connexion vers le DC et changement d'heure de création d'un fichier. Le verrouillage de `tst.lock` relève surtout du journal Security du DC ; il ne doit pas être présenté comme une démonstration de Sysmon sur le poste. Les scénarios restent simulés, sans malware réel, brute force ni collecte de secrets.
+La piste endpoint exploite d'abord les événements réellement configurés sur `CC-W11-01` : processus sélectionnés, connexion vers le DC et changement d'heure de création d'un fichier. Le verrouillage de `tst.lock` relève surtout du journal Security du DC ; il ne doit pas être présenté comme une démonstration de Sysmon sur le poste. Les exercices restent contrôlés, sans malware, brute force ni collecte de secrets.
 
 - Entrées : EVTX exportés après chaque scénario, avec leur empreinte SHA-256.
 - Sorties : chronologie CSV ou JSON, règle déclenchée, événement source, horodatage UTC et interprétation humaine.
@@ -91,7 +91,7 @@ Une politique doit être démontrée avec une entrée conforme (PASS) et un éca
 
 ## Ordre de clôture du mandat
 
-1. Ouvrir la [fiche de décision M-CLIENT-01](fiche-m-client-01.md), nommer le responsable fictif, le dossier `Clients` concerné, la fenêtre d'audit et les preuves à conserver. Une case non renseignée ne vaut pas approbation.
+1. Ouvrir la [fiche de décision M-CLIENT-01](fiche-m-client-01.md), nommer le responsable de la décision, le dossier `Clients` concerné, la fenêtre d'audit et les preuves à conserver. Une case non renseignée ne vaut pas approbation.
 2. Écrire et exécuter Conftest V01 à V05 sur l'export réel et une copie fautive ; vérifier aussi les cartes dans Hyper-V. Ce contrôle devient une porte d'entrée avant une nouvelle exception.
 3. Reprendre le rapport GPOZaurr existant, revoir les liens, propriétaires et permissions, puis tester `gpresult` et les droits effectifs sur le dossier. Consigner les écarts et leurs responsables.
 4. Refaire, si le laboratoire le permet, le triplet Nmap « bloqué / autorisé / rebloqué » avec trois fichiers XML distincts et Ndiff pour les deux transitions. S01 fournit déjà une démonstration partielle, pas la première pièce XML.
@@ -103,14 +103,14 @@ Le tableau de recette existant reste la source de vérité des validations : auc
 
 Chaque tâche doit aboutir à une décision et à une pièce du dossier de remise. « À réaliser » signifie que les preuves existantes peuvent être réutilisées, mais que la décision métier n'a pas encore été prise.
 
-| Tâche | Irritant métier et responsable fictif | Travail à accomplir | Critère de clôture | État |
+| Tâche | Irritant métier et responsable | Travail à accomplir | Critère de clôture | État |
 | --- | --- | --- | --- | --- |
 | M01 — Demande traçable | La direction veut une livraison rapide ; l'IT reçoit des demandes orales d'ouverture. Responsable : direction. | Rédiger la fiche `M-CLIENT-01` : motif, porteur, cible, ports, fenêtre, approbation, retour prévu et effet sur le livrable. | La demande permet à un autre administrateur de décider sans deviner le périmètre. | À réaliser. |
-| M02 — Refus d'une dérive silencieuse | Une carte Hyper-V ajoutée pour dépanner peut échapper à la revue. Responsable : IT. | Exporter la topologie réelle, écrire V01–V05, exécuter Conftest sur l'export et sur une copie fautive, puis comparer aux cartes natives. | PASS réel, FAIL sur erreur injectée, export daté et vérification de l'absence de faux PASS sur champ manquant. | À réaliser. |
+| M02 — Refus d'une dérive silencieuse | Une carte Hyper-V ajoutée pour dépanner peut échapper à la revue. Responsable : IT. | Exporter la topologie réelle, écrire V01–V05, exécuter Conftest sur l'export et sur une copie fautive, puis comparer aux cartes natives. | PASS réel, FAIL sur erreur injectée, export daté et vérification de l'absence de faux PASS sur champ manquant. | Contrôle statique réalisé le 01/11/2026 ; à relancer avant la fenêtre et à compléter par T03–T04. |
 | M03 — GPO gouvernée | Une stratégie fonctionne aujourd'hui, mais ses droits ou son lien peuvent autoriser une modification future non maîtrisée. Responsable : IT. | Reprendre le rapport GPOZaurr T10, examiner liens, propriétaires et permissions pertinents, croiser avec `gpresult`, puis noter toute décision d'écart. | Un constat précis ou une absence d'écart vérifiée sur ces catégories ; effet métier documenté. | T10 couvre les GPO cassées/orphelines ; revue des autres catégories à réaliser. |
 | M04 — Exception mesurée et refermée | Une règle d'audit provisoire reste parfois active après la mission. Responsable : IT et auditeur. | Rattacher S01 à la fiche M01 ; confronter les XML « autorisé » et « rebloqué », l'observation initiale consignée et les horaires de règle ; lors d'un prochain changement, conserver trois XML distincts. | Ndiff explique la fermeture ; l'état final et la règle pfSense concordent ; l'export manquant est déclaré. | Deux XML S01 préservés ; XML initial écrasé et dossier de changement à compléter. |
-| M05 — Signal endpoint préservé | Après une anomalie, l'IT doit comprendre une action sur un poste sans avoir capturé tout le système. Responsable : IT. | Définir une action bénigne correspondant aux événements Sysmon configurés, relever son heure et son compte, comparer le SHA-256 du livrable fictif avant/après, exporter Sysmon et Security, hacher les EVTX. | Processus et événement source retrouvés ; absence de trace explicitée si la configuration ne la produit pas ; empreinte du livrable interprétée sans prétendre exclure une lecture ou une copie. | Essai Sysmon présent ; cas métier et T12–T13 à compléter. |
+| M05 — Signal endpoint préservé | Après une anomalie, l'IT doit comprendre une action sur un poste sans avoir capturé tout le système. Responsable : IT. | Définir une action bénigne correspondant aux événements Sysmon configurés, relever son heure et son compte, comparer le SHA-256 d'une copie de contrôle du livrable avant/après, exporter Sysmon et Security, hacher les EVTX. | Processus et événement source retrouvés ; absence de trace explicitée si la configuration ne la produit pas ; empreinte interprétée sans prétendre exclure une lecture ou une copie. | Essai Sysmon présent ; cas métier et T12–T13 à compléter. |
 | M06 — Qualification pour la direction | Une alerte brute peut provoquer une décision erronée ou être ignorée. Responsable : IT, décision finale : direction. | Traiter les EVTX M05 avec Hayabusa ; relier chronologie, règle, événement source et action connue ; conclure attendu, suspect ou indéterminé. | Fiche lisible qui cite la preuve et ses limites, avec décision poursuivre, corriger ou suspendre. | Chronologie d'essai présente ; qualification du mandat à réaliser. |
-| M07 — Contre-test et remise | Le client fictif veut savoir ce qui est encore ouvert après l'intervention. Responsable : IT. | Refaire les contrôles touchés par toute correction et assembler les extraits expurgés, le temps de constitution et les limites. | État final attribué à un responsable, écarts ouverts visibles et preuve avant/après vérifiable. | À réaliser. |
+| M07 — Contre-test et remise | Le destinataire de la remise doit savoir ce qui reste ouvert après l'intervention. Responsable : IT. | Refaire les contrôles touchés par toute correction et assembler les extraits expurgés, le temps de constitution et les limites. | État final attribué à un responsable, écarts ouverts visibles et preuve avant/après vérifiable. | À réaliser. |
 
 Les tests T08–T09 restent nécessaires pour prouver les droits sur les dossiers `Clients`, `Finance` et `RH`. Les tests T14–T15 vérifient la reprise. Ni GPOZaurr ni les journaux endpoint ne peuvent établir seuls ces résultats.

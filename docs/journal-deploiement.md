@@ -587,3 +587,11 @@ Captures et fichiers vérifiés le 13 octobre 2026 :
 - Après archivage, `CC-KALI01` a été arrêtée proprement. Sa mémoire de démarrage a été rétablie à 2 048 Mio avec mémoire dynamique toujours activée ; le disque virtuel temporaire de transfert est détaché de la VM.
 - Les quatre règles temporaires ont été supprimées, sans modifier la règle de référence. Le contre-test enregistré dans `blocked-restored.xml` retourne à nouveau `filtered` pour les ports `53`, `88`, `389` et `445`.
 - La commande `ndiff ~/s01-ndiff/blocked-restored.xml ~/s01-ndiff/temporary-pass.xml` confirme, pour chacun des quatre ports, la différence attendue : `filtered` dans l'état bloqué et `open` lorsque les règles temporaires étaient actives.
+
+### M-CLIENT-01 — contrôle statique de topologie M02 (1er novembre 2026)
+
+- Conftest `0.71.1` / OPA `1.21.1` a été installé localement après vérification du SHA-256 de l'archive officielle Windows x86_64. Les règles Rego V01–V05 sont dans `policy/topology.rego` et l'export en lecture seule dans `scripts/export-hyperv-topology.ps1`.
+- L'export réel du 01/11/2026 à 16:26:00 UTC montre `CC-LAN` et `CC-AUDIT` en `Private`, `CC-WAN-MAINT` en `Internal`, les cartes uniques des VM cibles sur les zones attendues et la troisième carte pfSense déconnectée. Le contrôle a donné PASS sur cet export.
+- Les cinq copies fautives ont toutes donné FAIL pour la raison attendue : switch externe, seconde carte Kali, WAN rebranché, VM manquante et champ `connected` absent. Aucune carte ou règle de production n'a été modifiée pour ces contre-tests.
+- Pièce Hyper-V retenue : `M-CLIENT-01_topologie_20261101T162606114Z_HOTE-HYPERV_HyperV` ; SHA-256 `35283529490BAEE1FD95FA999BE34D4464A7A1BAE434A5AE3F83E73B24B5F715`. Rapport retenu : `M-CLIENT-01_topologie_20261101T162606177Z_HOTE-HYPERV_Conftest` ; SHA-256 `BECF2072C5277D310766A71ABF485AA3643460B485B2BAB22814BB82C7866358`. Les deux sont dans le coffre M-CLIENT-01, pas dans Git.
+- T01–T02 sont validés pour cet état ponctuel. T03–T04 restent à faire : le PASS statique ne démontre ni l'échec d'une sortie WAN, ni le refus journalisé d'un flux. La fiche M-CLIENT-01 demeure sans demandeur, responsable, fenêtre ou approbation ; aucune nouvelle exception réseau n'est autorisée. Voir [le mode opératoire et ses limites](controle-topologie.md).
