@@ -9,11 +9,15 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 3. Importer les identifiants initiaux de `secrets/initial-passwords.csv` dans un gestionnaire de mots de passe, puis supprimer la copie CSV locale dès que l’import est vérifié. Ce fichier est ignoré par Git mais se trouve dans un dossier OneDrive. Changer les secrets après leur première utilisation, en particulier les comptes d’administration. Si le fichier manque avant le déploiement, le recréer avec `python scripts/generate_initial_passwords.py` ; le script refuse d’écraser un fichier existant. Ne pas utiliser ces valeurs pour un système réel.
 4. Pour une reconstruction, préparer les VM hors ligne puis suivre la séquence du dossier de conception (p. 10). La carte WAN de pfSense doit rester déconnectée pendant les exercices d’audit.
 
-## Outillage de sécurité prévu
+## Mission de sécurité en cours
 
 CyberCorp doit répondre à une demande client tout en maîtrisant une exception d'audit et en qualifiant un signal sur un poste. Le résultat attendu est un dossier de décision : qui a autorisé quoi, quels accès ont réellement changé, ce qui a été observé, ce qui a été refermé et ce qui demeure incertain. Le [mandat métier M-CLIENT-01](docs/mission-securite.md) donne le cas opérationnel ; le [plan d'outillage](docs/outillage-securite.md) répartit le travail entre Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA.
 
 Les nouveaux exports suivent le [protocole de chaîne de preuves](docs/protocole-preuves.md) : coffre local hors OneDrive, noms uniques, registre, empreintes SHA-256 et relecture des extraits avant remise.
+
+**État au 4 novembre 2026 :** M02 a passé le contrôle statique de topologie. Pour M03, le dossier `CL-2026-014\Livraison` a été créé sur `CC-DC01` et deux [collectes avant/après](docs/controle-gpo-clients.md) ont été produites. Leur transfert au coffre, la revue GPOZaurr et les tests d'accès métier restent à faire. La fenêtre d'audit proposée pour le 3 novembre est dépassée ; aucune nouvelle mesure depuis Kali n'est couverte par cette proposition.
+
+Le [guide de clôture du 5 novembre](docs/plan-cloture-2026-11-05.md) détaille l'ordre de travail, les profils de VM, la recette T01–T15, les 26 captures, les preuves et les dépendances.
 
 ## Repères
 
@@ -46,6 +50,8 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 - [x] VM, commutateurs privés et règles pfSense de base créés et documentés
 - [x] Essais bornés Nmap/Ndiff, Sysmon/Hayabusa et GPOZaurr consignés
 - [x] Conftest/OPA exécuté le 01/11/2026 : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-topologie.md)
+- [x] Dossier `CL-2026-014\Livraison` créé ; deux collectes M03 réalisées sur `CC-DC01` les 01–02/11/2026
+- [ ] JSON M03 rapatriés, inscrits au registre et analysés avec GPOZaurr, `gpresult` et les tests d'accès métier
 - [ ] Mandat M-CLIENT-01 assemblé et décidé
 - [ ] Recette T01–T15 exécutée et preuves conservées
 

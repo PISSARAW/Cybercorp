@@ -10,6 +10,8 @@ CyberCorp doit avancer sur ses missions client tout en répondant à trois deman
 
 Le mandat `M-CLIENT-01` concerne la remise d'un dossier technique stocké dans `Clients`. Trois questions exigent une réponse vérifiable : qui peut modifier ce dossier, l'audit réseau exceptionnel est-il bien refermé, et que signifie une action inhabituelle sur le poste de préparation ? L'équipe IT de deux personnes doit répondre sans immobiliser durablement les projets. Une campagne d'audit bornée depuis `CC-KALI01` vers les seuls ports désignés de `CC-DC01` est prévue après validation des préconditions. Un exercice contrôlé sur `CC-W11-01` permettra de tester la capacité d'explication d'un changement d'horodatage. La direction devra décider si la remise peut se poursuivre, si un écart doit être corrigé ou si elle doit être suspendue. Ce mandat est en cours de préparation ; aucune autorisation ni décision finale n'est présumée.
 
+**Avancement au 4 novembre 2026.** Le contrôle Conftest M02 a passé les règles V01–V05 sur l'export Hyper-V du 1er novembre. Pour M03, le partage `Clients` a été contrôlé, le dossier `CL-2026-014\Livraison` a été créé et deux inventaires natifs avant/après ont été produits sur `CC-DC01` : [observations et limites](controle-gpo-clients.md). Ces JSON attendent leur transfert au coffre et leur inscription au registre. La revue GPOZaurr, les tests d'accès depuis le poste, la nouvelle fenêtre d'audit et la décision de remise restent ouverts. La fenêtre proposée du 3 novembre est dépassée sans approbation documentée.
+
 Ce mandat réunit trois problèmes métier :
 
 | Problème irritant | Ce qui manque dans une PME peu outillée | Décision attendue |
@@ -42,13 +44,14 @@ Les contrôles natifs restent indispensables : ACL et tests SMB pour la confiden
 
 1. **Demande** — consigner qui demande l'audit, pourquoi, la cible `10.77.10.10`, les quatre ports autorisés, l'heure de début et de fin et la personne qui décide. Une demande incomplète suspend l'ouverture.
 2. **Préconditions** — exporter la topologie Hyper-V, exécuter les règles Conftest et revoir les GPO avec GPOZaurr. Un écart de confinement bloque le scénario ; un écart GPO reçoit une décision documentée avant toute suite.
-3. **État initial** — mesurer depuis Kali les seuls ports autorisés. Garder le XML Nmap et les journaux pfSense, sans cibler l'hôte ni le réseau personnel.
-4. **Exception** — ouvrir les règles pfSense temporaires déjà définies pour S01 ; refaire exactement la mesure et comparer les deux XML avec Ndiff.
-5. **Fermeture** — retirer les règles, refaire la même mesure et contrôler l'inventaire. Comparer au XML autorisé et à la mesure initiale disponible. Si l'état initial ne revient pas, la mission est suspendue.
-6. **Signal endpoint** — dans un profil mémoire séparé, produire une action bénigne autorisée sur `CC-W11-01`, comparer l'empreinte d'une copie de contrôle du livrable avant/après, exporter Security et Sysmon, conserver les empreintes, puis analyser avec Hayabusa. Chercher l'événement source et expliquer toute alerte ou absence de trace.
-7. **Décision** — remettre une fiche « poursuivre / corriger / suspendre » avec preuves avant/après, effet métier, limites de visibilité et responsable. Un test de restauration T14–T15 complète la capacité de reprise, sans être déduit des cinq outils.
+3. **Dossier et accès** — conserver les collectes M03 avant/après, vérifier les droits SMB et NTFS de `Clients\CL-2026-014\Livraison`, puis tester depuis `CC-W11-01` une modification autorisée et un refus attendu sous deux comptes métier. Relever l'empreinte du livrable lorsqu'il existe.
+4. **État initial** — après approbation d'une nouvelle fenêtre, mesurer depuis Kali les seuls ports autorisés. Garder le XML Nmap et les journaux pfSense, sans cibler l'hôte ni le réseau personnel.
+5. **Exception** — ouvrir les règles pfSense temporaires définies pour le mandat ; refaire exactement la mesure et comparer les deux XML avec Ndiff.
+6. **Fermeture** — retirer les règles, refaire la même mesure et contrôler l'inventaire. Comparer au XML autorisé et à la mesure initiale conservée. Si l'état initial ne revient pas, la mission est suspendue.
+7. **Signal endpoint** — dans un profil mémoire séparé, produire une action bénigne autorisée sur `CC-W11-01`, comparer l'empreinte d'une copie de contrôle du livrable avant/après, exporter Security et Sysmon, conserver les empreintes, puis analyser avec Hayabusa. Chercher l'événement source et expliquer toute alerte ou absence de trace.
+8. **Décision** — remettre une fiche « poursuivre / corriger / suspendre » avec preuves avant/après, effet métier, limites de visibilité et responsable. Un test de restauration T14–T15 complète la capacité de reprise, sans être déduit des cinq outils.
 
-Les résultats Nmap/Ndiff, GPOZaurr et Sysmon/Hayabusa déjà consignés dans le [journal de déploiement](journal-deploiement.md) sont des matériaux de ce dossier. Ils ont été obtenus lors de séances différentes. L'export XML initial de S01 a été écrasé par erreur ; seuls les XML de l'autorisation temporaire et du blocage restauré sont conservés. C'est un écart de traçabilité à présenter tel quel. [Conftest a désormais passé le contrôle statique M02](controle-topologie.md) ; la demande, les contrôles dynamiques et plusieurs recettes restent à faire.
+Les résultats Nmap/Ndiff, GPOZaurr et Sysmon/Hayabusa déjà consignés dans le [journal de déploiement](journal-deploiement.md) sont des matériaux de ce dossier. Ils ont été obtenus lors de séances différentes. L'export XML initial de S01 a été écrasé par erreur ; seuls les XML de l'autorisation temporaire et du blocage restauré sont conservés. C'est un écart de traçabilité à présenter tel quel. [Conftest a passé le contrôle statique M02](controle-topologie.md) et les collectes natives M03 ont commencé ; la demande approuvée, les contrôles dynamiques et plusieurs recettes restent à faire.
 
 ## Critères de succès mesurables
 
