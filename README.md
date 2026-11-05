@@ -15,7 +15,7 @@ CyberCorp doit répondre à une demande client tout en maîtrisant une exception
 
 Les nouveaux exports suivent le [protocole de chaîne de preuves](docs/protocole-preuves.md) : coffre local hors OneDrive, noms uniques, registre, empreintes SHA-256 et relecture des extraits avant remise.
 
-**État au 4 novembre 2026 :** M02 a passé le contrôle statique de topologie. Pour M03, le dossier `CL-2026-014\Livraison` a été créé sur `CC-DC01` et deux [collectes avant/après](docs/controle-gpo-clients.md) ont été produites. Leur transfert au coffre, la revue GPOZaurr et les tests d'accès métier restent à faire. La fenêtre d'audit proposée pour le 3 novembre est dépassée ; aucune nouvelle mesure depuis Kali n'est couverte par cette proposition.
+**État au 5 novembre 2026 :** M02 a passé le contrôle statique de topologie sur l'export du 1er novembre. Pour M03, les deux [collectes avant/après](docs/controle-gpo-clients.md) sont rapatriées dans le coffre hors Git et OneDrive, leurs SHA-256 concordent avec les sources et elles sont inscrites au registre. Le contenu confirme l'état `False → True` du dossier ; les captures C02–C04 sont conservées dans le coffre. La revue GPOZaurr, `gpresult` et les tests d'accès métier restent à faire. La fenêtre d'audit proposée pour le 3 novembre est dépassée ; aucune nouvelle mesure depuis Kali n'est couverte par cette proposition.
 
 Le [guide de clôture du 5 novembre](docs/plan-cloture-2026-11-05.md) détaille l'ordre de travail, les profils de VM, la recette T01–T15, les 26 captures, les preuves et les dépendances.
 
@@ -51,7 +51,8 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 - [x] Essais bornés Nmap/Ndiff, Sysmon/Hayabusa et GPOZaurr consignés
 - [x] Conftest/OPA exécuté le 01/11/2026 : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-topologie.md)
 - [x] Dossier `CL-2026-014\Livraison` créé ; deux collectes M03 réalisées sur `CC-DC01` les 01–02/11/2026
-- [ ] JSON M03 rapatriés, inscrits au registre et analysés avec GPOZaurr, `gpresult` et les tests d'accès métier
+- [x] JSON M03 rapatriés et inscrits au registre le 05/11/2026 ; SHA-256 source/copie vérifiés, état `False → True` et captures C02–C04 conservées hors Git et OneDrive
+- [ ] Revue M03 avec GPOZaurr, `gpresult` et tests d'accès métier
 - [ ] Mandat M-CLIENT-01 assemblé et décidé
 - [ ] Recette T01–T15 exécutée et preuves conservées
 

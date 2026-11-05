@@ -2,7 +2,7 @@
 
 Ce formulaire est à remplir avec les résultats réellement observés. Les cases vides ne valent ni conformité ni approbation. Les pièces citées suivent le [protocole de chaîne de preuves](protocole-preuves.md) ; conserver les exports bruts dans le coffre restreint et ne partager que des extraits expurgés.
 
-**État au 4 novembre 2026 : cadrage proposé, non approuvé.** Le dossier `CL-2026-014\Livraison` a été créé et observé sur `CC-DC01` ; le livrable PDF, ses accès effectifs et l'accord des personnes nommées restent à vérifier. La fenêtre envisagée le 3 novembre est passée sans approbation documentée dans ce dossier. Une nouvelle fenêtre et une approbation explicite sont nécessaires avant toute règle ou nouvelle mesure depuis Kali.
+**État au 5 novembre 2026 : cadrage proposé, non approuvé.** Le dossier `CL-2026-014\Livraison` a été créé et observé sur `CC-DC01` ; ses deux collectes M03 sont archivées et inscrites au registre, avec SHA-256 vérifiés et état `False → True`. Le livrable PDF, ses accès effectifs et l'accord des personnes nommées restent à vérifier. La fenêtre envisagée le 3 novembre est passée sans approbation documentée dans ce dossier. Une nouvelle fenêtre et une approbation explicite sont nécessaires avant toute règle ou nouvelle mesure depuis Kali.
 
 **Référence de cadrage :** rapport Google « Dossier Henri Pissa », annexe E « Mandat de sécurité M-CLIENT-01 », mis à jour au 4 novembre 2026. Le rapport décrit le mandat et ses rôles par fonction, mais ne constitue pas une approbation nominative ou une fenêtre d'audit. Les preuves détaillées de Conftest M02 et des collectes M03 restent dans les documents et registres locaux liés ci-dessous.
 
@@ -24,7 +24,7 @@ Ce formulaire est à remplir avec les résultats réellement observés. Les case
 | --- | --- | --- | --- |
 | Topologie Hyper-V conforme à V01–V05 ? | `M-CLIENT-01_topologie_20261101T162606114Z_HOTE-HYPERV_HyperV` + `M-CLIENT-01_topologie_20261101T162606177Z_HOTE-HYPERV_Conftest` | PASS sur l'export réel du 01/11/2026 ; cinq copies fautives refusées. État ponctuel, à revérifier avant l'audit. | Précondition technique satisfaite à cet instant ; **aucune autorisation d'ouverture accordée**. |
 | WAN pfSense déconnecté et Kali confinée ? | Cartes Hyper-V + test contrôlé | À renseigner | À renseigner |
-| GPO appliquées et gouvernance examinée ? | `gpresult` + rapport GPOZaurr T10 + [collectes M03](controle-gpo-clients.md) | Quatre GPO inventoriées lors de deux collectes ; propriétaires, délégations et liens à qualifier avec GPOZaurr et `gpresult`. JSON à rapatrier et enregistrer. | À renseigner après revue. |
+| GPO appliquées et gouvernance examinée ? | `gpresult` + rapport GPOZaurr T10 + [collectes M03 et identifiants du registre](controle-gpo-clients.md#chaîne-de-preuves--transfert-et-enregistrement-du-5-novembre-2026) | Quatre GPO inventoriées lors de deux collectes. JSON rapatriés et enregistrés le 5 novembre, SHA-256 source/copie vérifiés ; propriétaires, délégations et liens encore à qualifier avec GPOZaurr et `gpresult`. | À renseigner après revue. |
 | Accès métier aux dossiers sensibles conformes ? | [ACL M03](controle-gpo-clients.md) + tests SMB T08–T09 | `Clients` présent ; `CL-2026-014\Livraison` créé avec trois règles NTFS héritées, dont `DL_CLIENTS_MODIFY` en modification. Aucun test positif/négatif depuis un compte métier rapporté. | Accès effectif et remise non validés. |
 
 ## 3. Exception et fermeture

@@ -70,6 +70,8 @@ Les plages suivantes sont des **créneaux de travail**, pas une autorisation de 
 
 ## 6. Procédure A — coffre et deux collectes M03
 
+**Suivi opérateur du 5 novembre :** préparation du coffre, transfert des deux JSON, comparaison des SHA-256, contrôle `False → True`, inscription au registre et rangement des captures C02–C04 réalisés. Les [identifiants, empreintes et limites du diagnostic](controle-gpo-clients.md#chaîne-de-preuves--transfert-et-enregistrement-du-5-novembre-2026) sont consignés. L'écart avec l'inspection antérieure reste inexpliqué ; la revue GPO et les accès métier relèvent encore de la procédure B.
+
 **VM :** `CC-DC01` allumée ; Kali et W11 inutiles. **Outil :** PowerShell Direct, `collect-m03-gpo-clients.ps1` déjà exécuté, puis `enregistrer-preuve.ps1`. **Dépendance :** accès au coffre sur la même machine que la session PowerShell de l'opérateur. **Captures :** C02–C04.
 
 1. Sur l'hôte, afficher `$env:COMPUTERNAME`, `whoami`, `$env:LOCALAPPDATA`, puis `Get-Item -LiteralPath 'C:\Users\pissa\AppData\Local\CyberCorp\preuves\M-CLIENT-01' -Force`. Comparer au chemin vu par la session qui a renvoyé « coffre introuvable ». Vérifier que la racine `...\CyberCorp\preuves` a l'héritage ACL désactivé. Ne pas utiliser un autre dossier par commodité.
