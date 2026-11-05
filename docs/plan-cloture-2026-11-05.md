@@ -83,6 +83,12 @@ Les plages suivantes sont des **créneaux de travail**, pas une autorisation de 
 
 ## 7. Procédure B — GPO, dossier et accès métier
 
+**Suivi opérateur du 5 novembre : revue GPO engagée, interrompue avant C05 et avant archivage du nouveau rapport.** GPOZaurr 1.1.13 a produit un HTML à `09:32:16 UTC` ; des différences de propriétaires/cohérence concernent les deux GPO natives et `GPOPermissions` contient des erreurs SID/GUID. Les délégations, ACE AD ciblées et liens ont été contrôlés nativement, sans correction.
+
+**Interruption :** le DC s'est arrêté à `09:59:57 UTC` par le système invité (événement hôte 18508), motif à établir. Dernier état confirmé à `10:27:00 UTC` : `Off`, 2,64 Gio libres, 2 Gio requis pour démarrer, marge prévue 0,64 Gio ; redémarrage annulé par le garde-fou. L'opérateur prévoit de continuer sur téléphone avec ChatGPT fermé sur l'hôte.
+
+**Reprise immédiate : contrôle mémoire et démarrage de la seule VM DC ; aucune sortie ne confirme encore ce démarrage.** Le [point de reprise détaillé et son bloc PowerShell](controle-gpo-clients.md#interruption-et-point-de-reprise) conservent le chemin et le SHA-256 du rapport à retrouver. Ouvrir ensuite une nouvelle session Direct ; les anciennes variables distantes ne doivent pas être supposées disponibles. Attendre la sortie de chaque action avant de donner la suivante.
+
 **VM :** DC seule pour l'audit GPO ; ensuite profil métier (`CC-PFS01`, `CC-DC01`, `CC-W11-01`). **Outils :** GPOZaurr, commandes AD/GPO natives, ACL/SMB, `gpresult`. **Responsable :** IT. **Captures :** C05–C09. **Indépendance :** réalisable avant la fenêtre réseau.
 
 1. Sur le DC, ouvrir le rapport GPOZaurr T10 et les deux JSON M03. Relever, pour les quatre GPO, propriétaire, droits de modification, liens directs/hérités, état et toute incohérence AD/SYSVOL. Qualifier **un écart précis** ou « aucun écart observé dans ces catégories » ; ne pas extrapoler à tout AD. Si le rapport T10 est trop ancien pour une conclusion actuelle, relancer GPOZaurr en lecture seule et hacher le nouveau rapport. C05.
