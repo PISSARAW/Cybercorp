@@ -1,6 +1,6 @@
 # M-CLIENT-01 — contrôle M03 des GPO et du dossier `Clients`
 
-**État au 6 novembre 2026 : deux JSON M03 et le rapport GPOZaurr archivés et inscrits au registre ; C05 finalisée côté preuves.** Les empreintes source/copie, les fichiers dans `brut` et les lignes du registre ont été contrôlés. Les JSON confirment `False → True`. C05 illustre les propriétaires AD/SYSVOL des quatre GPO et référence le rapport enregistré. Les différences sur les deux GPO natives et les erreurs de `GPOPermissions` restent à qualifier ; C06 (`gpresult`) et les accès métier restent à réaliser. L'arrêt du DC a été attribué à une expiration de licence par le journal invité ; l'activation a échoué sur une résolution de nom. Aucune validation complète de M03 ni décision de remise n'en découle.
+**État au 6 novembre 2026, reprise du soir : C05 et C07–C09 conservées ; C06 reste à produire.** Les JSON confirment `False → True`. Les captures C07–C09 montrent les ACL/SMB de Clients, une création/lecture réussie sous `usr.com01` et un refus d'écriture sous `usr.fin02`. Leurs inscriptions et contrôles conformes ont été communiqués en séance ; les copies sous `brut` et leurs SHA-256 ont été revérifiés pendant la documentation. Le registre alors accessible ne présente cependant que sept anciennes lignes : cet écart doit être réconcilié avant clôture. Les différences AD/SYSVOL, erreurs de `GPOPermissions`, activation et stabilité du DC restent ouvertes. Aucune validation complète de M03 ni décision de remise n'en découle. Voir le [bilan de reprise et l'écart de registre](journal-deploiement.md#reprise-20261106-soir).
 
 ## Question métier
 
@@ -164,32 +164,35 @@ Une tentative d'activation Microsoft `/ato` de l'édition installée a échoué 
 
 Les événements et sorties de licence/DNS ont été communiqués en console ou par capture ; leur export natif et leur inscription au registre ne sont pas confirmés à ce stade. C05 et le rapport GPOZaurr, eux, sont archivés et vérifiés.
 
+### Accès Clients et captures C07–C09 — reprise du 6 novembre
+
+Les images du lot `captures/lot-avancement-20261106T194027759Z` montrent : partage `Clients`, administrateurs en `Full`, `DL_CLIENTS_MODIFY` en `Change` ; dossier `CL-2026-014\Livraison` avec héritage actif et trois ACE héritées (Système/Administrateurs : contrôle total ; groupe Clients : modification). La liste récursive du groupe contient `usr.com01` à `usr.com07` ; le jeton de `usr.com01` sur W11 contient `DL_CLIENTS_MODIFY`.
+
+Deux sessions métier distinctes sont visibles : `usr.com01` crée et relit un fichier de test au chemin UNC, avec SHA-256 affiché ; `usr.fin02` atteint TCP 445 du DC mais reçoit `System.UnauthorizedAccessException` / « Accès refusé » en tentant de créer `C09-test-interdit.txt` dans le même dossier. Ce refus ne permet pas de distinguer à lui seul le contrôle SMB du contrôle NTFS.
+
+| Capture | Identifiant communiqué lors de l'inscription | Octets | SHA-256 du PNG sous `brut` |
+| --- | --- | --- | --- |
+| C07 — ACL/SMB | `M-CLIENT-01_autre_20261106T194451915Z_MONNOKOELOBA_CaptureEcran` | 83183 | `6E90F2CC2D0811DF4B25BE4C185C55FE3829CDEBDEF6DA1B8260C055F5DE45E6` |
+| C08 — création/lecture `usr.com01` | `M-CLIENT-01_poste_20261106T194539353Z_MONNOKOELOBA_CaptureEcran` | 90413 | `D17381C8A0A26E6B42DE707449A0A35330A222DB9B1711EC4178B1F7B0CABBCC` |
+| C09 — écriture refusée `usr.fin02` | `M-CLIENT-01_poste_20261106T194615307Z_MONNOKOELOBA_CaptureEcran` | 98320 | `2EE6B04CD26DF15494CCE52658B0E52E3C1554F0B3F9D018008FCA12285D9623` |
+
+Les trois contrôles communiqués donnent une ligne unique, une taille conforme et un SHA-256 conforme. Les copies sous `brut` sont présentes et ont été revérifiées lors de la documentation. L'heure exacte de capture reste inconnue : `evenement_utc` était vide dans les sorties d'inscription. La liste des groupes et le jeton restent conservés dans le lot, sans inscription individuelle confirmée. Les journaux natifs des tests, le nom complet et la conservation du fichier positif, sa suppression contrôlée et le livrable PDF restent à établir. Ces essais Clients ne couvrent pas tous les scénarios Finance de T08 ni la lecture seule Direction/Syntheses de T09. L'écart du registre accessible est décrit dans le [journal](journal-deploiement.md#reprise-20261106-soir).
+
 ### Interruption et point de reprise
 
-**Point actuel : C06, avant le démarrage de `CC-W11-01`.** Le dernier relevé communiqué le 6 novembre, après le contrôle final de C05, ne comporte pas d'horodatage dans sa sortie :
+**Priorité actuelle : réconcilier le registre, puis terminer l'archivage C12 ; C06 reste ouverte.** Au relevé du `2026-11-06T19:47:50.0720714Z`, pfSense et Kali sont `Running` (1 et 1,96 Gio affectés), DC et W11 `Off`, avec 0,58 Gio libres. Les démarrages configurés sont DC 2 Gio, W11 1 Gio, pfSense/Kali 1 Gio chacun. L'opérateur a demandé de continuer d'abord avec les VM déjà ouvertes ; aucune mise en état enregistré de Kali n'est confirmée. Les contrôles suivants portent sur les fichiers existants et les interfaces, sans nouveau scan ni règle modifiée dans cette séquence guidée.
 
-| VM | État | RAM affectée (Gio) | RAM de démarrage (Gio) |
-| --- | --- | --- | --- |
-| `CC-DC01` | `Running` | 1,28 | 2 |
-| `CC-W11-01` | `Off` | 0 | 1 |
-| `CC-PFS01` | `Saved` | 0 | 1 |
-| `CC-KALI01` | `Off` | 0 | 1 |
+Reprendre **une seule action courte à la fois**, attendre la sortie ou la photo ; le presse-papiers invité ne fonctionne pas. Éviter les blocs longs. Depuis l'hôte, le dossier utilisé est le coffre `M-CLIENT-01/transfert` ; ne pas supposer les variables PowerShell encore disponibles après fermeture de la console.
 
-L'hôte dispose alors de **1,73 Gio libres**. Ajouter les 1 Gio de démarrage du poste ne laisserait théoriquement que **0,73 Gio**, sous la marge requise de 1,5 Gio. Il faut au minimum 2,5 Gio libres avant ce démarrage, soit **0,77 Gio supplémentaires**, puis contrôler la marge réelle après démarrage. Ce calcul est une estimation préalable ; les allocations réelles et la mémoire libre varient.
-
-Reprendre **une seule action et ses commandes PowerShell à la fois**, puis attendre la sortie :
-
-1. Après sauvegarde de tout autre travail ouvert dans Edge et l'Outil Capture, fermer ces applications maintenant que C05 est archivée ; relever la mémoire libre et l'état du DC. **Aucun démarrage de W11 n'est encore confirmé.**
-2. Si le DC fonctionne et si la mémoire permet d'ajouter le poste tout en conservant 1,5 Gio pour l'hôte, démarrer uniquement `CC-W11-01`, puis mesurer la marge réelle. Laisser Kali arrêtée et pfSense dans son état actuel tant qu'aucun besoin distinct n'est établi ; le trafic DC/poste sur `CC-LAN` ne traverse pas pfSense. Ne modifier aucune règle ni connexion WAN pour cette étape.
-3. Vérifier l'identité et le contexte d'administration du poste, contrôler sa communication avec le DC, puis préparer un nouveau `gpresult` daté. Les comptes d'administration du domaine sont refusés à l'ouverture de session sur le poste par la GPO documentée ; utiliser le compte local de secours autorisé pour l'administration et distinguer ce contexte des futurs comptes métier de test.
-4. Produire et examiner le rapport C06, puis le rapatrier, comparer les SHA-256, l'enregistrer et prendre la capture pertinente. La présence de liens ou un rapport du 20 octobre ne prouvent pas l'application actuelle sur le poste.
-5. Poursuivre C07–C09 (ACL/SMB, appartenances et essais métier), la qualification des différences GPO et des erreurs du rapport. Conserver séparément le suivi de l'activation : les lectures ponctuelles restent possibles, mais la stabilité durable du DC ne peut pas être validée tant que les arrêts persistent.
-
-Les étapes relatives au registre et à C05 ne doivent pas être rejouées : leurs identifiants sont consignés ci-dessus. En cas de nouvelle rupture ou de redémarrage du DC, recréer la session PowerShell Direct et vérifier l'identité avant les commandes distantes. Les captures C06–C09 et les essais métier ne sont pas déclarés acquis.
+1. Examiner le registre réellement utilisé lors des inscriptions : les sorties de séance montrent les nouvelles lignes, mais le CSV accessible pendant la documentation ne contient que sept lignes du 1er novembre. Identifier le bon chemin/version et comparer les lignes aux fichiers ; ne pas réinscrire en bloc ni reconstruire le registre depuis les captures.
+2. Conserver l'export C12 `transfert/C12-20261106T210309003Z.json`, relever son SHA-256 complet et l'enregistrer une fois ; aucun test Conftest sur cet export de `21:03:11 UTC` n'est encore confirmé. Voir [M02/C12](controle-topologie.md). Archiver aussi le complément pfSense WAN et la concordance MAC.
+3. Préparer séparément le profil DC/W11 pour C06 : mesurer les états et la RAM, garder 1,5 Gio pour l'hôte. Si DC/W11 sont tous deux arrêtés et démarrent à 2/1 Gio, il faut au minimum 4,5 Gio libres avant leur lancement ; DC déjà actif, au moins 2,5 Gio avant W11. Contrôler la marge réelle après chaque démarrage.
+4. Vérifier les identités, la communication DC/poste et le contexte administrateur autorisé, puis produire un nouveau `gpresult` daté. Les administrateurs du domaine sont refusés à l'ouverture de session sur W11 par la GPO documentée ; distinguer le compte local de secours des comptes métier. Rapatrier, hacher, enregistrer et capturer C06. Recréer la session Direct après tout redémarrage.
+5. Compléter les preuves natives et scénarios métier manquants sans refaire les inscriptions C07–C09 déjà annoncées ; qualifier les différences GPO et les huit erreurs SID/GUID. L'activation et la stabilité durable du DC restent à traiter séparément.
 
 ## Revue et décision encore nécessaires
 
 1. Conserver les identifiants du rapport et de C05 déjà archivés ; poursuivre C06 (`gpresult` sur `CC-W11-01`) après préparation du budget mémoire. Terminer la qualification des différences sur les deux GPO natives et des erreurs de `GPOPermissions`, et archiver les contrôles natifs complémentaires. L'application d'une stratégie ne valide pas à elle seule sa gouvernance.
-2. Comparer les droits SMB et NTFS de `Clients` et de `Livraison`, ainsi que les membres de `DL_CLIENTS_MODIFY`, à la matrice d'accès prévue.
-3. Réaliser depuis `CC-W11-01` un test de modification autorisée et un refus attendu avec deux comptes métier distincts. Consigner l'identité, l'heure, le résultat et une preuve native ; la liste des membres ne démontre pas l'accès effectif.
+2. Relier les droits SMB/NTFS et les appartenances observées en C07–C09 à la matrice d'accès, puis compléter les exports natifs et la preuve du contexte de chaque compte.
+3. Conserver les essais Clients positifs et négatifs déjà montrés, préciser leurs heures et fichiers lorsque connus sans les déduire des noms des captures ; compléter Finance et Direction/Syntheses pour T08/T09 et consigner le nettoyage des seuls fichiers de contrôle.
 4. Renseigner la [fiche M-CLIENT-01](fiche-m-client-01.md) et la [recette](../config/recette.csv) après qualification et éventuel contre-test. La présence du dossier n'établit pas l'existence du livrable PDF ni l'autorisation de remise.
