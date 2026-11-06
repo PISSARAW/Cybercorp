@@ -15,7 +15,7 @@ CyberCorp doit répondre à une demande client tout en maîtrisant une exception
 
 Les nouveaux exports suivent le [protocole de chaîne de preuves](docs/protocole-preuves.md) : coffre local hors OneDrive, noms uniques, registre, empreintes SHA-256 et relecture des extraits avant remise.
 
-**État au 5 novembre 2026 :** M02 a passé le contrôle statique de topologie sur l'export du 1er novembre. Pour M03, les deux [collectes avant/après](docs/controle-gpo-clients.md) sont rapatriées dans le coffre hors Git et OneDrive, leurs SHA-256 concordent avec les sources et elles sont inscrites au registre. Le contenu confirme l'état `False → True` du dossier ; les captures C02–C04 sont conservées dans le coffre. La revue GPO est engagée : rapport actualisé produit, différences AD/SYSVOL sur les deux GPO natives et erreurs dans l'analyse des permissions, complétés par des contrôles natifs. L'arrêt du DC et le manque de mémoire ont interrompu la suite avant archivage du rapport et C05 ; voir le [point de reprise](docs/controle-gpo-clients.md#interruption-et-point-de-reprise). `gpresult` et les tests d'accès métier restent à faire. La fenêtre d'audit proposée pour le 3 novembre est dépassée ; aucune nouvelle mesure depuis Kali n'est couverte par cette proposition.
+**État au 6 novembre 2026 :** les deux [JSON M03 avant/après](docs/controle-gpo-clients.md) sont enregistrés avec leurs SHA-256 vérifiés et l'état `False → True`. Le rapport GPOZaurr et C05 sont maintenant archivés, inscrits au registre et contrôlés ; C02–C05 restent hors Git et OneDrive. Les différences AD/SYSVOL sur les deux GPO natives et les erreurs SID/GUID de l'analyse des permissions restent à qualifier. L'arrêt du DC a été attribué à l'expiration de licence (`wlms.exe`, événement 1074) ; l'activation Microsoft a échoué sur une résolution de nom. Le dernier relevé montre le DC actif et 1,73 Gio libres : libérer de la mémoire avant de démarrer W11 pour C06 (`gpresult`), puis poursuivre les accès métier. Voir le [point de reprise](docs/controle-gpo-clients.md#interruption-et-point-de-reprise). M02 reste validé pour l'export du 1er novembre, à rafraîchir avant exception. La fenêtre du 3 novembre est dépassée, sans nouvelle autorisation de scan documentée.
 
 Le [guide de clôture du 5 novembre](docs/plan-cloture-2026-11-05.md) détaille l'ordre de travail, les profils de VM, la recette T01–T15, les 26 captures, les preuves et les dépendances.
 
@@ -52,7 +52,8 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 - [x] Conftest/OPA exécuté le 01/11/2026 : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-topologie.md)
 - [x] Dossier `CL-2026-014\Livraison` créé ; deux collectes M03 réalisées sur `CC-DC01` les 01–02/11/2026
 - [x] JSON M03 rapatriés et inscrits au registre le 05/11/2026 ; SHA-256 source/copie vérifiés, état `False → True` et captures C02–C04 conservées hors Git et OneDrive
-- [ ] Revue M03 avec GPOZaurr, `gpresult` et tests d'accès métier
+- [x] Rapport GPOZaurr et capture C05 archivés et enregistrés le 06/11/2026 ; empreintes et référence croisée contrôlées
+- [ ] Qualification finale M03, C06 (`gpresult`) et tests d'accès métier C07–C09
 - [ ] Mandat M-CLIENT-01 assemblé et décidé
 - [ ] Recette T01–T15 exécutée et preuves conservées
 

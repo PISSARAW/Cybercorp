@@ -1,6 +1,6 @@
 # M-CLIENT-01 — contrôle M03 des GPO et du dossier `Clients`
 
-**État au 5 novembre 2026 : deux collectes exécutées sur `CC-DC01`, rapatriées et inscrites au registre ; revue GPO engagée, à terminer.** Les commandes et captures communiquées par l'opérateur établissent les observations ci-dessous. Les SHA-256 des copies concordent avec les sources ; le registre et les fichiers dans `brut` ont été contrôlés. Les JSON confirment `False → True`. Un rapport GPOZaurr actualisé a été produit et des contrôles natifs réalisés ; ses erreurs, son archivage restant et l'arrêt du DC empêchent une conclusion complète. Les accès effectifs et la remise ne sont pas validés.
+**État au 6 novembre 2026 : deux JSON M03 et le rapport GPOZaurr archivés et inscrits au registre ; C05 finalisée côté preuves.** Les empreintes source/copie, les fichiers dans `brut` et les lignes du registre ont été contrôlés. Les JSON confirment `False → True`. C05 illustre les propriétaires AD/SYSVOL des quatre GPO et référence le rapport enregistré. Les différences sur les deux GPO natives et les erreurs de `GPOPermissions` restent à qualifier ; C06 (`gpresult`) et les accès métier restent à réaliser. L'arrêt du DC a été attribué à une expiration de licence par le journal invité ; l'activation a échoué sur une résolution de nom. Aucune validation complète de M03 ni décision de remise n'en découle.
 
 ## Question métier
 
@@ -70,10 +70,10 @@ Invoke-GPOZaurr `
 | Rapport source | `C:\Audit\M-CLIENT-01\GPOZaurr-20261105T093146410Z\GPOZaurr-M03.html` |
 | Taille | 3980516 octets |
 | SHA-256 source affiché | `8CDA26993471BC692A85F8F46D77C0F5E8C2A388DFC0FA03FE72CA4035864314` |
-| Archivage dans le coffre | Non confirmé : aucun transfert ni identifiant de registre pour ce nouveau rapport à ce stade. |
-| Capture C05 | À finaliser et à ranger ; la commande de synthèse prévue a été refusée car la session était `Broken`. |
+| Archivage dans le coffre | Réalisé le 6 novembre : `M-CLIENT-01_gpo_20261106T085819590Z_CC-DC01_GPOZaurr`, fichier et registre contrôlés à `09:01:48.2857109Z`. |
+| Capture C05 | Réalisée depuis le HTML archivé sur l'hôte, enregistrée au registre et contrôlée à `2026-11-06T12:34:36.9662086Z`. |
 
-Le rapport est une pièce produite sur le DC, pas encore une pièce archivée et contrôlée dans le coffre. L'empreinte ci-dessus devra être comparée au fichier retrouvé puis à sa copie, sans remplacer les deux JSON déjà enregistrés.
+Le 6 novembre à `08:51:11.4463257Z`, le fichier retrouvé sur le DC présentait la même taille et la même empreinte que le 5 novembre. Il a été copié dans `transfert\GPOZaurr-20261105T093146410Z\GPOZaurr-M03.html`, sous le coffre, puis inscrit au registre et contrôlé dans `brut`. Les deux JSON enregistrés précédemment ont été conservés.
 
 ### Propriétaires, cohérence et délégations observés
 
@@ -116,59 +116,80 @@ La liste `InheritedGpoLinks` comprend aussi des liens directs ; son ordre ne doi
 
 **Qualification à ce stade :** différences de propriétaires et indicateurs de cohérence AD/SYSVOL sur les deux GPO natives, à qualifier ; analyse GPOZaurr des permissions partiellement en erreur, complétée par des lectures natives. Aucun changement de propriétaire, d'ACL ou de GPO n'a été appliqué. La revue M03 complète reste **non démontrée** ; aucun nouveau résultat de recette n'est validé sur cette base. Les contrôles natifs ont été consultés en console et transmis par captures ; aucun export de ces contrôles inscrit au registre n'est confirmé à ce stade.
 
+### Rapport et C05 archivés le 6 novembre
+
+Les pièces suivantes sont dans le coffre `C:\Users\pissa\AppData\Local\CyberCorp\preuves\M-CLIENT-01`, hors Git et OneDrive :
+
+| Pièce | Identifiant du registre | Taille (octets) | SHA-256 vérifié |
+| --- | --- | --- | --- |
+| Rapport GPOZaurr | `M-CLIENT-01_gpo_20261106T085819590Z_CC-DC01_GPOZaurr` | 3980516 | `8CDA26993471BC692A85F8F46D77C0F5E8C2A388DFC0FA03FE72CA4035864314` |
+| C05 — tableau des propriétaires | `M-CLIENT-01_gpo_20261106T122808572Z_MONNOKOELOBA_CaptureEcran` | 115043 | `4651F40E122498EA6CD7F03AEB49F8372EF7DDDB80E3BDCE9354045B2ED32177` |
+
+- Le rapport est dans `brut\M-CLIENT-01_gpo_20261106T085819590Z_CC-DC01_GPOZaurr.html`. L'événement du registre reste le début réel de l'audit, `2026-11-05T09:31:46.4100267Z` ; la collecte au coffre date du 6 novembre. L'action mentionne explicitement l'analyse partielle de `GPOPermissions` et les erreurs SID/GUID. Le contrôle à `2026-11-06T09:01:48.2857109Z` a confirmé une ligne unique, le chemin sous `brut`, la taille, le SHA-256 et l'heure d'événement (`RegistreConforme=True`).
+- Le rapport archivé a été ouvert localement sur l'hôte. La capture retenue montre la section **Group Policy Owners**, les quatre GPO, les propriétaires AD/SYSVOL, les SID et les valeurs de cohérence : deux lignes natives à `False`, deux lignes CyberCorp à `True`. Le libellé `NotAdministrative` de l'outil reste assorti de la qualification exposée ci-dessus ; aucune correction suggérée par le rapport n'a été exécutée dans les opérations suivies.
+- L'image originale a été rangée dans `captures\M-CLIENT-01_C05_20261106T122346_HOTE.png`, à `2026-11-06T12:23:46.5768283Z`, puis enregistrée comme `Brut`, source `MONNOKOELOBA`, outil `CaptureEcran`. La copie enregistrée est `brut\M-CLIENT-01_gpo_20261106T122808572Z_MONNOKOELOBA_CaptureEcran.png`.
+- L'heure exacte de prise de vue n'étant pas connue, `evenement_utc` est volontairement vide pour C05. L'horodatage du nom initial correspond au rangement ; il ne doit être assimilé ni à l'heure de l'audit ni à une heure de capture démontrée. L'action du registre cite l'identifiant du rapport GPOZaurr.
+- À `2026-11-06T12:34:36.9662086Z`, la relecture du registre a confirmé une ligne unique pour C05 et pour son rapport de référence, le chemin sous `brut`, la taille, le SHA-256 de l'image, le lien contenu dans l'action et l'absence d'heure d'événement inventée (`RegistreConforme=True`). **La traçabilité de C05 est finalisée.** La capture et le rapport demeurent des pièces brutes ; leur présence ne valide pas à elle seule toutes les GPO ni les accès métier, et ne constitue pas une version expurgée destinée à la remise.
+
+### Arrêt du DC — cause établie, activation non résolue
+
+Le DC était de nouveau `Running` lors du contrôle du 6 novembre à `08:46:09.6346304Z`, avec le coffre accessible et 1,71 Gio libres sur l'hôte. Une nouvelle session PowerShell Direct a confirmé `cybercorp\administrateur` et `CC-DC01` à `08:48:35.3302312Z`. Les anciennes variables de l'audit en mémoire n'ont pas été réutilisées pour reconstruire C05 : le fichier HTML déjà produit a été retrouvé puis archivé.
+
+La lecture du journal `System` du DC a établi le motif de l'arrêt du 5 novembre :
+
+| Événement | Heure UTC | Observation |
+| --- | --- | --- |
+| 1074, `User32` | `2026-11-05T09:59:51.9188700Z` | `C:\Windows\system32\wlms\wlms.exe` a demandé l'arrêt sous Système ; le commentaire indique que la période de licence Windows a expiré. |
+| 6006, `EventLog` | `2026-11-05T09:59:52.6555508Z` | Le service de journalisation a été arrêté. |
+| 18508, journal Hyper-V de l'hôte | `2026-11-05T09:59:57.6873493Z` | Le système invité a arrêté la VM, comme déjà observé le 5 novembre. |
+
+L'arrêt observé est donc lié à la licence. Le manque de mémoire de l'hôte constituait un obstacle distinct au redémarrage ; il n'est pas le motif donné par l'événement 1074.
+
+Les lectures `SoftwareLicensingProduct` et `slmgr.vbs /dlv` ont donné :
+
+| Champ | Valeur relevée |
+| --- | --- |
+| Édition | Windows Server 2025 Standard Evaluation, `ServerStandardEval`, canal `TIMEBASED_EVAL` / `Retail:TB:Eval` |
+| Installation UTC | `2026-10-13T16:32:13Z` |
+| Dernier démarrage au premier relevé de licence | `2026-11-06T08:33:24.9169850Z` ; un redémarrage ultérieur a ensuite été annoncé par l'opérateur. |
+| État de licence | `LicenseStatus=5`, notification |
+| Motif | `0xC004F009`, délai de grâce expiré |
+| Grâce restante | 0 minute |
+| Réinitialisations restantes | Windows : 1 ; SKU : 1, au relevé `/dlv` |
+| `EvaluationEndDate` affiché | `01/01/1601 01:00:00` ; cette valeur ne fournit pas une échéance réelle exploitable de l'évaluation. |
+
+Ces observations ne démontrent pas à elles seules que les 180 jours de l'évaluation ont été consommés. Microsoft indique que l'évaluation doit être activée dans les dix premiers jours pour éviter les arrêts automatiques : [Evaluation Center](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2025). Le code `0xC004F009` et les options de diagnostic/activation sont décrits dans les [codes d'activation](https://learn.microsoft.com/fr-fr/troubleshoot/windows-server/licensing-and-activation/troubleshoot-activation-error-codes) et la [référence Slmgr](https://learn.microsoft.com/en-us/windows-server/get-started/activation-slmgr-vbs-options).
+
+Une tentative d'activation Microsoft `/ato` de l'édition installée a échoué avec `0x80072EE7`, erreur de résolution de nom. Le contrôle DNS effectué sur le DC a montré : interface `Ethernet`, DNS client `127.0.0.1`, aucun redirecteur affiché, `UseRootHint=True`, `Timeout=3`. La requête DNS de type A pour `activation-v2.sls.microsoft.com.` a expiré (`ERROR_TIMEOUT`). Le DNS local du DC n'a pas été remplacé et aucune règle réseau, carte ou liaison WAN n'a été modifiée dans les commandes suivies. Aucun `/rearm` n'a été exécuté dans cette séquence ; une activation réussie et la fin des arrêts automatiques ne sont pas démontrées. L'absence de redirecteur avec recours aux indications de racine ne suffit pas à établir une erreur de configuration ; l'accès à la résolution externe reste à examiner selon une maintenance autorisée.
+
+Les événements et sorties de licence/DNS ont été communiqués en console ou par capture ; leur export natif et leur inscription au registre ne sont pas confirmés à ce stade. C05 et le rapport GPOZaurr, eux, sont archivés et vérifiés.
+
 ### Interruption et point de reprise
 
-- La session PowerShell Direct `$s` (`WinRM4`) est devenue `Broken`. Le dernier état Hyper-V observé du DC est `Off`.
-- Le journal hôte `Microsoft-Windows-Hyper-V-Worker-Admin` indique un démarrage du système invité à `08:59:39.2143588Z` (événement 18601), puis un arrêt **par le système d'exploitation invité** à `09:59:57.6873493Z` (événement 18508). Ce journal n'établit ni le processus ni le motif de l'arrêt. Une cause liée à la licence ou à la mémoire n'est pas démontrée ; lire le journal `System` du DC après redémarrage, notamment l'événement 1074 s'il est présent.
-- Les tentatives de redémarrage ont été annulées par le contrôle préalable de mémoire, avant `Start-VM`. Un relevé transitoire à 5,62 Gio libres n'a pas été confirmé au démarrage. Le dernier relevé complet à `2026-11-05T10:27:00.2662781Z` montre `Off`, 2,64 Gio libres, 2 Gio de démarrage et seulement 0,64 Gio de marge prévue, sous les 1,5 Gio requis.
-- L'opérateur a confirmé pouvoir suivre les instructions sur son téléphone et fermer ChatGPT sur l'hôte, tout en gardant PowerShell ouvert. **Le bloc de démarrage proposé après ce changement de contexte n'a pas encore de sortie confirmée.** Ne pas déclarer le DC redémarré.
-- Une nouvelle session PowerShell Direct sera nécessaire. Les variables distantes `$script:auditM03GpoZaurr` et `$script:rapportM03GpoZaurr` ne doivent pas être supposées disponibles après l'arrêt du DC ; utiliser le chemin du rapport consigné ci-dessus et vérifier le fichier sur disque.
+**Point actuel : C06, avant le démarrage de `CC-W11-01`.** Le dernier relevé communiqué le 6 novembre, après le contrôle final de C05, ne comporte pas d'horodatage dans sa sortie :
 
-Reprendre **une seule action et ses commandes PowerShell à la fois**, puis attendre la sortie de l'opérateur :
+| VM | État | RAM affectée (Gio) | RAM de démarrage (Gio) |
+| --- | --- | --- | --- |
+| `CC-DC01` | `Running` | 1,28 | 2 |
+| `CC-W11-01` | `Off` | 0 | 1 |
+| `CC-PFS01` | `Saved` | 0 | 1 |
+| `CC-KALI01` | `Off` | 0 | 1 |
 
-1. Depuis le téléphone, après fermeture de ChatGPT sur l'hôte, exécuter le bloc de démarrage déjà fourni : vérifier `Off`, recalculer la mémoire libre et la marge après les 2 Gio de démarrage, n'allumer que `CC-DC01` si la marge prévue atteint au moins 1,5 Gio, puis afficher l'état de la VM et la mémoire libre réelle. Ne pas allumer les autres VM à ce stade.
-2. Si le démarrage et la marge sont confirmés, ouvrir une **nouvelle** session PowerShell Direct, confirmer `hostname` et `whoami`, puis examiner le motif de l'arrêt dans les événements du DC.
-3. Retrouver le rapport HTML au chemin exact ci-dessus, contrôler taille et SHA-256 contre les valeurs affichées avant l'arrêt, puis le rapatrier sans écrasement dans le coffre hors Git et OneDrive. Ne pas relancer l'audit pour tenter de retrouver une variable en mémoire ; examiner d'abord le fichier déjà produit.
-4. Comparer le SHA-256 source/copie, enregistrer le rapport avec `-Etape gpo -Source CC-DC01 -Outil GPOZaurr`, une action qui mentionne l'analyse partielle et les erreurs SID/GUID, et `-EvenementUtc '2026-11-05T09:31:46.4100267Z'` (début observé de l'audit). Conserver l'identifiant produit et contrôler le registre.
-5. Finaliser C05 à partir du rapport et des constats réellement conservés, y faire apparaître les limites de l'analyse et la conserver dans le coffre. Archiver les contrôles natifs complémentaires avec leur source et leur date. Reprendre ensuite `gpresult` et les essais métier, après vérification du budget mémoire du profil nécessaire.
+L'hôte dispose alors de **1,73 Gio libres**. Ajouter les 1 Gio de démarrage du poste ne laisserait théoriquement que **0,73 Gio**, sous la marge requise de 1,5 Gio. Il faut au minimum 2,5 Gio libres avant ce démarrage, soit **0,77 Gio supplémentaires**, puis contrôler la marge réelle après démarrage. Ce calcul est une estimation préalable ; les allocations réelles et la mémoire libre varient.
 
-**Prochaine action proposée à l'opérateur, pas encore confirmée :** fermer ChatGPT sur l'hôte, garder PowerShell ouvert et suivre l'échange sur téléphone, puis exécuter uniquement ce bloc et transmettre sa sortie avant toute autre action :
+Reprendre **une seule action et ses commandes PowerShell à la fois**, puis attendre la sortie :
 
-```powershell
-& {
-    $ErrorActionPreference = 'Stop'
-    $dc = Get-VM -Name 'CC-DC01'
-    $libre = (Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory * 1KB
-    $marge = $libre - $dc.MemoryStartup
+1. Après sauvegarde de tout autre travail ouvert dans Edge et l'Outil Capture, fermer ces applications maintenant que C05 est archivée ; relever la mémoire libre et l'état du DC. **Aucun démarrage de W11 n'est encore confirmé.**
+2. Si le DC fonctionne et si la mémoire permet d'ajouter le poste tout en conservant 1,5 Gio pour l'hôte, démarrer uniquement `CC-W11-01`, puis mesurer la marge réelle. Laisser Kali arrêtée et pfSense dans son état actuel tant qu'aucun besoin distinct n'est établi ; le trafic DC/poste sur `CC-LAN` ne traverse pas pfSense. Ne modifier aucune règle ni connexion WAN pour cette étape.
+3. Vérifier l'identité et le contexte d'administration du poste, contrôler sa communication avec le DC, puis préparer un nouveau `gpresult` daté. Les comptes d'administration du domaine sont refusés à l'ouverture de session sur le poste par la GPO documentée ; utiliser le compte local de secours autorisé pour l'administration et distinguer ce contexte des futurs comptes métier de test.
+4. Produire et examiner le rapport C06, puis le rapatrier, comparer les SHA-256, l'enregistrer et prendre la capture pertinente. La présence de liens ou un rapport du 20 octobre ne prouvent pas l'application actuelle sur le poste.
+5. Poursuivre C07–C09 (ACL/SMB, appartenances et essais métier), la qualification des différences GPO et des erreurs du rapport. Conserver séparément le suivi de l'activation : les lectures ponctuelles restent possibles, mais la stabilité durable du DC ne peut pas être validée tant que les arrêts persistent.
 
-    if ($dc.State -ne 'Off') {
-        throw "Etat du DC different de Off : $($dc.State)"
-    }
-    if ($marge -lt 1.5GB) {
-        throw ("Demarrage annule : marge prevue de {0:N2} Gio." -f ($marge / 1GB))
-    }
-
-    Start-VM -Name 'CC-DC01'
-    Start-Sleep -Seconds 15
-
-    Get-VM -Name 'CC-DC01' |
-        Select-Object Name, State,
-            @{Name='RAM_Gio'; Expression={
-                [math]::Round($_.MemoryAssigned / 1GB, 2)
-            }} |
-        Format-List
-
-    Get-CimInstance Win32_OperatingSystem |
-        Select-Object @{Name='MemoireLibre_Gio'; Expression={
-            [math]::Round($_.FreePhysicalMemory / 1MB, 2)
-        }} |
-        Format-List
-}
-```
+Les étapes relatives au registre et à C05 ne doivent pas être rejouées : leurs identifiants sont consignés ci-dessus. En cas de nouvelle rupture ou de redémarrage du DC, recréer la session PowerShell Direct et vérifier l'identité avant les commandes distantes. Les captures C06–C09 et les essais métier ne sont pas déclarés acquis.
 
 ## Revue et décision encore nécessaires
 
-1. Terminer la qualification des différences sur les deux GPO natives et des erreurs de `GPOPermissions`, archiver le rapport actualisé et les contrôles natifs, puis finaliser C05. Croiser avec `gpresult` sur `CC-W11-01` ; l'application d'une stratégie ne valide pas sa gouvernance.
+1. Conserver les identifiants du rapport et de C05 déjà archivés ; poursuivre C06 (`gpresult` sur `CC-W11-01`) après préparation du budget mémoire. Terminer la qualification des différences sur les deux GPO natives et des erreurs de `GPOPermissions`, et archiver les contrôles natifs complémentaires. L'application d'une stratégie ne valide pas à elle seule sa gouvernance.
 2. Comparer les droits SMB et NTFS de `Clients` et de `Livraison`, ainsi que les membres de `DL_CLIENTS_MODIFY`, à la matrice d'accès prévue.
 3. Réaliser depuis `CC-W11-01` un test de modification autorisée et un refus attendu avec deux comptes métier distincts. Consigner l'identité, l'heure, le résultat et une preuve native ; la liste des membres ne démontre pas l'accès effectif.
 4. Renseigner la [fiche M-CLIENT-01](fiche-m-client-01.md) et la [recette](../config/recette.csv) après qualification et éventuel contre-test. La présence du dossier n'établit pas l'existence du livrable PDF ni l'autorisation de remise.

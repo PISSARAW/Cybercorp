@@ -2,19 +2,21 @@
 
 **Objet.** Donner à l'opérateur un déroulé complet pour terminer le dossier M-CLIENT-01 et la recette T01–T15 : préparation, VM nécessaires, outils, personnes, actions, captures, preuves, dépendances et décision. Ce guide décrit le travail à réaliser ; une case à faire n'est pas un résultat. Les heures ci-dessous servent à organiser la journée du **jeudi 5 novembre 2026**, fuseau `Europe/Paris`. La fenêtre de scan doit être fixée et approuvée séparément dans la [fiche de décision](fiche-m-client-01.md).
 
+**Mise à jour de suivi : vendredi 6 novembre 2026.** La procédure A est terminée ; le rapport GPOZaurr et C05 sont maintenant archivés et contrôlés. Reprendre C06 après libération de mémoire. Les créneaux du 5 novembre ci-dessous restent des repères historiques, à replanifier selon l'état réel et les autorisations.
+
 **Règle de clôture.** À la fin de la journée, chaque exigence porte l'un des états `Validé avec pièce`, `Écart à corriger`, `Non démontré` ou `Hors fenêtre/autorisation`. La direction choisit `poursuivre`, `corriger puis contre-tester` ou `suspendre` pour la remise. Un dossier final peut être rendu avec une décision de suspension motivée ; aucune capture ni ancien essai ne transforme un contrôle manquant en validation.
 
-## 1. État connu avant la journée
+## 1. Point d'avancement du 6 novembre
 
-| Sujet | État au 4 novembre | Action restante |
+| Sujet | État constaté | Suite attendue |
 | --- | --- | --- |
 | M01 — mandat | Cadrage écrit ; fenêtre proposée du 3 novembre dépassée ; approbation non documentée. | Nommer le demandeur, le décideur, l'opérateur, le motif, le livrable, une nouvelle fenêtre et l'accord écrit. |
-| M02 — topologie | Conftest V01–V05 : PASS sur l'export réel du 1er novembre, FAIL sur cinq copies fautives ; T01–T02 validés pour cet instant. | Relancer sur un export frais avant toute exception, contrôler la carte WAN et les cartes Hyper-V. |
-| M03 — GPO et dossier | Deux JSON produits sur `CC-DC01` : `M03-GPO-Clients-20261101T202134.json` avec `MandateFolderExists=False`, puis `M03-GPO-Clients-20261102T065842.json` avec `True`. `CL-2026-014\Livraison` a été créé ; trois règles NTFS héritées observées. | Rapatrier les JSON, comparer les SHA-256, les enregistrer ; revoir GPOZaurr et `gpresult` ; tester SMB avec deux comptes. |
+| M02 — topologie | Conftest V01–V05 : PASS sur l'export réel du 1er novembre, FAIL sur cinq copies fautives ; T01–T02 validés pour cet instant. La disponibilité des anciennes pièces M02 dans le coffre recréé n'a pas été revérifiée. | Retrouver les pièces M02 ; relancer sur un export frais avant toute exception, puis contrôler le WAN et les cartes Hyper-V. |
+| M03 — GPO et dossier | Deux JSON, rapport GPOZaurr et C05 archivés, enregistrés et contrôlés. `False → True` vérifié ; C05 référence le rapport. Les différences sur les deux GPO natives et les huit erreurs SID/GUID restent à qualifier. | Reprendre C06 (`gpresult`) après libération de mémoire, puis C07–C09 et qualification finale. Archiver les contrôles natifs complémentaires. Aucun accès métier ni décision de remise validé. |
 | M04 — exception réseau | S01 du 20 octobre a montré l'état autorisé et le retour au blocage ; le premier XML bloqué a été écrasé. | Nouvelle campagne avec trois XML distincts, deux Ndiff, règles pfSense datées et preuve de retrait, uniquement après accord. |
 | M05–M06 — signal poste | Sysmon et Hayabusa ont fonctionné sur un essai du 20 octobre ; T12–T13 restent à faire pour le mandat. | Action bénigne sur copie de contrôle, EVTX, SHA-256, événement source, chronologie et qualification. |
 | T14–T15 — reprise | Sauvegarde indépendante et restauration non démontrées. | Tester sur une copie distincte si un support et une sauvegarde valides existent ; sinon constater la lacune. |
-| Preuves M03 | Le coffre local existe dans une inspection de l'hôte, mais la session de l'opérateur a répondu « coffre introuvable » ; aucune pièce M03 n'est inscrite au registre. | Diagnostiquer le contexte de session avant le transfert. |
+| Disponibilité du DC et budget C06 | Le journal invité confirme un arrêt par `wlms.exe` pour expiration de licence. État notification, `0xC004F009`, grâce nulle ; activation Microsoft échouée sur résolution de nom (`0x80072EE7`). Dernier relevé : DC `Running` (1,28 Gio affectés), W11 `Off`, pfSense `Saved`, Kali `Off`, 1,73 Gio libres sur l'hôte. | Préserver 1,5 Gio : libérer au moins 0,77 Gio avant d'ajouter les 1 Gio de démarrage de W11, puis mesurer la marge réelle. Activation et stabilité durable restent ouvertes ; aucun changement réseau implicite. [Point de reprise C06](controle-gpo-clients.md#interruption-et-point-de-reprise). |
 
 Références : [mission](mission-securite.md), [architecture et mémoire](architecture.md), [outils](outillage-securite.md), [protocole de preuve](protocole-preuves.md), [M03](controle-gpo-clients.md), [recette](../config/recette.csv), [journal](journal-deploiement.md).
 
@@ -44,23 +46,23 @@ L'hôte possède 16 Gio ; ne pas allumer les quatre VM ensemble. Relever la mém
 
 Avant chaque profil : noter heure, VM, mémoire libre, commutateurs, cartes et état du WAN. Capture **C01**. Avant de quitter un profil : exporter les preuves encore dans les VM, puis arrêter proprement les VM devenues inutiles.
 
-## 4. Ce soir, 4 novembre — préparation indépendante des tests
+## 4. Préparation indépendante des tests — liste de contrôle
 
 1. **Rassembler les supports.** Ouvrir la fiche M-CLIENT-01, la recette CSV, le journal, le rapport GPOZaurr T10, le `gpresult` existant, le collecteur M03, la politique Conftest et la configuration Sysmon. Vérifier les chemins et versions sans en changer le contenu.
-2. **Obtenir les informations qui bloquent demain.** Faire renseigner demandeur, décideur, motif et nouvelle fenêtre dans la fiche. L'accord doit identifier la source `CC-KALI01` (`10.77.20.50`), la cible `CC-DC01` (`10.77.10.10`), TCP `53,88,389,445`, le début, la fin, le retrait et le critère d'arrêt. Sans cet accord, M04 reste documentaire.
+2. **Obtenir les informations qui bloquent la suite.** Faire renseigner demandeur, décideur, motif et nouvelle fenêtre dans la fiche. L'accord doit identifier la source `CC-KALI01` (`10.77.20.50`), la cible `CC-DC01` (`10.77.10.10`), TCP `53,88,389,445`, le début, la fin, le retrait et le critère d'arrêt. Sans cet accord, M04 reste documentaire.
 3. **Préparer le livrable client.** Confirmer son contenu et son responsable. Le chemin `\\CC-DC01\Clients\CL-2026-014\Livraison` existe ; le PDF proposé dans la fiche n'a pas été observé. Préparer le vrai PDF et sa version, puis calculer son SHA-256 quand il est déposé. Ne pas placer de données sensibles dans les captures de soutenance.
 4. **Préparer les comptes.** Confirmer dans AD le membre autorisé de `DL_CLIENTS_MODIFY` et un compte non membre ; vérifier leur possibilité de connexion sur `CC-W11-01`. Ne pas employer le compte Administrateur pour prouver un droit métier.
 5. **Préparer le support de reprise.** Identifier une copie indépendante utilisable pour T14/T15, son heure et son emplacement. Si elle n'existe pas, noter la dépendance dès maintenant ; un checkpoint Hyper-V sur le même disque ne répond pas à T14/T15.
 6. **Préparer les captures.** Créer un dossier de travail temporaire sous le coffre restreint avec les noms `C01` à `C26`. Les images brutes et JSON/EVTX restent hors du dépôt et de OneDrive. Les extraits de présentation sont expurgés, relus et inscrits au registre.
 
-## 5. Demain — ordre critique et budget de temps
+## 5. Ordre critique et budget de temps du 5 novembre
 
-Les plages suivantes sont des **créneaux de travail**, pas une autorisation de scan. Déplacer M04 à l'intérieur de la fenêtre réellement approuvée ; si aucune fenêtre n'est signée, consacrer ce créneau à la revue des autres preuves.
+Les plages suivantes sont des **créneaux de travail indicatifs du 5 novembre**, pas une autorisation de scan. Le premier bloc est terminé ; dans le second, le rapport et C05 ont été archivés le 6 novembre après l'interruption du DC. Reprendre C06 au point indiqué en procédure B et décaler les blocs selon la mémoire et le temps réels. Déplacer M04 à l'intérieur de la fenêtre réellement approuvée ; sans fenêtre signée, poursuivre les travaux indépendants des scans.
 
 | Créneau indicatif | Profil | Travail | Fin de bloc attendue |
 | --- | --- | --- | --- |
-| 08 h 00–08 h 45 | Hôte + DC | Diagnostic du coffre, rapatriement et registre M03. | Deux JSON hachés, `False → True`, deux identifiants du registre. |
-| 08 h 45–10 h 15 | DC puis métier | GPOZaurr, `gpresult`, groupes/ACL, tests SMB positif et négatif. | Constat M03 et captures C04–C09. |
+| 08 h 00–08 h 45 | Hôte + DC | Diagnostic du coffre, rapatriement et registre M03. | **Réalisé** : deux JSON hachés, `False → True`, deux identifiants du registre et C02–C04. |
+| 08 h 45–10 h 15 | DC puis métier | GPOZaurr, `gpresult`, groupes/ACL, tests SMB positif et négatif. | **Partiel, suivi au 06/11** : rapport GPOZaurr et C05 archivés et contrôlés ; qualification GPO, C06 (`gpresult`) et essais métier encore ouverts. |
 | 10 h 15–11 h 00 | Hôte | Export Hyper-V frais, Conftest, cartes et WAN ; vérifier la fiche signée. | Préconditions M01/M02 et captures C10–C12. |
 | Fenêtre approuvée | Audit serveur | Bloqué → autorisé → rebloqué, Ndiff, journaux et retrait des règles. | Trois XML, deux comparaisons, preuve de fermeture. |
 | 13 h 30–15 h 30 | Métier | T05–T09, T12–T13 : action bénigne Sysmon, EVTX et export. | Tests métiers et journaux sources. |
@@ -72,7 +74,7 @@ Les plages suivantes sont des **créneaux de travail**, pas une autorisation de 
 
 **Suivi opérateur du 5 novembre :** préparation du coffre, transfert des deux JSON, comparaison des SHA-256, contrôle `False → True`, inscription au registre et rangement des captures C02–C04 réalisés. Les [identifiants, empreintes et limites du diagnostic](controle-gpo-clients.md#chaîne-de-preuves--transfert-et-enregistrement-du-5-novembre-2026) sont consignés. L'écart avec l'inspection antérieure reste inexpliqué ; la revue GPO et les accès métier relèvent encore de la procédure B.
 
-**VM :** `CC-DC01` allumée ; Kali et W11 inutiles. **Outil :** PowerShell Direct, `collect-m03-gpo-clients.ps1` déjà exécuté, puis `enregistrer-preuve.ps1`. **Dépendance :** accès au coffre sur la même machine que la session PowerShell de l'opérateur. **Captures :** C02–C04.
+**Profil utilisé pour cette procédure terminée :** `CC-DC01` allumée ; Kali et W11 inutiles. **Outil :** PowerShell Direct, `collect-m03-gpo-clients.ps1` déjà exécuté, puis `enregistrer-preuve.ps1`. **Dépendance :** accès au coffre sur la même machine que la session PowerShell de l'opérateur. **Captures acquises :** C02–C04. Ce profil est historique ; l'état courant doit être relevé avant une nouvelle bascule.
 
 1. Sur l'hôte, afficher `$env:COMPUTERNAME`, `whoami`, `$env:LOCALAPPDATA`, puis `Get-Item -LiteralPath 'C:\Users\pissa\AppData\Local\CyberCorp\preuves\M-CLIENT-01' -Force`. Comparer au chemin vu par la session qui a renvoyé « coffre introuvable ». Vérifier que la racine `...\CyberCorp\preuves` a l'héritage ACL désactivé. Ne pas utiliser un autre dossier par commodité.
 2. Si nécessaire, rouvrir PowerShell Direct avec `$s = New-PSSession -VMName CC-DC01 -Credential (Get-Credential)` et confirmer `Invoke-Command -Session $s -ScriptBlock { whoami; hostname }`.
@@ -83,15 +85,15 @@ Les plages suivantes sont des **créneaux de travail**, pas une autorisation de 
 
 ## 7. Procédure B — GPO, dossier et accès métier
 
-**Suivi opérateur du 5 novembre : revue GPO engagée, interrompue avant C05 et avant archivage du nouveau rapport.** GPOZaurr 1.1.13 a produit un HTML à `09:32:16 UTC` ; des différences de propriétaires/cohérence concernent les deux GPO natives et `GPOPermissions` contient des erreurs SID/GUID. Les délégations, ACE AD ciblées et liens ont été contrôlés nativement, sans correction.
+**Suivi au 6 novembre : rapport et C05 archivés, C06 à préparer.** Le rapport GPOZaurr du 5 novembre est enregistré sous `M-CLIENT-01_gpo_20261106T085819590Z_CC-DC01_GPOZaurr`, SHA-256 `8CDA26993471BC692A85F8F46D77C0F5E8C2A388DFC0FA03FE72CA4035864314`. C05 est enregistrée sous `M-CLIENT-01_gpo_20261106T122808572Z_MONNOKOELOBA_CaptureEcran`, SHA-256 `4651F40E122498EA6CD7F03AEB49F8372EF7DDDB80E3BDCE9354045B2ED32177`. Le contrôle final à `12:34:36 UTC` confirme la copie dans `brut`, sa ligne unique et son lien vers le rapport. Les différences de propriétaires/cohérence des GPO natives et les huit erreurs SID/GUID restent à qualifier ; aucune correction GPO appliquée.
 
-**Interruption :** le DC s'est arrêté à `09:59:57 UTC` par le système invité (événement hôte 18508), motif à établir. Dernier état confirmé à `10:27:00 UTC` : `Off`, 2,64 Gio libres, 2 Gio requis pour démarrer, marge prévue 0,64 Gio ; redémarrage annulé par le garde-fou. L'opérateur prévoit de continuer sur téléphone avec ChatGPT fermé sur l'hôte.
+**Disponibilité :** le journal invité du 5 novembre confirme `wlms.exe` à l'origine de l'arrêt pour expiration de licence. Le diagnostic du 6 novembre montre notification, grâce nulle et `0xC004F009` ; `/ato` a échoué avec `0x80072EE7` et la résolution du serveur Microsoft a expiré. Aucun `/rearm` ni changement DNS, de règle réseau ou de WAN exécuté dans les commandes suivies. Le DC a été redémarré et est `Running` au dernier relevé ; la résolution durable de l'incident n'est pas démontrée.
 
-**Reprise immédiate : contrôle mémoire et démarrage de la seule VM DC ; aucune sortie ne confirme encore ce démarrage.** Le [point de reprise détaillé et son bloc PowerShell](controle-gpo-clients.md#interruption-et-point-de-reprise) conservent le chemin et le SHA-256 du rapport à retrouver. Ouvrir ensuite une nouvelle session Direct ; les anciennes variables distantes ne doivent pas être supposées disponibles. Attendre la sortie de chaque action avant de donner la suivante.
+**Reprise immédiate : libérer de la mémoire pour C06.** Dernier relevé : DC `Running`, 1,28 Gio affectés ; W11 `Off`, 1 Gio de démarrage ; pfSense `Saved`, Kali `Off` ; 1,73 Gio libres sur l'hôte. Fermer le navigateur du rapport et l'Outil Capture après sauvegarde des autres travaux, puis mesurer la mémoire et l'état du DC. Viser au moins 2,5 Gio libres avant W11 pour conserver 1,5 Gio après son démarrage, et vérifier la marge réelle ensuite. Ne pas rejouer l'archivage de C05. Voir le [point de reprise détaillé](controle-gpo-clients.md#interruption-et-point-de-reprise) ; attendre la sortie de chaque action.
 
 **VM :** DC seule pour l'audit GPO ; ensuite profil métier (`CC-PFS01`, `CC-DC01`, `CC-W11-01`). **Outils :** GPOZaurr, commandes AD/GPO natives, ACL/SMB, `gpresult`. **Responsable :** IT. **Captures :** C05–C09. **Indépendance :** réalisable avant la fenêtre réseau.
 
-1. Sur le DC, ouvrir le rapport GPOZaurr T10 et les deux JSON M03. Relever, pour les quatre GPO, propriétaire, droits de modification, liens directs/hérités, état et toute incohérence AD/SYSVOL. Qualifier **un écart précis** ou « aucun écart observé dans ces catégories » ; ne pas extrapoler à tout AD. Si le rapport T10 est trop ancien pour une conclusion actuelle, relancer GPOZaurr en lecture seule et hacher le nouveau rapport. C05.
+1. **Rapport et C05 conservés au registre.** Conserver leurs identifiants et leurs contrôles ; qualifier encore les différences sur les deux GPO natives et les huit erreurs SID/GUID de `GPOPermissions`, puis archiver les contrôles natifs complémentaires. C05 illustre la revue et ne valide pas à elle seule tout AD. Le HTML archivé est utilisable ; aucun nouveau rapport n'est requis pour retrouver les anciennes variables distantes.
 2. Sur le poste, exécuter `gpupdate /force` si autorisé puis produire un nouveau `gpresult /h` daté. Vérifier l'application de `CC-Postes-Securite`, `CC-Domaine-Comptes` et des GPO natives pertinentes. Comparer l'effet du poste à la gouvernance du DC. C06.
 3. Sur le DC, relever `Get-SmbShareAccess -Name Clients`, l'ACL de `E:\Partages\Clients\CL-2026-014\Livraison` et les membres récursifs de `DL_CLIENTS_MODIFY`. Les trois ACE NTFS héritées observées donnent contrôle total à Système et Administrateurs, modification à `DL_CLIENTS_MODIFY` ; vérifier à nouveau l'état et les permissions de partage. C07.
 4. Sur `CC-W11-01`, ouvrir une session sous le compte métier **membre vérifié** de `DL_CLIENTS_MODIFY`. Montrer `whoami` et l'heure, créer puis relire un fichier de contrôle nommé de façon unique dans `\\CC-DC01\Clients\CL-2026-014\Livraison`. Capturer le succès et conserver le nom, le contenu non sensible et le SHA-256. C08.
@@ -153,6 +155,8 @@ Les états actuels sont ceux de [config/recette.csv](../config/recette.csv). Une
 ## 12. Registre des captures à prendre au bon moment
 
 Une capture est nommée `M-CLIENT-01_Cxx_YYYYMMDDTHHMMSS_<source>.png` et enregistrée dans le coffre. Afficher machine, heure et résultat pertinent ; masquer mot de passe, session, identifiant sensible ou contenu client. Chaque capture renvoie à une pièce brute ; la capture seule n'établit pas la conformité.
+
+**Suivi au 6 novembre :** C02–C04 sont rangées et reliées aux deux JSON enregistrés. C05 est également rangée, enregistrée et vérifiée ; son action référence le rapport GPOZaurr archivé. Son heure d'événement reste vide car l'instant exact de capture n'est pas connu ; l'horodatage de son nom initial est celui du rangement. C06–C26 ne sont pas déclarées acquises.
 
 | ID | Moment exact | Ce qui doit être visible | Pièce qui la soutient |
 | --- | --- | --- | --- |
