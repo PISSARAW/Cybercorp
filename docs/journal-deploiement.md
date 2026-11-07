@@ -2,6 +2,10 @@
 
 Ce journal conserve les étapes réalisées et validées avec l'utilisateur. Une étape n'est marquée **Validée** qu'après confirmation explicite de l'utilisateur.
 
+**Suivi du 7 novembre 2026, 09 h 16 Europe/Paris :** [réarmement explicite autorisé et contrôles après redémarrage](rearmement-dc01-2026-11-07.md). Un seul `/rearm`, réussi à 08:12:27 UTC, puis redémarrage propre du seul DC ; nouvel amorçage à 08:12:57 UTC. Licence passée de notification à grâce initiale, échéance `/xpr` le 17 novembre à 09:13:10 Europe/Paris, zéro réinitialisation Windows/SKU restante. Advertising/SysVolCheck/NetLogons : code 0 sans erreur ; services AD/DNS, partages et SRV présents. 2,346 Gio libres au contrôle. Surveillance en lecture seule lancée jusqu'à 65 minutes après amorçage, en cours ; aucune stabilité durable ni activation déclarée acquise. Cinq pièces copiées et hachées hors Git avec manifeste séparé, sans modifier le registre divergent. Aucun changement DNS/WAN/NAT/règle ni démarrage d'autre VM.
+
+**Reprise du 7 novembre 2026, 09 h 09 Europe/Paris :** [diagnostic de stabilisation CC-DC01](diagnostic-dc01-2026-11-07.md). L'opérateur a démarré le seul DC après 4,14 Gio libres ; 2,15 Gio restent immédiatement après. Les lectures autonomes confirment la notification de licence (`0xC004F009`, grâce nulle, une réinitialisation Windows/SKU), les horloges DC/hôte proches et l'échec de résolution externe avec pfSense enregistré et WAN déconnecté. Aucun changement de licence, d'horloge ou de réseau n'est appliqué ; réarmement proposé en attente d'accord. Diagnostic conservé et haché hors dépôt. Le registre accessible comporte 12 lignes actives et un consolidé de 19 pièces conformes, en divergence avec le bilan de 27 ; actif inchangé et nouvelle pièce non inscrite, avec manifeste séparé. Le HEAD local observé est `a62864f`, différent du commit poussé annoncé `2bf60ab` ; aucun changement de branche ni commit. Aucune nouvelle étape de recette validée.
+
 ## État des étapes
 
 | Étape | Objet | État |

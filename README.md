@@ -11,7 +11,9 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 
 ## Mission de sécurité en cours
 
-**Dernier état, 7 novembre 2026 :** [contrôles autonomes et C06 retrouvée](docs/avancement-autonome-2026-11-07.md). Le registre compte 27 pièces contrôlées. Conftest est conforme sur le dernier C12 et sur un export actuel ; les MAC Hyper-V sont archivées. Le rapport C06 du 6 novembre est conservé et analysé. La faible RAM disponible bloque le profil métier ; activation du DC, transfert Kali et autres tests restent ouverts. Les bilans datés plus anciens ci-dessous restent historiques.
+**Dernier état, 7 novembre 2026, 09 h 16 Europe/Paris :** [réarmement autorisé réussi, DC redémarré](docs/rearmement-dc01-2026-11-07.md). Dix jours de grâce initiale jusqu'au 17 novembre à 09:13, zéro réinitialisation restante ; activation encore à faire. Contrôles AD ciblés réussis, DC seul actif et plus de 1,5 Gio libres sur l'hôte. Surveillance au-delà d'une heure en cours, fin prévue vers 10:18. Aucun changement DNS, WAN ou règle réseau. Le coffre accessible diverge du bilan de 27 pièces : 12 lignes actives et un consolidé de 19 pièces historiques vérifiées ; actif préservé, nouvelles preuves conservées séparément avec leurs manifestes.
+
+**Bilan antérieur du 7 novembre 2026 :** [contrôles autonomes et C06 retrouvée](docs/avancement-autonome-2026-11-07.md). Le registre comptait 27 pièces contrôlées selon ce bilan. Conftest était conforme sur le dernier C12 et sur un export actuel ; les MAC Hyper-V étaient archivées. Le rapport C06 du 6 novembre était conservé et analysé. Activation du DC, transfert Kali et autres tests restaient ouverts. Les bilans datés plus anciens ci-dessous restent historiques.
 
 **Archivage C12/WAN du 7 novembre :** [trois pièces ajoutées et contrôlées](docs/archivage-c12-wan-2026-11-07.md). Le registre actif compte désormais 22 lignes sans doublon, avec 22 fichiers conformes. Le dernier export C12 et les deux captures pfSense sont archivés ; les fichiers Kali restent à rapatrier.
 
