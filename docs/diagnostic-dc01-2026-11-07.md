@@ -64,7 +64,7 @@ Le bilan précédent annonçait 27 pièces. À 08:09 UTC, le chemin accessible p
 
 L'actif reste inchangé : SHA-256 avant/après `05FF3BB292B17D14F21A55EA576501AE73DB083E6DF6AA5D3471AE8D72FEC122`. Le diagnostic nouveau n'est **pas inscrit au registre divergent** ; il est conservé avec son manifeste en attendant l'identification de la version à 27 pièces. Aucun remplacement ni réenregistrement en bloc n'a été effectué.
 
-Le HEAD local observé est `a62864f`, différent du dernier commit poussé `2bf60ab` annoncé à la reprise. L'origine de cette différence n'est pas établie ; aucun checkout, reset, commit ou push n'a été exécuté. Le dossier `tmp/` préexistant est préservé.
+Le HEAD local observé au diagnostic était `a62864f`, différent du dernier commit poussé `2bf60ab` annoncé à la reprise. La lecture ultérieure de l'historique explique cette différence : `2bf60ab` est un ancêtre, suivi de trois commits locaux préexistants, préservés. Aucun checkout, reset ou push n'a été exécuté. Le commit documentaire demandé ensuite par l'utilisateur est `66b6c8a`. Le dossier `tmp/` préexistant est préservé. Voir le [suivi des lectures et de la préparation](preparation-activation-dc01-2026-11-07.md).
 
 ## Proposition initiale avant accord
 

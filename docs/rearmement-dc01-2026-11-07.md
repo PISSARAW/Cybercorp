@@ -77,4 +77,4 @@ Le registre divergent reste inchangé, SHA-256 `05FF3BB292B17D14F21A55EA576501AE
 
 ## Suite nécessaire
 
-Lire et conserver le bilan de surveillance après son achèvement, puis qualifier la stabilité. Préparer une maintenance réseau bornée pour l'activation officielle, avec accord préalable avant tout DNS/WAN/NAT/règle ou démarrage de pfSense. Le DC conserve son DNS local. Résoudre séparément la divergence de versions du coffre et du dépôt. Les validations métier et GPO restent différées jusqu'à la qualification de la stabilité.
+Lire et conserver le bilan de surveillance après son achèvement, puis qualifier la stabilité. La [préparation de maintenance pour l'activation](preparation-activation-dc01-2026-11-07.md) décrit les préconditions relevées et le périmètre soumis à accord avant tout DNS/WAN/NAT/règle ou démarrage de pfSense. Le DC conserve son DNS local. L'écart de HEAD est expliqué par trois commits locaux préexistants ; la divergence du coffre reste ouverte, avec deux sources historiques C06/C12 retrouvées et recopiées sous manifeste séparé. Les validations métier et GPO restent différées jusqu'à la qualification de la stabilité.
