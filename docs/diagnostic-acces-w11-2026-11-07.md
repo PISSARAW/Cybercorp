@@ -1,5 +1,7 @@
 # Accès CC-W11-01 : session de base et verrouillage local — 7 novembre 2026
 
+**Suivi ultérieur de 15 h 27 :** [W11 repris puis réenregistré faute de mémoire](reprise-powershell-metier-2026-11-07.md). Aucun essai PowerShell Direct ni mot de passe tenté ; le verrouillage local-admin n'a pas été relu. Les tests métier peuvent avancer avec les comptes correspondants sans attendre ce compte administratif. Le registre est ensuite porté à 43 pièces contrôlées ; les 38 lignes et la session ouverte décrites ci-dessous correspondent au diagnostic historique.
+
 Le dernier état montré par l'utilisateur est une session **`CYBERCORP\usr.com01` ouverte sur CC-W11-01**. Le compte `local-admin` existe et est actif, mais la lecture CIM montre **`Lockout=True`**. La stratégie locale prévoit un verrouillage de **15 minutes après cinq échecs**, avec une fenêtre d'observation de 15 minutes. L'attente sans nouvelle tentative a été demandée ; le déverrouillage et une connexion administrative réussie ne sont pas encore confirmés.
 
 Ce document complète la [reprise registre/AUDIT/GPO](reprise-registre-audit-gpo-2026-11-07.md). Il distingue les actions exécutées par l'agent sur l'hôte, les manipulations guidées de l'utilisateur dans la VM et les observations sur ses captures. Les heures visibles sur les images ne sont pas transformées en heures UTC d'événement.

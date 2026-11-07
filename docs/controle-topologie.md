@@ -1,5 +1,9 @@
 # M-CLIENT-01 — contrôle préalable de la topologie
 
+**Suivi ultérieur du 7 novembre, 15 h 30 Europe/Paris :** la [tentative de reprise W11](reprise-powershell-metier-2026-11-07.md) a été interrompue pour conserver la marge mémoire, sans changement réseau ni test de flux. Sa pièce porte le registre à 43 lignes contrôlées. Le dernier Conftest reste celui de 14:08 UTC décrit ci-dessous.
+
+**État courant au 7 novembre, 14:08 UTC :** [nouvel export et contrôle autonome de clôture](controle-final-autonome-2026-11-07.md). PASS réel et cinq FAIL attendus, 18 règles par cas ; les quatre nouvelles pièces portent le registre à 42 lignes vérifiées. WAN Hyper-V déconnecté et aucun WinNAT ; DC Running, trois autres VM Saved. Aucun flux testé ; T03/T04 restent à faire. Les comptes de registre et travaux d'archivage mentionnés dans les suivis ci-dessous sont historiques.
+
 **Suivi du 7 novembre, 07:33 UTC :** [PASS sur le dernier C12 et sur une topologie actuelle](avancement-autonome-2026-11-07.md), avec cinq refus attendus dans chaque série. Relevé natif des MAC Hyper-V archivé. Ces résultats complètent l'archivage décrit ci-dessous ; le registre compte 27 pièces vérifiées. Les mentions d'absence de rapport sur le dernier C12 sont désormais historiques.
 
 **Mise à jour du 7 novembre :** [registre réconcilié](reconciliation-registre-2026-11-07.md), puis [dernier export C12 et deux captures WAN archivés](archivage-c12-wan-2026-11-07.md). Le registre actif compte 22 lignes uniques, avec 22 tailles et SHA-256 conformes. Aucun PASS Conftest n'a été produit sur le dernier export. Les mentions de réconciliation et d'archivage à faire ci-dessous sont historiques.

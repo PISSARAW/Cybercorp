@@ -11,6 +11,14 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 
 ## Mission de sécurité en cours
 
+**État documenté au 7 novembre 2026, 15 h 30 Europe/Paris :** [tentative de reprise W11 et pilotage métier depuis l'hôte](docs/reprise-powershell-metier-2026-11-07.md). W11 a été repris une fois puis remis immédiatement en état Saved : mémoire libre descendue à 1,251 Gio, sous la marge de 1,5 Gio. Aucun essai d'authentification ni test métier exécuté. DC actif, autres VM Saved ; 3,312 Gio libres au bilan de reprise. Le registre compte désormais **43 pièces principales contrôlées**.
+
+Le [lot autonome précédent](docs/controle-final-autonome-2026-11-07.md) a vérifié 38 pièces et 90 annexes, puis ajouté quatre pièces ; Conftest frais donne PASS réel et cinq FAIL attendus, 18 règles par cas. WAN déconnecté et aucun WinNAT au contrôle. La reprise suivante n'a modifié aucun réseau.
+
+La [recette](config/recette.csv) compte **2 tests validés, 1 à actualiser (T10) et 12 à faire**. L'activation du DC, la cohérence native des quatre GPO et le classement du dernier C12 sont acquis selon les preuves datées. Les essais métier peuvent avancer avec leurs comptes dédiés sans attendre local-admin ; l'accès Direct sous usr.com01 reste à tester après préparation de la mémoire. La licence W11, les contrôles administratifs et réseau, Sysmon/Hayabusa, la restauration indépendante et la décision restent ouverts. Aucun extrait de remise relu n'est encore présent au coffre.
+
+### Historique des interventions
+
 **Dernier suivi d'accès du 7 novembre 2026 :** [session usr.com01 ouverte et verrouillage local-admin constaté](docs/diagnostic-acces-w11-2026-11-07.md). Après guidage vers la console de base, `whoami` confirme le compte métier. Lecture CIM : compte local actif mais `Lockout=True` ; `net accounts` : cinq échecs, verrouillage de 15 minutes. Attente sans nouvelle tentative demandée, déverrouillage non confirmé. Le bureau signale aussi une évaluation W11 expirée, à diagnostiquer nativement. Nouveau gpresult et essais métier restent ouverts ; registre inchangé à 38 lignes.
 
 **Dernier état, 7 novembre 2026, 11 h 42 Europe/Paris :** [registre rapproché, AUDIT réactivé et GPO cohérentes](docs/reprise-registre-audit-gpo-2026-11-07.md). Sources couvrant les 27 empreintes historiques ; registre actif de 38 pièces principales uniques, tailles/SHA-256 contrôlés, anciennes versions préservées. Blocage IPv4 AUDIT journalisé chargé ; WAN déconnecté et aucun NAT. Quatre GPO cohérentes après alignement natif des deux GPO par défaut, sans changement des fichiers de stratégie. [DC activé jusqu'au 6 mai 2027](docs/activation-dc01-2026-11-07.md), contrôles AD ciblés conformes. DC/W11 actifs, pfSense/Kali Saved, environ 1,95 Gio libres. Identifiants locaux W11 refusés : nouveau gpresult et essais métier bloqués. Les comptes Direction exigent leur premier changement de mot de passe.
@@ -61,13 +69,16 @@ Le [tableau de bord du projet](https://cybercorp-vitrine.fabled-haven-3189.chatg
 - [x] Pack de cinq outils de sécurité sélectionné et documenté
 - [x] VM, commutateurs privés et règles pfSense de base créés et documentés
 - [x] Essais bornés Nmap/Ndiff, Sysmon/Hayabusa et GPOZaurr consignés
-- [x] Conftest/OPA exécuté les 01 et 06/11/2026 : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-topologie.md)
+- [x] Conftest/OPA réexécuté le 07/11/2026 à 14:08 UTC : export réel PASS, cinq copies fautives FAIL ; [contrôle et limites](docs/controle-final-autonome-2026-11-07.md)
 - [x] Dossier `CL-2026-014\Livraison` créé ; deux collectes M03 réalisées sur `CC-DC01` les 01–02/11/2026
 - [x] JSON M03 rapatriés et inscrits au registre le 05/11/2026 ; SHA-256 source/copie vérifiés, état `False → True` et captures C02–C04 conservées hors Git et OneDrive
 - [x] Rapport GPOZaurr et capture C05 archivés et enregistrés le 06/11/2026 ; empreintes et référence croisée contrôlées
 - [x] C07–C09 et C10–C12 conservées dans le coffre ; contrôles des copies communiqués, avec détail et limites dans les documents de contrôle
-- [ ] Réconcilier le registre accessible avec les inscriptions du 6 novembre ; enregistrer le dernier export C12
-- [ ] Qualification finale M03, C06 (`gpresult`) et complément des essais métier / T08–T09
+- [x] Registre rapproché, dernier C12 archivé ; 43 pièces principales contrôlées après le suivi de reprise W11 du 7 novembre
+- [x] DC activé jusqu'au 6 mai 2027 ; quatre GPO cohérentes selon les contrôles natifs
+- [ ] Reprise W11 avec marge mémoire et accès métier ; C06 actuelle, contrôles endpoint et complément des essais métier / T08–T09 ; accès administratif et licence à traiter séparément
+- [ ] Contrôles de flux T03–T04 et scénario M04 sous nouvelle fenêtre approuvée
+- [ ] Scénario Sysmon/Hayabusa T12–T13 et sauvegarde/restauration indépendante T14–T15
 - [ ] Mandat M-CLIENT-01 assemblé et décidé
 - [ ] Recette T01–T15 exécutée et preuves conservées
 
