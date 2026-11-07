@@ -1,5 +1,7 @@
 # Réconciliation du registre de preuves — 7 novembre 2026
 
+**Suivi à 11:42 Europe/Paris :** un [nouveau rapprochement sur les sources](reprise-registre-audit-gpo-2026-11-07.md) traite l'actif revenu à 12 lignes : 19 lignes historiques conservées, huit récupérations actuelles couvrant les empreintes des 27 pièces, puis manifestes et preuves nouvelles, soit 38 lignes uniques contrôlées. Les quatre sources autonomes sont retrouvées dans les sous-dossiers de transfert. Le CSV historique exact à 27 lignes reste non retrouvé ; aucune ancienne inscription n'a été reconstituée. Le texte ci-dessous conserve le bilan antérieur.
+
 Le contrôle final du **7 novembre 2026 à 07:19:35 UTC (08:19:35 Europe/Paris)** confirme un registre actif de **19 lignes, 19 identifiants uniques et zéro anomalie de taille ou de SHA-256** pour les 19 fichiers référencés.
 
 ## Versions trouvées dans le coffre

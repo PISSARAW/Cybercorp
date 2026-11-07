@@ -1,5 +1,7 @@
 # M-CLIENT-01 — contrôle M03 des GPO et du dossier `Clients`
 
+**Suivi du 7 novembre, 10:42 UTC :** [registre à 38 lignes contrôlées, AUDIT réactivé et quatre GPO cohérentes](reprise-registre-audit-gpo-2026-11-07.md). Après sauvegardes, les deux GPO natives ont été alignées avec `MakeAclConsistent()` ; ACL AD, versions et fichiers de stratégie inchangés, cohérence native vraie. M03 et exports natifs archivés. W11 a été démarré avec la marge mémoire prévue, mais l'accès local de secours est refusé. Nouveau gpresult et scénarios métier restent bloqués ; les comptes Direction exigent leur premier changement de mot de passe. Les bilans précédents restent historiques.
+
 **Suivi du 7 novembre, 09:49 UTC :** [CC-DC01 activé en évaluation jusqu'au 6 mai 2027](activation-dc01-2026-11-07.md), surveillance de 65 minutes sans arrêt puis contrôles AD ciblés conformes. DNS et confinement restaurés ; W11 reste arrêté. C06 actualisée, gouvernance GPO et scénarios métier restent à poursuivre. Le rapport décrit aussi la divergence actuelle du registre et la règle explicite AUDIT désactivée à qualifier.
 
 **Suivi du 7 novembre, 07:33 UTC :** [HTML C06 retrouvé et archivé](avancement-autonome-2026-11-07.md), collecte affichée du 6 novembre à 17:18:10, fuseau non établi. Il décrit les GPO et paramètres du poste ; C06 n'est plus absente. Aucun nouveau gpresult ni validation des autres scénarios métier n'a été réalisé. Le registre compte désormais 27 pièces vérifiées.

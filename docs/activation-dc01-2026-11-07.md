@@ -1,5 +1,7 @@
 # CC-DC01 activé et confinement rétabli — 7 novembre 2026
 
+**Suivi à 11:42 Europe/Paris :** [registre rapproché, AUDIT réactivé et incohérence GPO corrigée](reprise-registre-audit-gpo-2026-11-07.md). Les quatre sources autonomes ont été retrouvées ; registre actif de 38 lignes vérifiées. W11 est actif avec le DC, mais ses identifiants locaux sont refusés. Les états et points ouverts ci-dessous décrivent la clôture de la maintenance à 10:49.
+
 CC-DC01 est activé en **évaluation**, `LicenseStatus=1`. L'unique tentative `/ato` autorisée a réussi à 09:43:53–09:43:58 UTC, soit 10:43 Europe/Paris. Windows a affiché 259 200 minutes restantes, soit 180 jours, et `/xpr` indique une expiration au **6 mai 2027**. La valeur sentinelle `EvaluationEndDate` de 1601 reste inexploitable ; le résultat repose sur l'état de licence et `/xpr`.
 
 Le WAN et le NAT temporaires sont fermés, le DNS du DC et les règles initiales de pfSense sont restaurés. Seul le DC reste actif. La marge mémoire de l'hôte est respectée.
