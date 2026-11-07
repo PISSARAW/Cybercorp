@@ -11,6 +11,8 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 
 ## Mission de sécurité en cours
 
+**Dernier état, 7 novembre 2026 :** [contrôles autonomes et C06 retrouvée](docs/avancement-autonome-2026-11-07.md). Le registre compte 27 pièces contrôlées. Conftest est conforme sur le dernier C12 et sur un export actuel ; les MAC Hyper-V sont archivées. Le rapport C06 du 6 novembre est conservé et analysé. La faible RAM disponible bloque le profil métier ; activation du DC, transfert Kali et autres tests restent ouverts. Les bilans datés plus anciens ci-dessous restent historiques.
+
 **Archivage C12/WAN du 7 novembre :** [trois pièces ajoutées et contrôlées](docs/archivage-c12-wan-2026-11-07.md). Le registre actif compte désormais 22 lignes sans doublon, avec 22 fichiers conformes. Le dernier export C12 et les deux captures pfSense sont archivés ; les fichiers Kali restent à rapatrier.
 
 **Mise à jour du 7 novembre 2026 :** [registre réconcilié](docs/reconciliation-registre-2026-11-07.md). Le consolidé existant reprend exactement les 7 lignes historiques et les 12 inscriptions récentes ; il est désormais actif. Les 19 fichiers, tailles et SHA-256 concordent, sans doublon. L'écart de registre décrit dans le bilan historique ci-dessous est résolu ; les autres tâches de clôture restent ouvertes.

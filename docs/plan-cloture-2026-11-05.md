@@ -1,5 +1,7 @@
 # CyberCorp — guide de clôture du projet, 5 novembre 2026
 
+**Dernier suivi du 7 novembre :** [contrôles autonomes](avancement-autonome-2026-11-07.md) : C06 historique retrouvée et archivée, PASS Conftest sur le dernier C12 et sur une nouvelle topologie, MAC Hyper-V conservées. Registre à 27 pièces vérifiées. Le profil métier est bloqué par la RAM ; activation du DC et rapatriement Kali restent ouverts. Les consignes plus anciennes indiquant C06 absente ou C12 sans rapport sont dépassées par ce suivi.
+
 **Archivage C12/WAN du 7 novembre :** [dernier export C12 et deux captures pfSense enregistrés](archivage-c12-wan-2026-11-07.md). Le registre actif comporte désormais 22 lignes, sans doublon ni anomalie de taille/SHA-256. L'archivage de ces pièces est terminé ; le rapatriement Kali et les autres contrôles restent ouverts. Aucun nouveau PASS Conftest n'a été produit sur le dernier C12.
 
 **Mise à jour du 7 novembre :** la [réconciliation du registre](reconciliation-registre-2026-11-07.md) est terminée : 19 lignes uniques et 19 pièces dont tailles/SHA-256 concordent. Le consolidé existant a été installé après sauvegarde de l'ancien actif, sans ajout de ligne. Les instructions de réconciliation ci-dessous sont donc accomplies. Prochaine tâche documentaire : archivage du dernier export C12 et du complément WAN, puis rapatriement des fichiers Kali.

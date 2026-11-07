@@ -698,6 +698,8 @@ La revue documentaire a aussi corrigé un caractère surnuméraire dans la trans
 
 ### Réconciliation du registre — 7 novembre 2026
 
+Suivi autonome ultérieur : [compte rendu du 7 novembre](avancement-autonome-2026-11-07.md). Quatre pièces de topologie et le HTML C06 retrouvé sont ajoutés au coffre, portant le registre à 27 fichiers contrôlés. Conftest donne un PASS réel et cinq FAIL attendus sur le dernier C12, puis sur un export actuel. Les MAC Hyper-V sont conservées. Le rapport C06 retrouvé date du 6 novembre ; aucun nouveau gpresult n'a été lancé. DC/W11 arrêtés, Kali/pfSense actifs et RAM libre de 0,37 puis 0,633 Gio lors des relevés : aucun démarrage ni changement réseau exécuté.
+
 Suivi après cette réconciliation : le [dernier export C12 et deux captures du complément WAN](archivage-c12-wan-2026-11-07.md) ont été inscrits à `07:23:30 UTC`, après sauvegarde du registre et recherche de doublons. Contrôle final : 22 lignes uniques, 22 tailles et SHA-256 conformes. Les captures montrent l'affectation des interfaces pfSense et WAN `hn0` sans porteuse, MAC `00:15:5d:01:3c:0e`. Aucun nouveau contrôle réseau ni rapport Conftest n'a été exécuté. Les bruts restent au coffre.
 
 - Le coffre contient un consolidé existant de 19 lignes, un historique de 7 lignes et une sauvegarde des 12 inscriptions des 5–6 novembre. La comparaison de tous les champs établit que le consolidé est leur réunion exacte, sans doublon. Les 19 fichiers référencés sont présents et leurs tailles/SHA-256 recalculés concordent.
