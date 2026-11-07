@@ -1,5 +1,7 @@
 # Annexe technique — mandat M-CLIENT-01
 
+**Clôture documentaire avec réserves — 7 novembre 2026 :** [rapport final](rapport-cloture-avec-reserves-2026-11-07.md). Recette : **2 validés, 6 partiellement démontrés, 7 non démontrés**. Registre actif rapproché à **43 pièces distinctes**, huit alias historiques conservés ; pièce W11 réinscrite sous `M-CLIENT-01_poste_20261107T162640679Z_MONNOKOELOBA_HyperV`. SHA-256 du registre final : `4D7860F21D5C457231F0BA843A3FE055BE05CA4A40CFFB553B00B0D5A45B03CE`. Proposition : remettre les constats avec réserves, acceptation technique globale suspendue, validation humaine en attente. Les états et références des bilans ci-dessous restent historiques.
+
 **Référence :** AT-M-CLIENT-01 · **Version :** 0.4 · **État arrêté au :** 7 novembre 2026, 15 h 30 Europe/Paris · **Statut :** dossier de constats en cours, non approuvé pour la remise.
 
 Cette annexe relie les questions du [mandat](fiche-m-client-01.md) aux configurations, essais, résultats et pièces vérifiables. Le [guide de clôture](plan-cloture-2026-11-05.md) indique l'ordre d'exécution ; le [rapport principal](https://docs.google.com/document/d/1cxUCv6RS4L5Fr2NMFRqwuIYaI75UVpWj4PkX5wN-_-8/edit) porte la synthèse et la décision. Les exports bruts demeurent dans le [coffre restreint](protocole-preuves.md), hors Git et OneDrive. Cette annexe ne reproduit ni secret, ni journal brut, ni contenu client.

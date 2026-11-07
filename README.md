@@ -11,6 +11,8 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 
 ## Mission de sécurité en cours
 
+**Clôture documentaire avec réserves — 7 novembre 2026 :** [rapport final](docs/rapport-cloture-avec-reserves-2026-11-07.md). Recette : **2 validés, 6 partiellement démontrés, 7 non démontrés**. Registre actif rapproché à **43 pièces distinctes**, huit alias historiques conservés ; pièce W11 réinscrite sous `M-CLIENT-01_poste_20261107T162640679Z_MONNOKOELOBA_HyperV`. SHA-256 du registre final : `4D7860F21D5C457231F0BA843A3FE055BE05CA4A40CFFB553B00B0D5A45B03CE`. Proposition : remettre les constats avec réserves, acceptation technique globale suspendue, validation humaine en attente. Les états et références des bilans ci-dessous restent historiques.
+
 **État documenté au 7 novembre 2026, 15 h 30 Europe/Paris :** [tentative de reprise W11 et pilotage métier depuis l'hôte](docs/reprise-powershell-metier-2026-11-07.md). W11 a été repris une fois puis remis immédiatement en état Saved : mémoire libre descendue à 1,251 Gio, sous la marge de 1,5 Gio. Aucun essai d'authentification ni test métier exécuté. DC actif, autres VM Saved ; 3,312 Gio libres au bilan de reprise. Le registre compte désormais **43 pièces principales contrôlées**.
 
 Le [lot autonome précédent](docs/controle-final-autonome-2026-11-07.md) a vérifié 38 pièces et 90 annexes, puis ajouté quatre pièces ; Conftest frais donne PASS réel et cinq FAIL attendus, 18 règles par cas. WAN déconnecté et aucun WinNAT au contrôle. La reprise suivante n'a modifié aucun réseau.

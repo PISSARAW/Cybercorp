@@ -1,5 +1,7 @@
 # M-CLIENT-01 — fiche de décision (modèle)
 
+**Clôture documentaire avec réserves — 7 novembre 2026 :** [rapport final](rapport-cloture-avec-reserves-2026-11-07.md). Recette : **2 validés, 6 partiellement démontrés, 7 non démontrés**. Registre actif rapproché à **43 pièces distinctes**, huit alias historiques conservés ; pièce W11 réinscrite sous `M-CLIENT-01_poste_20261107T162640679Z_MONNOKOELOBA_HyperV`. SHA-256 du registre final : `4D7860F21D5C457231F0BA843A3FE055BE05CA4A40CFFB553B00B0D5A45B03CE`. Proposition : remettre les constats avec réserves, acceptation technique globale suspendue, validation humaine en attente. Les états et références des bilans ci-dessous restent historiques.
+
 **État documenté au 7 novembre, 15 h 30 Europe/Paris :** [reprise W11 et pilotage métier](reprise-powershell-metier-2026-11-07.md). Registre à 43 lignes contrôlées. Reprise W11 suivie d'un retour immédiat Saved après 1,251 Gio libres ; aucune authentification ni test métier tenté. DC Running, W11/pfSense/Kali Saved ; aucune modification réseau ni nouvel essai de flux. Le dernier Conftest reste conforme à 14:08 UTC. Deux validations statiques, T10 à actualiser et douze tests à faire ; aucune décision de remise.
 
 **Derniers résultats invités disponibles :** [activation du DC, AUDIT réactivé et quatre GPO cohérentes](reprise-registre-audit-gpo-2026-11-07.md), puis [verrouillage local-admin W11 établi](diagnostic-acces-w11-2026-11-07.md). Aucun déverrouillage ni diagnostic natif de licence W11 confirmé. Les comptes Direction doivent effectuer leur premier changement de mot de passe ; l'application actuelle au poste et les essais métier restent non démontrés.
@@ -60,11 +62,11 @@ Une empreinte inchangée du fichier testé ne démontre pas qu'il n'a pas été 
 
 ## 5. Décision et suivi
 
-**Décision :** poursuivre / corriger / suspendre — à sélectionner après revue.
+**Recommandation technique :** remise du dossier de constats avec réserves ; acceptation technique globale suspendue. Décision humaine de remise à dater et signer ; aucun accord déduit.
 
-**Motif, effets sur le livrable et risques restants :** à renseigner.
+**Motif et réserves :** socle déployé, DC activé et cohérence GPO native acquise. Réseau complet, état endpoint actuel, Direction, chronologie du mandat et restauration indépendante restent partiels ou non démontrés. PDF métier, hash, destinataire et canal non établis. Aucune certification de sécurité globale, d'absence d'exfiltration ni de RTO/RPO.
 
-**Corrections, contre-tests, responsables et échéances :** à renseigner.
+**Suivi :** libérer le budget mémoire et clarifier W11 ; compléter les tests endpoint/accès, prévoir une fenêtre réseau approuvée et une restauration indépendante. Responsables et échéances à attribuer par le décideur. Les lacunes restent dans la recette finale.
 
 **Temps réel de constitution du dossier :** à mesurer, sans annoncer de délai contractuel non établi.
 
