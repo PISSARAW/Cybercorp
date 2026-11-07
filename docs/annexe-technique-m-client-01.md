@@ -1,5 +1,7 @@
 # Annexe technique — mandat M-CLIENT-01
 
+**Complément du 7 novembre, 21:32 UTC :** [audit GPOZaurr C05 et chaîne Sysmon/Hayabusa](validation-gpo-sysmon-hayabusa-2026-11-07.md). Le contre-audit GPO en lecture seule confirme les quatre cohérences natives et documente huit erreurs SID/GUID persistantes. Le contrôle Sysmon est relié aux EventRecordID 11152, 11154 et 11160 ; Hayabusa détecte le timestomp intentionnel et un autre événement Edge reste indéterminé. C05 et C22–C23 sont au registre. Les bilans ci-dessous restent des états antérieurs.
+
 **Clôture documentaire avec réserves — 7 novembre 2026 :** [rapport final](rapport-cloture-avec-reserves-2026-11-07.md). Recette : **2 validés, 6 partiellement démontrés, 7 non démontrés**. Registre actif rapproché à **43 pièces distinctes**, huit alias historiques conservés ; pièce W11 réinscrite sous `M-CLIENT-01_poste_20261107T162640679Z_MONNOKOELOBA_HyperV`. SHA-256 du registre final : `4D7860F21D5C457231F0BA843A3FE055BE05CA4A40CFFB553B00B0D5A45B03CE`. Proposition : remettre les constats avec réserves, acceptation technique globale suspendue, validation humaine en attente. Les états et références des bilans ci-dessous restent historiques.
 
 **Référence :** AT-M-CLIENT-01 · **Version :** 0.4 · **État arrêté au :** 7 novembre 2026, 15 h 30 Europe/Paris · **Statut :** dossier de constats en cours, non approuvé pour la remise.
