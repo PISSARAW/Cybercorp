@@ -1,5 +1,7 @@
 # Reprise du registre, du blocage AUDIT et des GPO — 7 novembre 2026
 
+**Suivi ultérieur :** [diagnostic d'accès W11 et verrouillage local](diagnostic-acces-w11-2026-11-07.md). L'utilisateur est connecté sous `CYBERCORP\usr.com01` après guidage vers la console de base. `local-admin` est actif mais verrouillé ; stratégie de 15 minutes après cinq échecs. Attente demandée, déverrouillage non confirmé ; aucun nouveau gpresult ou essai métier. Une expiration d'évaluation W11 est visible, sans diagnostic natif. Le bilan ci-dessous conserve les opérations et preuves de la reprise précédente.
+
 À **11:42 Europe/Paris**, le registre actif contient **38 lignes uniques contrôlées**, le blocage AUDIT journalisé est réactivé et les quatre GPO sont cohérentes selon l'API native Microsoft. Les nouveaux essais sur W11 restent bloqués par le refus des identifiants du compte local de secours. Aucun nouveau `gpresult` ni essai métier n'est déclaré exécuté.
 
 ## Registre rapproché sur les sources

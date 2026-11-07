@@ -1,5 +1,7 @@
 # M-CLIENT-01 — fiche de décision (modèle)
 
+**Complément d'accès du 7 novembre :** [session métier ouverte et verrouillage local-admin établi](diagnostic-acces-w11-2026-11-07.md). Les lectures locales montrent un compte de secours actif mais verrouillé et une stratégie de 15 minutes après cinq échecs. Attente sans nouvel essai demandée ; accès administratif, nouveau gpresult et scénarios métier toujours non démontrés. Les captures signalent aussi une évaluation W11 expirée à qualifier. Aucune décision de remise n'est prononcée.
+
 **Suivi technique du 7 novembre, 11:42 Europe/Paris :** [registre rapproché, AUDIT réactivé et GPO cohérentes](reprise-registre-audit-gpo-2026-11-07.md). Les pièces nouvelles sont référencées dans ce bilan ; les anciennes lignes de revue ci-dessous restent historiques. L'accès local W11 est refusé, les comptes Direction doivent effectuer leur premier changement de mot de passe ; l'application actuelle au poste et les essais métier restent non démontrés. Ce suivi ne prononce aucune décision de remise ni autorisation de scan.
 
 Ce formulaire est à remplir avec les résultats réellement observés. Les cases vides ne valent ni conformité ni approbation. Les pièces citées suivent le [protocole de chaîne de preuves](protocole-preuves.md) ; conserver les exports bruts dans le coffre restreint et ne partager que des extraits expurgés.
