@@ -1,0 +1,46 @@
+Id;Domaine;Type;Reference_temporaire_conversation;Statut_reference_temporaire;Conclusion
+CONV-001;pfSense;Capture transcrite;codex-clipboard-b2552e17-595f-4971-a250-a593153fd526.png;Indisponible;Interfaces LAN et AUDIT conformes au plan
+CONV-002;DNS;Capture transcrite;codex-clipboard-eee0378b-1f3e-45ea-b61c-4d1da6991640.png;Indisponible;Zones DNS initiales inventoriées
+CONV-003;DNS;Capture transcrite;codex-clipboard-6c49e7f2-09bd-494a-a67b-0f7bcab68722.png;Indisponible;Zone inversée sécurisée et intégrée à AD
+CONV-004;DNS;Capture transcrite;codex-clipboard-c87d9e96-4852-4169-b298-b2d5ec1eeb90.png;Indisponible;Enregistrements A du DC et du client
+CONV-005;DNS;Capture transcrite;codex-clipboard-c079327e-2529-42ef-ab60-7fc49d5beb11.png;Indisponible;PTR du DC et du client résolus
+CONV-006;DNS;Capture transcrite;codex-clipboard-188388d9-d373-4dc7-9f18-f27de9ef4a74.png;Indisponible;SRV LDAP du DC résolu
+CONV-007;AD OU;Capture transcrite;codex-clipboard-64b90437-af0a-4f3d-a035-57eb6e2e04b6.png;Indisponible;OU CyberCorp et Postes observées
+CONV-008;AD OU;Capture transcrite;codex-clipboard-b9e75f13-119f-4674-ac88-6fc3f6a25123.png;Indisponible;OU principales créées et protégées
+CONV-009;AD OU;Sortie textuelle;;Conservée;Six OU de services créées et protégées
+CONV-010;Groupes;Sortie textuelle;;Conservée;Aucun groupe CyberCorp initial
+CONV-011;Groupes;Capture transcrite;codex-clipboard-29970b6c-cc1f-46f8-9008-938e2cf2028f.png;Indisponible;Sept groupes globaux de sécurité
+CONV-012;Groupes;Capture transcrite;codex-clipboard-3c65fb55-d384-4ee2-98c6-ef41c0c83501.png;Indisponible;Huit groupes locaux de domaine
+CONV-013;Groupes;Capture transcrite;codex-clipboard-af4897cb-94be-4590-8b7b-b155f23ec92f.png;Indisponible;Six groupes métiers dans GG_TOUS
+CONV-014;Groupes;Capture transcrite;codex-clipboard-9ddf0ef0-422c-4810-8a08-28fc906eaa71.png;Indisponible;Imbrications AGDLP contrôlées
+CONV-015;Comptes;Sortie textuelle;;Conservée;Aucun compte CyberCorp initial
+CONV-016;Comptes;Sortie textuelle;;Conservée;29 comptes créés sans affichage des secrets
+CONV-017;Comptes;Capture transcrite;codex-clipboard-cc6477b9-47c6-4f38-83b3-972735b0fb87.png;Indisponible;Fichier temporaire supprimé et comptes répartis
+CONV-018;Groupes;Capture transcrite;codex-clipboard-1909ac5d-b8de-4af4-be5c-807250738025.png;Indisponible;Effectifs métiers et imbrication GG_TOUS
+CONV-019;Comptes;Capture transcrite;codex-clipboard-46e8f469-48bf-41b6-b426-742572fb236e.png;Indisponible;Comptes adm sans groupe privilégié visible
+CONV-020;Stockage;Capture transcrite;codex-clipboard-e1e8448b-7ea1-4f58-ac9d-7d01ca8eb494.png;Indisponible;Volume E DATA sain et partages absents initialement
+CONV-021;Stockage;Capture transcrite;codex-clipboard-4cf39303-1b6e-43b4-bfed-116f1d04711f.png;Indisponible;Six dossiers de partage créés
+CONV-022;ACL NTFS;Capture transcrite;codex-clipboard-94c2f4c0-b31c-425d-b4e7-0cba17c287fd.png;Indisponible;ACL protégées sans héritage
+CONV-023;ACL NTFS;Capture transcrite;codex-clipboard-ff49e763-5e8a-4d91-80af-2efa4a718aa1.png;Indisponible;Droits NTFS détaillés contrôlés
+CONV-024;SMB;Capture transcrite;codex-clipboard-a22656f2-5786-4ac2-b8b8-bed683834d3a.png;Indisponible;Six partages créés avec ABE et sans cache
+CONV-025;SMB;Capture transcrite;codex-clipboard-af101738-e0cc-4609-88cb-b40553bd5e0d.png;Indisponible;Droits SMB contrôlés sans Everyone visible
+CONV-026;Session;Capture transcrite;codex-clipboard-5b92462c-7725-4b8e-b7e1-366693051093.png;Indisponible;RDP refusé au compte métier
+CONV-027;Session;Capture transcrite;codex-clipboard-ab013bf5-836a-4e81-96fe-b8e62ec7b86f.png;Indisponible;Session locale usr.fin01 confirmée
+CONV-027-DIAG;Session;Capture diagnostique;codex-clipboard-e4c8e584-9772-4220-a24d-088cd6ff12ef.png;Indisponible;Erreurs de copie du prompt
+CONV-028;ACL fonctionnelle;Capture transcrite;codex-clipboard-0ae489f9-dd4b-4423-9ed3-66bb23704a96.png;Indisponible;Écriture et lecture Finance autorisées
+CONV-029;ACL fonctionnelle;Constat déclaré;;Sans capture locale;Lecture Clients refusée à usr.fin01
+CONV-030;ACL fonctionnelle;Capture transcrite;codex-clipboard-429c2a53-9ec6-4849-837f-d9e53b94da45.png;Indisponible;Commun lisible mais non modifiable
+CONV-031;GPO;Sortie textuelle;;Conservée;Deux GPO natives initiales
+CONV-032;GPO;Sortie textuelle;;Conservée;CC-Domaine-Comptes liée en priorité 1
+CONV-033;GPO;Captures diagnostiques;f5e8495d et fe7ef4b7;Indisponibles;Réglages affichés mais non persistés
+CONV-034;GPO;Capture transcrite;codex-clipboard-0839f2d4-7461-4c6f-97b9-784d2515fc3b.png;Indisponible;Politique effective initiale incorrecte
+CONV-035;GPO;Sortie textuelle;;Conservée;CC-Domaine-Comptes appliquée selon gpresult
+CONV-036;GPO;Sortie textuelle;;Conservée;Rapport XML initial incohérent
+CONV-037;GPO;Sortie textuelle;;Conservée;GUID et métadonnées de CC-Domaine-Comptes
+CONV-038;GPO;Capture transcrite;codex-clipboard-865549b5-43c1-4029-b960-b660271f103b.png;Indisponible;Mot de passe corrigé
+CONV-038-DIAG;GPO;Capture diagnostique;codex-clipboard-dbbc3d3c-5f0e-4ca1-b682-148988d40c79.png;Indisponible;Anciennes valeurs avant correction
+CONV-039-A;GPO;Capture transcrite;codex-clipboard-607d8b5a-e377-4d2e-97c5-8fb648204993.png;Indisponible;Verrouillage initialement non défini
+CONV-039-B;GPO;Capture transcrite;codex-clipboard-884bb143-95e2-4e66-a008-7f75266b65ba.png;Indisponible;Verrouillage corrigé
+CONV-040;GPO;Sortie textuelle;;Conservée;Rapport XML final conforme
+CONV-041;GPO;Sortie textuelle;;Conservée;Politique effective finale conforme
+CONV-042;GPO;Sortie textuelle;;Conservée;CC-Postes-Securite créée et liée à OU Postes
