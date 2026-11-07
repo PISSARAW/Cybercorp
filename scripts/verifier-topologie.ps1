@@ -24,7 +24,10 @@ $cas = @(
     [pscustomobject]@{ nom = 'champ-manquant'; fichier = (Join-Path $racineProjet 'tests\topology\audit-champ-manquant.json'); attendu = 'FAIL' }
 )
 
-if (-not (Test-Path -LiteralPath $Conftest -PathType Leaf)) { throw "Conftest introuvable : $Conftest" }
+if (-not (Test-Path -LiteralPath $Conftest -PathType Leaf)) {
+    $installateur = Join-Path $PSScriptRoot 'installer-conftest.ps1'
+    throw "Conftest introuvable : $Conftest. Installez la version requise avec : & '$installateur' -DossierInstallation '$(Split-Path -Parent $Conftest)', puis relancez la verification."
+}
 if (-not (Test-Path -LiteralPath $DossierRapport -PathType Container)) { throw "Dossier absent : $DossierRapport" }
 foreach ($test in $cas) {
     if (-not (Test-Path -LiteralPath $test.fichier -PathType Leaf)) { throw "Entrée absente : $($test.fichier)" }
@@ -38,10 +41,14 @@ $resultats = @(
         $sortie = (& $Conftest test --policy $dossierPolitique --namespace cybercorp.topology --output json $fichier 2>&1) -join [Environment]::NewLine
         $code = $LASTEXITCODE
         if ($sortie -notmatch '^\s*\[') { throw "Sortie Conftest non JSON pour $($test.nom) : $sortie" }
-        $analyse = @($sortie | ConvertFrom-Json)
-        $tests = @($analyse | Measure-Object -Property successes -Sum)[0].Sum
+        # Sous Windows PowerShell 5.1, ConvertFrom-Json renvoie le tableau sans
+        # l'enumerer : @(... | ConvertFrom-Json) ajouterait un tableau imbrique.
+        $analyse = ConvertFrom-Json -InputObject $sortie
+        $tests = ($analyse | ForEach-Object {
+            if ($_.PSObject.Properties['successes']) { [int]$_.successes } else { 0 }
+        } | Measure-Object -Sum).Sum
         $echecs = @($analyse | ForEach-Object { if ($_.PSObject.Properties['failures']) { $_.failures } })
-        if ($tests -le 0) { throw "Aucune règle exécutée pour $($test.nom)." }
+        if (($tests + $echecs.Count) -le 0) { throw "Aucune règle exécutée pour $($test.nom)." }
         $obtenu = if ($code -eq 0 -and $echecs.Count -eq 0) { 'PASS' } elseif ($code -eq 1 -and $echecs.Count -gt 0) { 'FAIL' } else { 'ERREUR' }
         [ordered]@{
             cas = $test.nom

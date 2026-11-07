@@ -10,7 +10,15 @@ Ce contrôle en lecture seule vérifie la configuration Hyper-V du profil **audi
 
 ## Exécution
 
-Conftest `0.71.1` (OPA `1.21.1`) est installé localement dans `%LOCALAPPDATA%\CyberCorp\tools\conftest\0.71.1\conftest.exe`. La version est fixe pour rendre les résultats comparables. L'archive Windows x86_64 officielle a été vérifiée avant extraction avec le SHA-256 `34d623334b5e7ed4465bf62a4cb3b092684859cd3d224bbd390925a0852b922a`.
+Conftest `0.71.1` (OPA `1.21.1`) doit être installé localement dans `%LOCALAPPDATA%\CyberCorp\tools\conftest\0.71.1\conftest.exe` sur chaque hôte. La version est fixe pour rendre les résultats comparables. L'[archive Windows x86_64 officielle](https://github.com/open-policy-agent/conftest/releases/tag/v0.71.1) est vérifiée avant extraction avec le SHA-256 `34d623334b5e7ed4465bf62a4cb3b092684859cd3d224bbd390925a0852b922a`.
+
+Depuis la racine du dépôt, installer l'outil une fois (accès HTTPS à GitHub, sans droits administrateur) :
+
+```powershell
+.\scripts\installer-conftest.ps1
+```
+
+L'installateur vérifie l'empreinte avant toute extraction, puis la version de l'exécutable. Une installation existante de la bonne version est conservée. Pour un hôte hors ligne, transférer l'archive officielle et utiliser `-Archive 'C:\transfert\conftest_0.71.1_Windows_x86_64.zip'` ; la même empreinte est exigée. Un autre emplacement peut être choisi avec `-DossierInstallation`, puis transmis au vérificateur avec `-Conftest 'C:\chemin\conftest.exe'`. Le vérificateur reste en lecture seule et ne télécharge rien.
 
 Depuis la racine du dépôt, choisir un nom de sortie **nouveau** dans un dossier local restreint hors Git et OneDrive, puis exécuter :
 
