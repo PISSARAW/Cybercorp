@@ -1,5 +1,9 @@
 # CyberCorp — guide de clôture du projet, 5 novembre 2026
 
+**Archivage C12/WAN du 7 novembre :** [dernier export C12 et deux captures pfSense enregistrés](archivage-c12-wan-2026-11-07.md). Le registre actif comporte désormais 22 lignes, sans doublon ni anomalie de taille/SHA-256. L'archivage de ces pièces est terminé ; le rapatriement Kali et les autres contrôles restent ouverts. Aucun nouveau PASS Conftest n'a été produit sur le dernier C12.
+
+**Mise à jour du 7 novembre :** la [réconciliation du registre](reconciliation-registre-2026-11-07.md) est terminée : 19 lignes uniques et 19 pièces dont tailles/SHA-256 concordent. Le consolidé existant a été installé après sauvegarde de l'ancien actif, sans ajout de ligne. Les instructions de réconciliation ci-dessous sont donc accomplies. Prochaine tâche documentaire : archivage du dernier export C12 et du complément WAN, puis rapatriement des fichiers Kali.
+
 **Objet.** Donner à l'opérateur un déroulé complet pour terminer le dossier M-CLIENT-01 et la recette T01–T15 : préparation, VM nécessaires, outils, personnes, actions, captures, preuves, dépendances et décision. Ce guide décrit le travail à réaliser ; une case à faire n'est pas un résultat. Les heures ci-dessous servent à organiser la journée du **jeudi 5 novembre 2026**, fuseau `Europe/Paris`. La fenêtre de scan doit être fixée et approuvée séparément dans la [fiche de décision](fiche-m-client-01.md).
 
 **Mise à jour de suivi : vendredi 6 novembre 2026, soir.** Après A/C05, C07–C09 et M02/C10–C12 ont été documentées et archivées selon les sorties de séance. Les huit pièces nouvelles sont présentes et hachées sous `brut`, mais le registre accessible pendant la documentation ne montre que sept lignes du 1er novembre : réconcilier cet écart avant clôture. Le dernier export C12 reste à inscrire, le complément WAN et les fichiers Kali à rapatrier/archiver. C06 et la qualification finale restent ouvertes. Les créneaux du 5 novembre ci-dessous sont historiques, à replanifier. Voir le [bilan détaillé](journal-deploiement.md#reprise-20261106-soir).
@@ -19,7 +23,7 @@
 | Disponibilité du DC et budget C06 | Licence/activation non résolues. Dernier relevé d'alimentation à 19:47:50 UTC : pfSense/Kali actifs (1/1,96 Gio), DC/W11 arrêtés, hôte 0,58 Gio libres. L'opérateur poursuit d'abord avec les systèmes ouverts ; la mise en état enregistré de Kali n'est pas confirmée. | Ne pas démarrer DC/W11 avec cette marge. Mesurer de nouveau avant bascule ; avec démarrages 2/1 Gio, minimum 4,5 Gio libres pour conserver 1,5 Gio, puis contrôle réel. [Point de reprise](controle-gpo-clients.md#interruption-et-point-de-reprise). |
 | Chaîne de preuves | 43 captures du lot vérifiées et retirées du dossier actif OneDrive, plus 11 captures de diagnostic conservées ; huit nouvelles pièces sous `brut` revérifiées. Les lignes annoncées en séance manquent au CSV accessible lors de la documentation. | Identifier le registre utilisé et sa version sans réinscrire en masse ni reconstituer des lignes. Ne pas déclarer la chaîne réconciliée sur la seule présence des fichiers. |
 
-Références : [mission](mission-securite.md), [architecture et mémoire](architecture.md), [outils](outillage-securite.md), [protocole de preuve](protocole-preuves.md), [M03](controle-gpo-clients.md), [recette](../config/recette.csv), [journal](journal-deploiement.md).
+Références : [mission](mission-securite.md), [annexe technique des constats et preuves](annexe-technique-m-client-01.md), [architecture et mémoire](architecture.md), [outils](outillage-securite.md), [protocole de preuve](protocole-preuves.md), [M03](controle-gpo-clients.md), [recette](../config/recette.csv), [journal](journal-deploiement.md).
 
 ## 2. Personnes et décisions
 

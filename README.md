@@ -11,6 +11,10 @@ Infrastructure Windows de CyberCorp, société de conseil de 25 collaborateurs. 
 
 ## Mission de sécurité en cours
 
+**Archivage C12/WAN du 7 novembre :** [trois pièces ajoutées et contrôlées](docs/archivage-c12-wan-2026-11-07.md). Le registre actif compte désormais 22 lignes sans doublon, avec 22 fichiers conformes. Le dernier export C12 et les deux captures pfSense sont archivés ; les fichiers Kali restent à rapatrier.
+
+**Mise à jour du 7 novembre 2026 :** [registre réconcilié](docs/reconciliation-registre-2026-11-07.md). Le consolidé existant reprend exactement les 7 lignes historiques et les 12 inscriptions récentes ; il est désormais actif. Les 19 fichiers, tailles et SHA-256 concordent, sans doublon. L'écart de registre décrit dans le bilan historique ci-dessous est résolu ; les autres tâches de clôture restent ouvertes.
+
 CyberCorp doit répondre à une demande client tout en maîtrisant une exception d'audit et en qualifiant un signal sur un poste. Le résultat attendu est un dossier de décision : qui a autorisé quoi, quels accès ont réellement changé, ce qui a été observé, ce qui a été refermé et ce qui demeure incertain. Le [mandat métier M-CLIENT-01](docs/mission-securite.md) donne le cas opérationnel ; le [plan d'outillage](docs/outillage-securite.md) répartit le travail entre Nmap/Ndiff, Sysmon, Hayabusa, GPOZaurr et Conftest/OPA.
 
 Les nouveaux exports suivent le [protocole de chaîne de preuves](docs/protocole-preuves.md) : coffre local hors OneDrive, noms uniques, registre, empreintes SHA-256 et relecture des extraits avant remise.
@@ -19,7 +23,7 @@ Les preuves communiquées pendant la construction pas à pas sont inventoriées 
 
 **État au 6 novembre 2026, reprise du soir :** les pièces M03 avant/après et GPOZaurr/C05 sont conservées. [C07–C09](docs/controle-gpo-clients.md) documentent les droits Clients, une création/lecture réussie sous `usr.com01` et un refus d'écriture sous `usr.fin02`. [M02 et C10–C12](docs/controle-topologie.md) ajoutent un PASS réel, cinq refus attendus et la concordance du WAN pfSense sans porteuse avec sa carte Hyper-V déconnectée. Les empreintes des huit nouvelles pièces sous `brut` ont été revérifiées ; les contrôles du registre annoncés en séance étaient conformes. **Écart à réconcilier : le registre accessible lors de la documentation ne contient que sept lignes anciennes du 1er novembre.** Les 43 captures du lot sont vérifiées et retirées du dossier OneDrive ; les bruts restent hors Git. Le dernier export C12 de `21:03:11 UTC` reste dans `transfert`, sans inscription ni nouveau test Conftest confirmés. Le scan Nmap déjà réalisé donne quatre ports sans réponse, sans disponibilité du DC démontrée pendant la mesure ; aucune nouvelle autorisation n'est documentée. C06, qualification GPO, licence du DC et décision de remise restent ouverts. Dernier relevé VM à `19:47:50 UTC` : pfSense/Kali actifs, DC/W11 arrêtés, 0,58 Gio libres. Voir le [bilan de reprise](docs/journal-deploiement.md#reprise-20261106-soir) et le [guide actualisé](docs/plan-cloture-2026-11-05.md).
 
-Le [guide de clôture du 5 novembre](docs/plan-cloture-2026-11-05.md) détaille l'ordre de travail, les profils de VM, la recette T01–T15, les 26 captures, les preuves et les dépendances.
+Le [guide de clôture du 5 novembre](docs/plan-cloture-2026-11-05.md) détaille l'ordre de travail, les profils de VM, la recette T01–T15, les 26 captures, les preuves et les dépendances. L'[annexe technique M-CLIENT-01](docs/annexe-technique-m-client-01.md) rassemble les constats, les pièces vérifiées, leurs limites et les écarts encore ouverts pour la décision.
 
 ## Repères
 

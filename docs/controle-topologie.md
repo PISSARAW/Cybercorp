@@ -1,5 +1,7 @@
 # M-CLIENT-01 — contrôle préalable de la topologie
 
+**Mise à jour du 7 novembre :** [registre réconcilié](reconciliation-registre-2026-11-07.md), puis [dernier export C12 et deux captures WAN archivés](archivage-c12-wan-2026-11-07.md). Le registre actif compte 22 lignes uniques, avec 22 tailles et SHA-256 conformes. Aucun PASS Conftest n'a été produit sur le dernier export. Les mentions de réconciliation et d'archivage à faire ci-dessous sont historiques.
+
 Ce contrôle en lecture seule vérifie la configuration Hyper-V du profil **audit** avant toute exception réseau. Il ne démarre ni n'arrête de VM, ne modifie aucune carte et ne teste pas le comportement des flux. Il doit être relancé immédiatement avant chaque nouvelle fenêtre d'audit : un PASS ancien ne vaut pas autorisation permanente.
 
 **Suivi du 6 novembre, soir :** nouveau PASS réel et cinq refus attendus examinés ; export, rapport, C10 et C11 archivés et contrôlés en séance. C12 complète les lectures Hyper-V et pfSense du WAN. Les huit nouvelles pièces du soir sont présentes sous `brut`, mais le registre accessible lors de la documentation ne reflète pas leurs lignes annoncées : réconcilier cet écart avant clôture. Le dernier export C12 reste dans `transfert`, sans inscription ni exécution Conftest confirmées. Voir le [bilan de reprise](journal-deploiement.md#reprise-20261106-soir).

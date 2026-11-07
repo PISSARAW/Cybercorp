@@ -1,5 +1,7 @@
 # M-CLIENT-01 — contrôle M03 des GPO et du dossier `Clients`
 
+**Mise à jour du 7 novembre :** [registre réconcilié](reconciliation-registre-2026-11-07.md), 19 lignes et 19 pièces contrôlées, sans doublon ni anomalie de taille/SHA-256. Les inscriptions M03, GPOZaurr/C05 et C07–C09 sont bien présentes dans le registre actif. Les mentions de réconciliation à faire ci-dessous décrivent la situation antérieure ; C06 et les autres contrôles restent ouverts.
+
 **État au 6 novembre 2026, reprise du soir : C05 et C07–C09 conservées ; C06 reste à produire.** Les JSON confirment `False → True`. Les captures C07–C09 montrent les ACL/SMB de Clients, une création/lecture réussie sous `usr.com01` et un refus d'écriture sous `usr.fin02`. Leurs inscriptions et contrôles conformes ont été communiqués en séance ; les copies sous `brut` et leurs SHA-256 ont été revérifiés pendant la documentation. Le registre alors accessible ne présente cependant que sept anciennes lignes : cet écart doit être réconcilié avant clôture. Les différences AD/SYSVOL, erreurs de `GPOPermissions`, activation et stabilité du DC restent ouvertes. Aucune validation complète de M03 ni décision de remise n'en découle. Voir le [bilan de reprise et l'écart de registre](journal-deploiement.md#reprise-20261106-soir).
 
 ## Question métier
