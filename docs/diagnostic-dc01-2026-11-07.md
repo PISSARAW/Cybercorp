@@ -1,6 +1,6 @@
 # Diagnostic CC-DC01 — 7 novembre 2026, 09 h 07–09 h 09 Europe/Paris
 
-**Suivi ultérieur :** le [réarmement explicitement autorisé a été exécuté à 09:12 Europe/Paris](rearmement-dc01-2026-11-07.md), puis le DC redémarré. Dix jours de grâce initiale sont retrouvés ; l'activation et la surveillance de plus d'une heure restent ouvertes. Le présent document conserve le diagnostic initial de 09:07–09:09.
+**Suivi ultérieur :** le [réarmement autorisé et le redémarrage](rearmement-dc01-2026-11-07.md) ont été suivis d'une surveillance positive de 65 minutes, puis de l'[activation officielle de l'évaluation jusqu'au 6 mai 2027](activation-dc01-2026-11-07.md). Le confinement est rétabli. Le présent document conserve le diagnostic initial de 09:07–09:09.
 
 Au diagnostic initial, le DC est accessible par PowerShell Direct. Sa licence reste en notification et sa stabilité durable n'est pas rétablie. Cette phase a réalisé des lectures et conservé un diagnostic ; aucune commande d'activation ou de réinitialisation, modification d'horloge, de DNS, de WAN ou de règle réseau n'avait alors été exécutée. Aucun autre démarrage de VM n'a été effectué par l'agent.
 

@@ -1,5 +1,7 @@
 # M-CLIENT-01 — contrôle M03 des GPO et du dossier `Clients`
 
+**Suivi du 7 novembre, 09:49 UTC :** [CC-DC01 activé en évaluation jusqu'au 6 mai 2027](activation-dc01-2026-11-07.md), surveillance de 65 minutes sans arrêt puis contrôles AD ciblés conformes. DNS et confinement restaurés ; W11 reste arrêté. C06 actualisée, gouvernance GPO et scénarios métier restent à poursuivre. Le rapport décrit aussi la divergence actuelle du registre et la règle explicite AUDIT désactivée à qualifier.
+
 **Suivi du 7 novembre, 07:33 UTC :** [HTML C06 retrouvé et archivé](avancement-autonome-2026-11-07.md), collecte affichée du 6 novembre à 17:18:10, fuseau non établi. Il décrit les GPO et paramètres du poste ; C06 n'est plus absente. Aucun nouveau gpresult ni validation des autres scénarios métier n'a été réalisé. Le registre compte désormais 27 pièces vérifiées.
 
 **Mise à jour du 7 novembre :** [registre réconcilié](reconciliation-registre-2026-11-07.md), 19 lignes et 19 pièces contrôlées, sans doublon ni anomalie de taille/SHA-256. Les inscriptions M03, GPOZaurr/C05 et C07–C09 sont bien présentes dans le registre actif. Les mentions de réconciliation à faire ci-dessous décrivent la situation antérieure ; C06 et les autres contrôles restent ouverts.

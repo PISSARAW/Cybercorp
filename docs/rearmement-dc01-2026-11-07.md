@@ -1,6 +1,8 @@
 # Réarmement autorisé de CC-DC01 — 7 novembre 2026
 
-CC-DC01 a retrouvé une période de grâce initiale après un unique réarmement autorisé et un redémarrage propre. L'activation officielle et la stabilité au-delà d'une heure restent à confirmer. Aucun DNS, lien WAN, règle réseau ou réglage d'horloge n'a été modifié ; aucune autre VM n'a été démarrée.
+**Suivi ultérieur :** [activation réussie et confinement rétabli](activation-dc01-2026-11-07.md). La surveillance de 65 minutes est positive ; l'unique `/ato` autorisé a activé l'évaluation jusqu'au 6 mai 2027. Le présent document conserve les résultats de la phase de réarmement.
+
+CC-DC01 a retrouvé une période de grâce initiale après un unique réarmement autorisé et un redémarrage propre. Pendant cette phase initiale, aucun DNS, lien WAN, règle réseau ou réglage d'horloge n'a été modifié ; aucune autre VM n'a été démarrée.
 
 ## Autorisation et exécution
 
@@ -46,9 +48,11 @@ Ce résultat fournit **dix jours de grâce initiale**, pas une activation de l'�
 
 Ces contrôles portent sur la disponibilité initiale et trois tests AD ciblés. Ils ne valident ni toute la recette ni la fin durable des arrêts automatiques.
 
-## Surveillance en cours
+## Surveillance achevée
 
-Un processus PowerShell caché, PID de lancement `18236`, a démarré le 7 novembre à 08:15:34 UTC. Il effectue des **lectures uniquement**, toutes les 30 secondes, jusqu'à 65 minutes après le nouvel amorçage : fin prévue vers **10:18 Europe/Paris**. Il ne redémarre aucune VM, n'applique aucune correction et signale simplement une RAM libre inférieure à 1,5 Gio.
+Le bilan final, créé à 09:17:59 UTC, confirme 3 902 secondes de fonctionnement, 124 relevés tous Running, aucune erreur de lecture, aucune mesure sous 1,5 Gio libres et aucun événement 1074 depuis l'amorçage. La maintenance d'activation a commencé après lecture de ce bilan positif.
+
+Un processus PowerShell caché, PID de lancement `18236`, a démarré le 7 novembre à 08:15:34 UTC. Il a effectué des **lectures uniquement**, toutes les 30 secondes, jusqu'à 65 minutes après le nouvel amorçage, puis s'est terminé à **10:17:59 Europe/Paris**. Il n'a redémarré aucune VM ni appliqué de correction ; il signalait simplement une RAM libre inférieure à 1,5 Gio.
 
 Il relève l'état Hyper-V, la RAM libre, l'heure du dernier amorçage et l'état de licence. Le bilan final vérifie un amorçage inchangé, plus d'une heure de fonctionnement, l'absence d'événement 1074 depuis cet amorçage, des échantillons tous actifs et l'absence d'erreur de lecture. Le bilan ne peut être déclaré réussi avant sa production et sa lecture.
 
@@ -59,7 +63,7 @@ Fichiers sous le coffre `M-CLIENT-01/transfert` :
 - `surveillance-dc01-rearm-20261107.samples.jsonl` : mesures successives.
 - `surveillance-dc01-rearm-20261107.final.json` : bilan créé uniquement à la fin ou en cas d'erreur fatale.
 
-Le premier relevé vérifié à 09:16:05 Europe/Paris montre le DC actif, le même amorçage, une grâce en cours et 2,326 Gio libres. **La surveillance est en cours au moment de cette documentation.** Pour permettre la mesure, laisser l'hôte et le DC actifs ; une fermeture de session ou un arrêt pourrait l'interrompre.
+Le premier relevé vérifié à 09:16:05 Europe/Paris montrait le DC actif, le même amorçage, une grâce en cours et 2,326 Gio libres. La mesure complète est désormais terminée et conservée avec les preuves d'activation.
 
 ## Conservation des preuves
 
@@ -77,4 +81,4 @@ Le registre divergent reste inchangé, SHA-256 `05FF3BB292B17D14F21A55EA576501AE
 
 ## Suite nécessaire
 
-Lire et conserver le bilan de surveillance après son achèvement, puis qualifier la stabilité. La [préparation de maintenance pour l'activation](preparation-activation-dc01-2026-11-07.md) décrit les préconditions relevées et le périmètre soumis à accord avant tout DNS/WAN/NAT/règle ou démarrage de pfSense. Le DC conserve son DNS local. L'écart de HEAD est expliqué par trois commits locaux préexistants ; la divergence du coffre reste ouverte, avec deux sources historiques C06/C12 retrouvées et recopiées sous manifeste séparé. Les validations métier et GPO restent différées jusqu'à la qualification de la stabilité.
+Le bilan positif et l'activation sont conservés dans le [rapport de clôture de l'intervention](activation-dc01-2026-11-07.md). La divergence du coffre, la règle explicite AUDIT désactivée et les validations métier/GPO restent à traiter. L'écart de HEAD est expliqué par trois commits locaux préexistants ; les quatre sources historiques C06/C12/WAN retrouvées sont recopiées sous manifestes séparés.
